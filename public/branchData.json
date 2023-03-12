@@ -1,0 +1,29 @@
+[
+  {
+    "distict_name": "Dkaha",
+    "distict_code": "001",
+    "entry": "Yes",
+    "branch_name": "Lalmatia",
+    "headOffice_code": "101",
+    "headOffice_name": "comtech",
+    "account_ststus": "monthly"
+  },
+  {
+    "distict_name": "Chattogram",
+    "distict_code": "002",
+    "entry": "No",
+    "branch_name": "Mohammadpur",
+    "headOffice_code": "102",
+    "headOffice_name": "comtech2",
+    "account_ststus": "weekly"
+  },
+  {
+    "distict_name": "Cumilla",
+    "distict_code": "003",
+    "entry": "yes",
+    "branch_name": "Kandirpar",
+    "headOffice_code": "103",
+    "headOffice_name": "comtech3",
+    "account_ststus": "Yearly"
+  }
+]

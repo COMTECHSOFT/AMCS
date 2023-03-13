@@ -31,6 +31,12 @@ function CommReport() {
     }, 0);
   };
 
+  const tableStyles = {
+    style: {
+      border: "1px solid black",
+      borderCollapse: "collapse",
+    },
+  };
   return (
     <div>
       <ReactToPrint
@@ -63,201 +69,163 @@ function CommReport() {
             </h1>
           </div>
         </div>
-        <div className="overflow-x-auto px-4">
-          <table className="table-auto min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Sl. No.
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  MO Code
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  MO Name
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Collection (NEW)
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Commission (NEW)
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Renewal Collection
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Renewal Commission
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Total Collection
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Total Commission
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Tax
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Net Pay
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  Signature
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {location?.state?.commissionData.map((data, index) => {
-                return (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center font-medium text-gray-900">
-                        {index + 1}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {data.A_CODE}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{data.NAME}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {data.NEW_PRM}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {" "}
-                        {data.AG_COMM_NEW}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {" "}
-                        {data.OTHER_PRM}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {" "}
-                        {data.AG_COMM_OTHER}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {+data.OTHER_PRM + +data.NEW_PRM}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {+data.AG_COMM_OTHER + +data.AG_COMM_NEW}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">{` ${
-                        ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100
-                      }`}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500">
-                        {+data.AG_COMM_OTHER +
-                          +data.AG_COMM_NEW -
-                          ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-center text-gray-500"></div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50"></th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50"></th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  Branch Wise Total:
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  {allNewCollection("NEW_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allRenewalCollection("OTHER_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allRenewalCommission("AG_COMM_OTHER")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allNewCollection("NEW_PRM") +
-                    allRenewalCollection("OTHER_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW") +
-                    allRenewalCommission("AG_COMM_OTHER")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {(allNewCommission("AG_COMM_NEW") * 5 +
+        <div className="px-4">
+          <table style={tableStyles.style} className="w-full text-center">
+            <tr>
+              <td rowSpan="2" style={tableStyles.style}>
+                Sl. No.
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                MO Code
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                MO Name
+              </td>
+              <td colspan="4" style={tableStyles.style}>
+                Monthly purchase deposit scheme
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                Total <br /> Collection
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                Total <br /> Commission
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                Tax
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                Net <br /> Pay
+              </td>
+              <td rowSpan="2" style={tableStyles.style}>
+                Signature
+              </td>
+            </tr>
+            <tr>
+              <td style={tableStyles.style}>
+                Collection <br /> (new)
+              </td>
+              <td style={tableStyles.style}>
+                Commission <br /> (new)
+              </td>
+              <td style={tableStyles.style}>
+                Renewal <br /> Collection
+              </td>
+              <td style={tableStyles.style}>
+                Renewal <br /> Commission
+              </td>
+            </tr>
+            {location?.state?.commissionData.map((data, index) => {
+              return (
+                <tr>
+                  <td style={tableStyles.style}>{index + 1}</td>
+                  <td style={tableStyles.style}>{data.A_CODE}</td>
+                  <td style={tableStyles.style}>{data.NAME}</td>
+                  <td style={tableStyles.style}> {data.NEW_PRM}</td>
+                  <td style={tableStyles.style}> {data.AG_COMM_NEW}</td>
+                  <td style={tableStyles.style}> {data.OTHER_PRM}</td>
+                  <td style={tableStyles.style}> {data.AG_COMM_OTHER}</td>
+                  <td style={tableStyles.style}>
+                    {+data.OTHER_PRM + +data.NEW_PRM}
+                  </td>
+                  <td style={tableStyles.style}>
+                    {" "}
+                    {+data.AG_COMM_OTHER + +data.AG_COMM_NEW}
+                  </td>
+                  <td style={tableStyles.style}>{` ${
+                    ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100
+                  }`}</td>
+                  <td style={tableStyles.style}>
+                    {" "}
+                    {+data.AG_COMM_OTHER +
+                      +data.AG_COMM_NEW -
+                      ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100}
+                  </td>
+                  <td style={tableStyles.style}></td>
+                </tr>
+              );
+            })}
+            <tr>
+              <td colSpan="3" style={tableStyles.style}>
+                Branch Wise Total:
+              </td>
+              <td style={tableStyles.style}> {allNewCollection("NEW_PRM")}</td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCommission("AG_COMM_NEW")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allRenewalCollection("OTHER_PRM")}
+              </td>
+              <td style={tableStyles.style}>
+                {allRenewalCommission("AG_COMM_OTHER")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCollection("NEW_PRM") +
+                  allRenewalCollection("OTHER_PRM")}
+              </td>
+              <td style={tableStyles.style}>
+                {allNewCommission("AG_COMM_NEW") +
+                  allRenewalCommission("AG_COMM_OTHER")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {(allNewCommission("AG_COMM_NEW") * 5 +
+                  allRenewalCommission("AG_COMM_OTHER") * 5) /
+                  100}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCommission("AG_COMM_NEW") +
+                  allRenewalCommission("AG_COMM_OTHER") -
+                  (allNewCommission("AG_COMM_NEW") * 5 +
                     allRenewalCommission("AG_COMM_OTHER") * 5) /
                     100}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW") +
-                    allRenewalCommission("AG_COMM_OTHER") -
-                    (allNewCommission("AG_COMM_NEW") * 5 +
-                      allRenewalCommission("AG_COMM_OTHER") * 5) /
-                      100}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50"></th>
-              </tr>
-            </thead>
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50"></th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50"></th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  Grand Total:
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  {allNewCollection("NEW_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider  text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allRenewalCollection("OTHER_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allRenewalCommission("AG_COMM_OTHER")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allNewCollection("NEW_PRM") +
-                    allRenewalCollection("OTHER_PRM")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW") +
-                    allRenewalCommission("AG_COMM_OTHER")}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase bg-gray-50">
-                  {(allNewCommission("AG_COMM_NEW") * 5 +
+              </td>
+              <td style={tableStyles.style}></td>
+            </tr>
+            <tr>
+              <td colSpan="3" style={tableStyles.style}>
+                Grand Total:
+              </td>
+              <td style={tableStyles.style}> {allNewCollection("NEW_PRM")}</td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCommission("AG_COMM_NEW")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allRenewalCollection("OTHER_PRM")}
+              </td>
+              <td style={tableStyles.style}>
+                {allRenewalCommission("AG_COMM_OTHER")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCollection("NEW_PRM") +
+                  allRenewalCollection("OTHER_PRM")}
+              </td>
+              <td style={tableStyles.style}>
+                {allNewCommission("AG_COMM_NEW") +
+                  allRenewalCommission("AG_COMM_OTHER")}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {(allNewCommission("AG_COMM_NEW") * 5 +
+                  allRenewalCommission("AG_COMM_OTHER") * 5) /
+                  100}
+              </td>
+              <td style={tableStyles.style}>
+                {" "}
+                {allNewCommission("AG_COMM_NEW") +
+                  allRenewalCommission("AG_COMM_OTHER") -
+                  (allNewCommission("AG_COMM_NEW") * 5 +
                     allRenewalCommission("AG_COMM_OTHER") * 5) /
                     100}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50">
-                  {allNewCommission("AG_COMM_NEW") +
-                    allRenewalCommission("AG_COMM_OTHER") -
-                    (allNewCommission("AG_COMM_NEW") * 5 +
-                      allRenewalCommission("AG_COMM_OTHER") * 5) /
-                      100}
-                </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase bg-gray-50"></th>
-              </tr>
-            </thead>
+              </td>
+              <td style={tableStyles.style}></td>
+            </tr>
           </table>
         </div>
       </div>

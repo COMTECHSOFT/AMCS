@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MoOpenInfo = () => {
-  const [value, setValue] = useState(0);
+  const [moCode, setMoCode] = useState(0);
   const [datas, setDatas] = useState([]);
   const moData = datas?.find((data) => data);
   useEffect(() => {
-    fetch(`http://192.168.31.94/api/mo_info.php?CODE=${value}`) // 000841
+    fetch(`http://192.168.31.94/api/mo_info.php?CODE=${moCode}`) // 000841
       .then((res) => res.json())
       .then((data) => setDatas(data.Mo_info));
-  }, [value]);
+  }, [moCode]);
 
   const [agencyData, setAgencyData] = useState([]);
   const branchData = agencyData?.find((data) => data);
@@ -23,8 +23,40 @@ const MoOpenInfo = () => {
       });
   }, [moData?.AGENCY_CODE]);
 
+  const [name,setName]=useState('')
+  const [fName,setFName]=useState('')
+  const [preAdd,setPreAdd]=useState('')
+  const [perAdd,setPerAdd]=useState('')
+
   const handleSave = () => {
-    console.log("first");
+    const moNewSaveData = {
+      // CODE: moCode,
+      // NAME: name,
+      // F_NAME:fName,
+      // ADDRESS1: perAdd,
+      // ADDRESS2: preAdd,
+      NAME: 'borhan',
+      CODE: '123456',
+      F_NAME:'nur mohammad',
+      ADDRESS1: 'badda',
+      ADDRESS2: 'khila',
+    };
+    console.log(moNewSaveData);
+    
+    const url = "http://192.168.31.94/api/mo_insert.php";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(moNewSaveData),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
   };
   return (
     <div>
@@ -36,7 +68,7 @@ const MoOpenInfo = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-12 bg-gray-300">
         <div className="border-r-2 border-white p-10 col-span-5">
-          <form action="" className="grid grid-cols-1 p-4  ">
+          <form onSubmit={handleSubmit} action="" className="grid grid-cols-1 p-4  ">
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 PIN No.
@@ -58,7 +90,7 @@ const MoOpenInfo = () => {
                 name=""
                 // value={moData?.CODE}
                 onChange={(e) => {
-                  setValue(e.target.value);
+                  setMoCode(e.target.value);
                 }}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
@@ -71,6 +103,9 @@ const MoOpenInfo = () => {
                 type="text"
                 name="name"
                 value={moData?.NAME}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -82,6 +117,7 @@ const MoOpenInfo = () => {
                 type="text"
                 name=""
                 value={moData?.F_NAME}
+                onChange={(e)=>setFName(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -91,6 +127,7 @@ const MoOpenInfo = () => {
               </label>
               <textarea
                 name=""
+                onChange={e=>setPerAdd(e.target.value)}
                 value={moData?.ADDRESS1}
                 rows="4"
                 className="mb-2 w-full pl-2 font-bold"
@@ -102,6 +139,7 @@ const MoOpenInfo = () => {
               </label>
               <textarea
                 name=""
+                onChange={e=>setPreAdd(e.target.value)}
                 value={moData?.ADDRESS2}
                 rows="4"
                 className="mb-2 w-full pl-2 font-bold"

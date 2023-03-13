@@ -44,41 +44,48 @@ const AmanaGroup = () => {
   }, [selectCommCode]);
 
   const handleSave = () => {
-    
     const newSaveData = {
-      PROPOSER : "oi borhan",
-      FDPS_NO : "371989",
-      PRO_NO : "37198",
-      SC_CODE : "003",
-      ENTRY_ZONE_CODE : "01",
-      BR_CODE : "",
-      TERM : "",
-      AGE : "",
-      SEX : "",
-      ADD4 : "",
-      M_NAME : "",
-      F_NAME : "",
-      UNIT : "",
-      RATE : "",
-      INST_NO : "",
-      LF_PRM : "",
-      SUM_INS : "",
-      AGE_ADMIT : "",
-      TABLEID : "",
-      SUS_AMT : "",
-      INSTMODE : "",
-      COF_PS : "",
-      COF_PER : "",
-      OC_NAME : "",
-      NOMINEE_NAME1 : " ",
-      NOMINEE_REL1 : " ",
-      NOMINEE_AGE1 : "",
-      NOM_GAR_NAME : "",
-      NOM_GAR_REL : "",
-      USER_NAME : "",
-      H_NAME : "",
-      NAT : "",
-      NAT_ID : "",
+      PROPOSER: "Al hasan arif",
+      FDPS_NO: "371982",
+      PRO_NO: "371982",
+      SC_CODE: location?.state?.findAllMainData?.SC_CODE,
+      // SC_CODE: "003",
+      ENTRY_ZONE_CODE: location?.state?.SUB_ZONE_CODE,
+      // ENTRY_ZONE_CODE: "01",
+      // BR_CODE: "1122",
+      BR_CODE: location?.state?.AGENCY_CODE,
+      // TERM: "05",
+      TERM: location?.state?.findAllMainData?.TERM,
+      AGE: "27",
+      SEX: "Male",
+      ADD4: location?.state?.accStatus,
+      // ADD4: "Refund",
+      M_NAME: "Hajera Begum",
+      F_NAME: "Late Nur Mohammad",
+      UNIT: "01",
+      RATE: "12000",
+      INST_NO: location?.state?.findPrEntryInfo?.INST_NO,
+      // INST_NO: "01",
+      LF_PRM: "200",
+      SUM_INS: location?.state?.findAllMainData?.SUM_INS,
+      // SUM_INS: "15000",
+      AGE_ADMIT: "22",
+      TABLEID: "02",
+      SUS_AMT: "124512",
+      INSTMODE: location?.state?.findPrEntryInfo?.INSTMODE,
+      // INSTMODE: "Monthly DPS",
+      COF_PS: "02",
+      COF_PER: "02",
+      OC_NAME: "Employee",
+      NOMINEE_NAME1: "Mayin",
+      NOMINEE_REL1: "Friend",
+      NOMINEE_AGE1: "27",
+      NOM_GAR_NAME: "Md Majedul Islam",
+      NOM_GAR_REL: "Sir",
+      USER_NAME: "Borhan",
+      H_NAME: "Admin",
+      NAT: "Bangladeshi",
+      NAT_ID: "123214",
       // FDPS_NO: accountNo,
       // B_CODE: location?.state?.AGENCY_CODE,
       // B_NAME: location?.state?.AGENCY_NAME,
@@ -105,7 +112,7 @@ const AmanaGroup = () => {
       // INSTMODE: location?.state?.findPrEntryInfo?.INSTMODE,
     };
     console.log(newSaveData);
-    const url = "http://192.168.31.94/api/insert.php";
+    const url = "http://192.168.31.94/api/insert.php"; //https://192.168.31.94/api/insert_data.php
     fetch(url, {
       method: "POST",
       headers: {
@@ -115,16 +122,6 @@ const AmanaGroup = () => {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
-    // axios
-    //   .post(url, {
-    //     newSaveData,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   };
   return (
     <div>

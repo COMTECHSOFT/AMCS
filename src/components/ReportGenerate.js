@@ -1,133 +1,384 @@
-import React from "react";
-import { Page, Text, Image, Document, StyleSheet } from "@react-pdf/renderer";
+import React, { useEffect, useRef, useState } from "react";
+import ReactToPrint from "react-to-print";
 
-const styles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
-  },
-  title: {
-    fontSize: 24,
-    textAlign: "center",
-  },
-  text: {
-    margin: 12,
-    marginTop:'110px',
-    color:'red',
-    fontSize: 14,
-    textAlign: "justify",
-    fontFamily: "Times-Roman",
-  },
-  image: {
-    width:'50px',
-    height:'50px',
-  },
-  header: {
-    fontSize: 12,
-    marginBottom: 20,
-    textAlign: "center",
-    color: "grey",
-  },
-  pageNumber: {
-    position: "absolute",
-    fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
-    textAlign: "center",
-    color: "grey",
-  },
-});
 
 const ReportGenerate = () => {
+  const componentRef = useRef();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
+  const [accNo, setAccNo] = useState("");
+  const [report1, setReport1] = useState([]);
+  console.log(report1);
+  const report1Data = report1?.find((data) => data);
+  useEffect(() => {
+    fetch(`http://192.168.31.94/api/report1.php?FDPS_NO=${accNo}`)
+      .then((res) => res.json())
+      .then((data) => setReport1(data?.Proposal_info));
+  }, [accNo]);
+
+  const [report2, setReport2] = useState([]);
+  const report2Data = report2?.find((data) => data);
+  useEffect(() => {
+    fetch(`http://192.168.31.94/api/report2.php?FDPS_NO=${accNo}`)
+      .then((res) => res.json())
+      .then((data) => setReport2(data?.report_info));
+  }, [accNo]);
+
+  const sumOfPrAmount = (columnKey) => {
+    return report1.reduce((total, row) => {
+      return total + parseFloat(row[columnKey]);
+    }, 0);
+  };
+
+  const sumOfPremium = (columnKey) => {
+    return report1.reduce((total, row) => {
+      return total + parseFloat(row[columnKey]);
+    }, 0);
+  };
+
+  
   return (
-    <Document>
-    <Page style={styles.body}>
-    <Image
-          style={styles.image}
-          src={
-            "https://lh3.googleusercontent.com/p/AF1QipPgKvyVYsnl_ilL0-LrxZPSfnE4fDCIKUgbrOwM=s680-w680-h510"
-          }
+    <div>
+    <div ref={componentRef}>
+      <div className="flex flex-col items-center justify-center py-4">
+        <img
+          src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png"
+          className=" lg:w-96 h-32"
         />
-        <Text style={styles.header} fixed>
-        
-          AMANA MULTIPURPOSE CO-OPERATIVE SOCIETY LTD.
-          </Text>
-      <Text style={styles.text} className=''>
-       
-        And why did 'I' have to take a cab? Perhaps, but perhaps your
-        civilization is merely the sewer of an even greater society above you!
-        Why would a robot need to drink? Stop! Don't shoot fire stick in space
-        canoe! Cause explosive decompression! I'm sure those windmills will
-        keep them cool. No! I want to live! There are still too many things I
-        don't own! Now that the, uh, garbage ball is in space, Doctor, perhaps
-        you can help me with my sexual inhibitions? I feel like I was mauled
-        by Jesus. Anyhoo, your net-suits will allow you to experience Fry's
-        worm infested bowels as if you were actually wriggling through them.
-        Bender, I didn't know you liked cooking. That's so cute. Who am I
-        making this out to? Aww, it's true. I've been hiding it for so long.
-        Are you crazy? I can't swallow that. Bite my shiny metal ass. Leela's
-        gonna kill me. You know, I was God once. There, now he's trapped in a
-        book I wrote: a crummy world of plot holes and spelling errors! Yes!
-        In your face, Gandhi! This is the worst kind of discrimination: the
-        kind against me! No, I'm Santa Claus! You are the last hope of the
-        universe. I am the man with no name, Zapp Brannigan! Why would I want
-        to know that? I guess if you want children beaten, you have to do it
-        yourself. Oh, I think we should just stay friends. No, just a regular
-        mistake. I'm Santa Claus! And then the battle's not so bad? I daresay
-        that Fry has discovered the smelliest object in the known universe!
-        No! The kind with looting and maybe starting a few fires! Bender, quit
-        destroying the universe! So, how 'bout them Knicks? Yes! In your face,
-        Gandhi! For one beautiful night I knew what it was like to be a
-        grandmother. Subjugated, yet honored. Bite my shiny metal ass. You
-        know the worst thing about being a slave? They make you work, but they
-        don't pay you or let you go. There's no part of that sentence I didn't
-        like! And when we woke up, we had these bodies. Oh sure! Blame the
-        wizards! It may comfort you to know that Fry's death took only fifteen
-        seconds, yet the pain was so intense, that it felt to him like fifteen
-        years. And it goes without saying, it caused him to empty his bowels.
-        You guys aren't Santa! You're not even robots. How dare you lie in
-        front of Jesus? Hey, whatcha watching? No, I'm Santa Claus! If rubbin'
-        frozen dirt in your crotch is wrong, hey I don't wanna be right. Oh,
-        you're a dollar naughtier than most. Then we'll go with that data
-        file! Fry, we have a crate to deliver. And why did 'I' have to take a
-        cab? I guess if you want children beaten, you have to do it yourself.
-        Say it in Russian! Anyhoo, your net-suits will allow you to experience
-        Fry's worm infested bowels as if you were actually wriggling through
-        them. And I'm his friend Jesus. Now what? Your best is an idiot! Quite
-        possible. We live long and are celebrated poopers. Switzerland is
-        small and neutral! We are more like Germany, ambitious and
-        misunderstood! I guess because my parents keep telling me to be more
-        ladylike. As though! You know the worst thing about being a slave?
-        They make you work, but they don't pay you or let you go. Oh right. I
-        forgot about the battle. Wow, you got that off the Internet? In my
-        day, the Internet was only used to download pornography. I don't know
-        what you did, Fry, but once again, you screwed up! Now all the planets
-        are gonna start cracking wise about our mamas. She also liked to shut
-        up! We'll go deliver this crate like professionals, and then we'll go
-        home. In your time, yes, but nowadays shut up! Besides, these are
-        adult stemcells, harvested from perfectly healthy adults whom I killed
-        for their stemcells. And I'm his friend Jesus. Incidentally, you have
-        a dime up your nose. Oh, you're a dollar naughtier than most. Bender,
-        being God isn't easy. If you do too much, people get dependent on you,
-        and if you do nothing, they lose hope. You have to use a light touch.
-        Like a safecracker, or a pickpocket. And why did 'I' have to take a
-        cab? Perhaps, but perhaps your civilization is merely the sewer of an
-        even greater society above you! Why would a robot need to drink? Stop!
-        Don't shoot fire stick in space canoe! Cause explosive decompression!
-         I'm Santa Claus!
-       
-      </Text>
-      <Text
-        style={styles.pageNumber}
-        render={({ pageNumber, totalPages }) =>
-          `${pageNumber} / ${totalPages}`
-        }
+        <div className="ml-8">
+          <p className="m-[-10px] font text-center">
+            Head Office: J.S Plaza (3rd Floor), Kanaikhali, Natore,
+            01771-62766
+          </p>
+        </div>
+      </div>
+
+      <ReactToPrint
+        trigger={() => (
+          <h1
+            className="text-xl font m-auto cursor-pointer"
+            style={{
+              borderBottom: "3px solid black",
+              maxWidth: "max-content",
+            }}
+          >
+            Deposite Statement
+          </h1>
+        )}
+        content={() => componentRef.current}
+        footer={() => <p>This is the footer of the printed document.</p>}
+        // onBeforePrint={() => {
+        //   const pageCount = Math.ceil(ref.current.offsetHeight / 1000); // assuming page height is 1000px
+        //   document.documentElement.style.setProperty(
+        //     "--page-count",
+        //     pageCount
+        //   );
+        // }}
       />
-    </Page>
-  </Document>
+
+      <div className="mt-6 ml-20 mr-20 border border-black flex justify-between">
+        <form onSubmit={handleSubmit} className=" p-2">
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Account Name:</label>
+            <input
+              type="text"
+              className="py-1 w-72 text-center font"
+              value={report1Data?.PROPOSER}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Account Number:</label>
+            <input
+              type="text"
+              className="py-1 w-72 text-center font"
+              onChange={(e) => {
+                setAccNo(e.target.value);
+              }}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Account Status:</label>
+            <input
+              type="text"
+              className="py-1 w-72 text-center font"
+              value={report1Data?.ADD4}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Opening Date:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.RISKDATE}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Premium:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.LF_PRM ? report1Data?.LF_PRM + ".00" : ""}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Maturity Date:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.MATURITY}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Install Mode:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.INSTMODE}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Plan & Term:</label>
+            <div className="flex">
+              <input
+                type="text"
+                className="py-1 w-28 text-center font"
+                value={report1Data?.TABLEID}
+                style={{ border: "1px solid black" }}
+              />
+              <input
+                type="text"
+                className="py-1 w-28 text-center font"
+                value={report1Data?.TERM}
+                style={{ border: "1px solid black" }}
+              />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Age:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.AGE}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">Sex:</label>
+            <input
+              type="text"
+              className="py-1 w-56 text-center font"
+              value={report1Data?.SEX}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="font text-xl w-44">A/C Holder Address:</label>
+            <textarea
+              className="py-1 w-56 text-center font"
+              value={report1Data?.COF_PS}
+              rows={4}
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+        </form>
+        <form onSubmit={handleSubmit} className=" p-2">
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              District Off. Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.Z_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              Branch Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.B_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              MO Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.A_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              UM Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.MO_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              BM Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.MM_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              AGM Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.BM_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              DGM Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.ZM_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              GM Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.AVP_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              ED Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.VP_CODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+          <div className="flex items-center">
+            <label className=" text-xl w-48 text-right mr-4 border border-black p-1">
+              Director Code
+            </label>
+            <input
+              type="text"
+              value={report2Data?.JVPCODE}
+              className="py-1 w-44 text-center "
+              style={{ border: "1px solid black" }}
+            />
+          </div>
+        </form>
+      </div>
+      <h1
+        className="text-xl font m-auto cursor-pointer my-4"
+        style={{
+          borderBottom: "3px solid black",
+          maxWidth: "max-content",
+        }}
+      >
+        Deposite Information
+      </h1>
+      <div className="border border-black mx-20">
+        <table className="w-full text-center">
+          <tr style={{ border: "1px solid black" }}>
+            <th>Install NO.</th>
+            <th>Install Wise Premium</th>
+            <th>PR NO.</th>
+            <th>PR DATE</th>
+            <th>PR Amount</th>
+            <th>Suspense Amount</th>
+            <th>PAYMODE</th>
+          </tr>
+          {report1?.map((data, index) => {
+            const subNum = Number(data?.PR_AMT);
+            return (
+              <tr style={{ border: "1px solid black" }}>
+                <td style={{ border: "1px solid black" }}>{data?.INST_NO}</td>
+                <td style={{ border: "1px solid black" }}>{data?.LF_PRM}</td>
+                <td style={{ border: "1px solid black" }}>{data?.PR_NO}</td>
+                <td style={{ border: "1px solid black" }}>{data?.PR_DATE}</td>
+                <td style={{ border: "1px solid black" }}>{data?.PR_AMT}</td>
+                <td style={{ border: "1px solid black" }}>{data?.SUS_AMT}</td>
+                <td style={{ border: "1px solid black" }}>
+                  {data?.PAY_MODE}
+                </td>
+              </tr>
+            );
+          })}
+          <tr style={{ border: "1px solid black" }}>
+            <th></th>
+            <th>
+            Total Due: {sumOfPremium("LF_PRM")}
+            </th>
+            <th></th>
+            <th></th>
+            <th>
+              {/* Subtotal ({report1?.reduce((a, c) => a + c.PR_AMT, 0)})
+              {report1.reduce((a, c) => a + c.quantity * c.price, 0)} */}
+              Total Deposited: {sumOfPrAmount("PR_AMT")}
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div className="flex justify-between mx-12 py-12 content-end">
+          <div>
+            <hr className="bg-black w-96" style={{ height: "3px" }} />
+            <p className="font-bold  text-center mb-2">Prepared By</p>
+            <p>This is computer generated premium deposit statement</p>
+          </div>
+          <div>
+            <hr className="bg-black w-60" style={{ height: "3px" }} />
+            <p className="font-bold text-center mb-2">Checked By</p>
+            <p>
+              Document Print Date: {new Date().getDate()}-
+              {new Date().getMonth() + 1}-{new Date().getFullYear()}
+            </p>
+          </div>
+          <div>
+            <hr className="bg-black w-60" style={{ height: "3px" }} />
+            <p className="font-bold  text-center mb-2">Authorised Officer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   );
 };
 

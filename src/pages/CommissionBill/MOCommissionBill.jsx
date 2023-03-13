@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MOCommissionBill = () => {
@@ -20,6 +20,31 @@ const MOCommissionBill = () => {
     "November",
     "December",
   ];
+
+  const [brCode, setBrCode] = useState();
+  const [brName, setBrName] = useState();
+  const [months, setMonths] = useState();
+  const [year, setYear] = useState();
+  const [bill, setBill] = useState();
+
+  // const viewReportdata = () => {
+  //   console.log(brCode, brName, months, year, bill);
+  // };
+
+  const [commissionData, setCommissionData] = useState([]);
+  const allReportData = {
+    commissionData: commissionData,
+    month: months,
+    year: year,
+  };
+  // console.log(allReportData);
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/com_report.php?PMON=feb&&PYEAR=2013&&B_CODE=${brCode}`
+    )
+      .then((res) => res.json())
+      .then((data) => setCommissionData(data?.comm_info));
+  }, [brCode]);
   return (
     <div>
       <nav className="bg-gray-300 px-4 py-2">
@@ -47,6 +72,7 @@ const MOCommissionBill = () => {
                   <input
                     type="text"
                     name="proposalNo"
+                    onChange={(e) => setBrCode(e.target.value)}
                     className="mb-2 h-8 w-full pl-2 font-bold"
                   />
                 </div>
@@ -57,6 +83,8 @@ const MOCommissionBill = () => {
                   <input
                     type="text"
                     name="proposalNo"
+                    value={commissionData[0]?.AGENCY_NAME}
+                    onChange={(e) => setBrName(e.target.value)}
                     className="mb-2 h-8 w-full pl-2 font-bold"
                   />
                 </div>
@@ -69,6 +97,7 @@ const MOCommissionBill = () => {
                       className="w-full ml-10 pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
                       id="gender"
                       name="gender"
+                      onChange={(e) => setMonths(e.target.value)}
                     >
                       {month?.map((item, index) => (
                         <option value={item} key={index}>
@@ -84,6 +113,7 @@ const MOCommissionBill = () => {
                     <input
                       type="text"
                       name="proposalNo"
+                      onChange={(e) => setYear(e.target.value)}
                       className="mb-2 h-8 w-full pl-2 font-bold"
                     />
                   </div>
@@ -95,6 +125,12 @@ const MOCommissionBill = () => {
                   <input
                     type="text"
                     name="proposalNo"
+                    value={
+                      brCode && months && year
+                        ? `MO/${brCode}/${months}/${year}`
+                        : ""
+                    }
+                    onChange={(e) => setBill(e.target.value)}
                     className="mb-2 h-8 w-full pl-2 font-bold"
                   />
                 </div>
@@ -103,9 +139,12 @@ const MOCommissionBill = () => {
           </div>
           <div className="border-t-4 bg-blue-700 py-8 border-white">
             <div className="flex gap-2 justify-center">
-              <Link to="">
+              <Link to={`/commReport `} state={allReportData}>
                 {" "}
-                <button className="bg-white w-[300px]  mb-[-40px]  py-2 text-xl font-bold shadow">
+                <button
+                  // onClick={viewReportdata}
+                  className="bg-white w-[300px]  mb-[-40px]  py-2 text-xl font-bold shadow"
+                >
                   View Report
                 </button>
               </Link>

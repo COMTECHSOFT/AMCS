@@ -1,5 +1,6 @@
 import { createBrowserRouter, Link } from "react-router-dom";
-import ShowReport from "../components/ShowReport";
+import CommReport from "../components/CommReport";
+import ReportGenerate from "../components/ReportGenerate";
 import Main from "../layout/Main/Main";
 import Account from "../pages/Account";
 import AccountInfo from "../pages/AccountInfo/AccountInfo";
@@ -178,7 +179,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/report",
-    element: <ShowReport />,
+    element: <ReportGenerate />,
+  },
+  {
+    path: "/commReport",
+    element: <CommReport />,
   },
   {
     path: "*",

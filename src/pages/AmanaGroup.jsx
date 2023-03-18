@@ -116,7 +116,10 @@ const AmanaGroup = () => {
     fetch(url, {
       method: "POST",
       headers: {
-        "content-type": "application/json",
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+       'Access-Control-Allow-Credentials': 'true'
+
       },
       body: JSON.stringify(newSaveData),
     })

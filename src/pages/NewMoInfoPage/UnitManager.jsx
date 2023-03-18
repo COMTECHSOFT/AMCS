@@ -22,6 +22,54 @@ const UnitManager = () => {
         setAgencyData(data.agency_details);
       });
   }, [moData?.AGENCY_CODE]);
+
+  const handleSave = () => {
+    const newSaveData = {
+      CODE: '123455',
+      NAME: 'MD MAYIN',
+      F_NAME:'Asif',
+      ADDRESS1: 'DHAKA',
+      ADDRESS2: 'DHAKA',
+      // CODE: '123455',
+      // NAME: 'MD MAYIN',
+      // ADDRESS1: 'DHAKA',
+      // PHONE2:'01620658621',
+      // A_MO:'000000',
+      // A_MM:'000222',
+      // A_BM:'000222',
+      // A_ZM:'001210',
+      // A_AVP:'210122',
+      // A_VP:'000000',
+      // ZONE:'01',
+      // SUB_ZONE:'009',
+      // AGENCY_CODE:'1981',
+      // F_NAME:'asif',
+      // ADDRESS2: 'DHAKA',
+      // JVP:'000000',
+      // JSVP:'000000'
+
+    };
+    console.log(newSaveData);
+    
+    const url = "http://192.168.31.94/api/uminsert.php";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newSaveData),
+    })
+      .then((res) => {
+        if(!res.ok){
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then((data) => console.log(data))
+      .catch(error=>{
+        console.error('There was a problem with the fetch operation:',error)
+      });
+  };
   return (
     <div>
       <nav className="bg-blue-400 text-center py-6">
@@ -478,6 +526,7 @@ const UnitManager = () => {
         <div className="flex flex-col md:flex-row justify-center cursor-pointer gap-1">
           <p
             className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl  `}
+            onClick={handleSave}
           >
             Save
           </p>

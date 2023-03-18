@@ -5,7 +5,8 @@ import ReactToPrint from "react-to-print";
 function CommReport() {
   const componentRef = useRef();
   const location = useLocation();
-  console.log(location?.state?.commissionData);
+  console.log(location);
+  const mnt = location?.state?.commissionData[0]?.PMON;
 
   const allNewCollection = (columnKey) => {
     return location?.state?.commissionData?.reduce((total, row) => {
@@ -55,10 +56,36 @@ function CommReport() {
                 Head Office: J.S Plaza (3rd Floor), Kanaikhali, Natore,
                 01771-62766
               </p>
-              <p className="text-center">Branch Wise MO Commission Bill</p>
+              <p className="text-center">
+                Branch Wise {location?.state?.design} Commission Bill
+              </p>
               <p className="text-center">
                 For the Month of:{" "}
-                {`${location?.state?.month} ${location?.state?.year}`}
+                {`${
+                  mnt === "jan"
+                    ? "January"
+                    : mnt === "feb"
+                    ? "February"
+                    : mnt === "mar"
+                    ? "March"
+                    : mnt === "apr"
+                    ? "April"
+                    : mnt === "may"
+                    ? "May"
+                    : mnt === "jun"
+                    ? "June"
+                    : mnt === "jul"
+                    ? "July"
+                    : mnt === "aug"
+                    ? "August"
+                    : mnt === "sep"
+                    ? "September"
+                    : mnt === "oct"
+                    ? "October"
+                    : mnt === "nov"
+                    ? "November"
+                    : "December"
+                } ${location?.state?.year}`}
               </p>
             </div>
           </div>

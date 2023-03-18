@@ -7,24 +7,39 @@ const MOCommissionBill = () => {
   }-${new Date().getFullYear()}`;
 
   const month = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    // "January",
+    // "February",
+    // "March",
+    // "April",
+    // "May",
+    // "June",
+    // "July",
+    // "August",
+    // "September",
+    // "October",
+    // "November",
+    // "December",
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
   ];
+
+  const desig = ["ME", "MO", "UM", "BM"];
 
   const [brCode, setBrCode] = useState();
   const [brName, setBrName] = useState();
   const [months, setMonths] = useState();
   const [year, setYear] = useState();
+  const [design, setDesign] = useState();
   const [bill, setBill] = useState();
 
   // const viewReportdata = () => {
@@ -36,15 +51,16 @@ const MOCommissionBill = () => {
     commissionData: commissionData,
     month: months,
     year: year,
+    design: design,
   };
   // console.log(allReportData);
   useEffect(() => {
     fetch(
-      `http://192.168.31.94/api/com_report.php?PMON=feb&&PYEAR=2013&&B_CODE=${brCode}`
+      `http://192.168.31.94/api/com_report.php?DESIG=${design}&&PMON=${months}&&PYEAR=${year}&&B_CODE=${brCode}`
     )
       .then((res) => res.json())
       .then((data) => setCommissionData(data?.comm_info));
-  }, [brCode]);
+  }, [design, months, brCode, year]);
   return (
     <div>
       <nav className="bg-gray-300 px-4 py-2">
@@ -59,7 +75,7 @@ const MOCommissionBill = () => {
         <div className="border-4 border-white bg-emerald-500 w-full">
           <div className="border-b-4 text-center bg-blue-700 border-white">
             <h1 className="py-8 text-4xl font-bold text-white">
-              MO Commission Bill
+              Chain Code Wise Commission Bill
             </h1>
           </div>
           <div className=" py-24">
@@ -120,6 +136,21 @@ const MOCommissionBill = () => {
                 </div>
                 <div className="flex items-center justify-center">
                   <label htmlFor="" className="mx-2 font-bold w-32">
+                    Designation
+                  </label>
+                  <select
+                    className="w-full pl-2 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                    onChange={(e) => setDesign(e.target.value)}
+                  >
+                    {desig?.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex items-center justify-center">
+                  <label htmlFor="" className="mx-2 font-bold w-32">
                     Bill No
                   </label>
                   <input
@@ -127,7 +158,7 @@ const MOCommissionBill = () => {
                     name="proposalNo"
                     value={
                       brCode && months && year
-                        ? `MO/${brCode}/${months}/${year}`
+                        ? `${design}/${brCode}/${months}/${year}`
                         : ""
                     }
                     onChange={(e) => setBill(e.target.value)}

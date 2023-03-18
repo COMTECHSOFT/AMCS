@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MoOpenInfo = () => {
+  const rct = ["Directly Appointed", "Promoted"];
   const [moCode, setMoCode] = useState(0);
+
   const [datas, setDatas] = useState([]);
   const moData = datas?.find((data) => data);
   useEffect(() => {
@@ -23,40 +25,87 @@ const MoOpenInfo = () => {
       });
   }, [moData?.AGENCY_CODE]);
 
-  const [name,setName]=useState('')
-  const [fName,setFName]=useState('')
-  const [preAdd,setPreAdd]=useState('')
-  const [perAdd,setPerAdd]=useState('')
+  const [name, setName] = useState("");
+  const [fName, setFName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [phone2, setPhone2] = useState("");
+  const [amo, setAmo] = useState("");
+  const [amm, setAmm] = useState("");
+  const [abm, setAbm] = useState("");
+  const [azm, setAzm] = useState("");
+  const [aAvp, setAAvp] = useState("");
+  const [avp, setAvp] = useState("");
+  const [zone, setZone] = useState("");
+  const [subZone, setSubZone] = useState("");
+  const [agencyCode, setAgencyCode] = useState("");
+  const [jvp, setJvp] = useState("");
+  const [mrNo, setMrNo] = useState("");
+  const [mrAmt, setMrAmt] = useState("");
+  const [dob, setDateOB] = useState("");
+  const [doapt, setDoapt] = useState("");
+  const [liceNum, setLicNum] = useState("");
+  const [licIssDate, setLicIssDate] = useState("");
+  const [licExpDate, setLicExpDate] = useState("");
+  const [licRenwDate, setLicRenwDate] = useState("");
+  const [effDate, setEffDate] = useState("");
+  const [expr, setExpr] = useState("");
+  const [rctp, setRct] = useState("");
 
   const handleSave = () => {
     const moNewSaveData = {
-      // CODE: moCode,
-      // NAME: name,
-      // F_NAME:fName,
-      // ADDRESS1: perAdd,
-      // ADDRESS2: preAdd,
-      NAME: 'borhan',
-      CODE: '123456',
-      F_NAME:'nur mohammad',
-      ADDRESS1: 'badda',
-      ADDRESS2: 'khila',
+      CODE: moCode,
+      NAME: name,
+      LIC_NO: liceNum,
+      LIC_EXPIRY: licExpDate,
+      ADDRESS1: address1,
+      PHONE2: phone2,
+      A_MO: amo,
+      A_MM: amm,
+      A_BM: abm,
+      A_ZM: azm,
+      A_AVP: aAvp,
+      A_VP: avp,
+      DOAPT: doapt,
+      MRNO: mrNo,
+      MR_AMT: mrAmt,
+      DOB: dob,
+      EXPR: expr,
+      LIC_ISSUE: licIssDate,
+      LIC_RENEW: licRenwDate,
+      ZONE: zone,
+      SUB_ZONE: subZone,
+      AGENCY_CODE: agencyCode,
+      EF_DATE: effDate,
+      F_NAME: fName,
+      ADDRESS2: address2,
+      RCT: rctp,
+      JVP: jvp,
     };
     console.log(moNewSaveData);
-    
-    const url = "http://192.168.31.94/api/mo_insert.php";
+
+    const url = "http://192.168.31.94/api/exinsert.php";
     fetch(url, {
       method: "POST",
+      mode: "no-cors",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(moNewSaveData),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data);
+      });
   };
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
+    // e.target.reset();
+  };
+
+  const handleClear = () => {
+    window.location.reload();
   };
   return (
     <div>
@@ -68,7 +117,11 @@ const MoOpenInfo = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-12 bg-gray-300">
         <div className="border-r-2 border-white p-10 col-span-5">
-          <form onSubmit={handleSubmit} action="" className="grid grid-cols-1 p-4  ">
+          <form
+            onSubmit={handleSubmit}
+            action=""
+            className="grid grid-cols-1 p-4  "
+          >
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 PIN No.
@@ -117,7 +170,7 @@ const MoOpenInfo = () => {
                 type="text"
                 name=""
                 value={moData?.F_NAME}
-                onChange={(e)=>setFName(e.target.value)}
+                onChange={(e) => setFName(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -127,7 +180,7 @@ const MoOpenInfo = () => {
               </label>
               <textarea
                 name=""
-                onChange={e=>setPerAdd(e.target.value)}
+                onChange={(e) => setAddress1(e.target.value)}
                 value={moData?.ADDRESS1}
                 rows="4"
                 className="mb-2 w-full pl-2 font-bold"
@@ -139,7 +192,7 @@ const MoOpenInfo = () => {
               </label>
               <textarea
                 name=""
-                onChange={e=>setPreAdd(e.target.value)}
+                onChange={(e) => setAddress2(e.target.value)}
                 value={moData?.ADDRESS2}
                 rows="4"
                 className="mb-2 w-full pl-2 font-bold"
@@ -153,6 +206,7 @@ const MoOpenInfo = () => {
                 type="text"
                 name=""
                 value={moData?.DOB}
+                onChange={(e) => setDateOB(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -164,6 +218,7 @@ const MoOpenInfo = () => {
                 type="phone"
                 name=""
                 value={moData?.PHONE2}
+                onChange={(e) => setPhone2(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -174,7 +229,8 @@ const MoOpenInfo = () => {
               <input
                 type="phone"
                 name=""
-                id=""
+                value={moData?.MRNO}
+                onChange={(e) => setMrNo(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -185,7 +241,8 @@ const MoOpenInfo = () => {
               <input
                 type="phone"
                 name=""
-                id=""
+                value={moData?.MR_AMT}
+                onChange={(e) => setMrAmt(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -197,6 +254,7 @@ const MoOpenInfo = () => {
                 type="text"
                 name=""
                 value={moData?.DOAPT}
+                onChange={(e) => setDoapt(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -208,7 +266,8 @@ const MoOpenInfo = () => {
               <input
                 type="text"
                 name=""
-                id=""
+                value={moData?.LIC_NO}
+                onChange={(e) => setLicNum(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -219,7 +278,8 @@ const MoOpenInfo = () => {
               <input
                 type="text"
                 name=""
-                id=""
+                value={moData?.LIC_ISSUE}
+                onChange={(e) => setLicIssDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -230,8 +290,9 @@ const MoOpenInfo = () => {
               <input
                 type="text"
                 name=""
-                id=""
-                className="mb-2 h-8 w-full pl-1"
+                value={moData?.LIC_EXPIRY}
+                onChange={(e) => setLicExpDate(e.target.value)}
+                className="mb-2 font-bold h-8 w-full pl-1"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -241,7 +302,8 @@ const MoOpenInfo = () => {
               <input
                 type="text"
                 name=""
-                id=""
+                value={moData?.LIC_RENEW}
+                onChange={(e) => setLicRenwDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -253,6 +315,7 @@ const MoOpenInfo = () => {
                 type="text"
                 name=""
                 value={moData?.EF_DATE}
+                onChange={(e) => setEffDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -265,10 +328,28 @@ const MoOpenInfo = () => {
                 className="w-full pl-2 font-bold mb-2 py-1 focus:outline-none focus:shadow-outline"
                 id="gender"
                 name="gender"
+                value={
+                  moData?.RCT && moData?.RCT === "DA"
+                    ? "Directly Appoinment"
+                    : "Promoted"
+                }
+                onChange={(e) => setRct(e.target.value)}
               >
-                <option value="Directly Appointed">Directly Appointed</option>
-                <option value="Promoted">Promoted</option>
+                {rct?.map((item, index) => (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                ))}
               </select>
+              {/* <input
+                type="text"
+                name=""
+                value={
+                  moData?.RCT === "DA" ? "Directly Appoinment" : "Promoted"
+                }
+                onChange={(e) => setEffDate(e.target.value)}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              /> */}
             </div>
           </form>
         </div>
@@ -283,6 +364,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.AGENCY_CODE}
+                  onChange={(e) => setAgencyCode(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
               </div>
@@ -294,6 +376,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.SUB_ZONE_CODE}
+                  onChange={(e) => setSubZone(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
               </div>
@@ -305,6 +388,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.Z_CODE}
+                  onChange={(e) => setZone(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
               </div>
@@ -315,7 +399,8 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.AGENCY_NAME}
-                  className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                  disabled
+                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -323,7 +408,8 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.SUB_ZONE_NAME}
-                  className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                  disabled
+                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -331,7 +417,8 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={branchData?.Z_NAME}
-                  className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                  disabled
+                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
                 />
               </div>
             </form>
@@ -346,6 +433,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_MO}
+                  onChange={(e) => setAmo(e.target.value)}
                   className="mb-2 h-8 font-bold text-right pr-2 w-32 pl-2"
                 />
               </div>
@@ -357,6 +445,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_MM}
+                  onChange={(e) => setAmm(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -368,6 +457,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_BM}
+                  onChange={(e) => setAbm(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -379,6 +469,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_ZM}
+                  onChange={(e) => setAzm(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -390,6 +481,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_AVP}
+                  onChange={(e) => setAAvp(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -401,6 +493,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.JVP}
+                  onChange={(e) => setJvp(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -412,6 +505,7 @@ const MoOpenInfo = () => {
                   type="text"
                   name=""
                   value={moData?.A_VP}
+                  onChange={(e) => setAvp(e.target.value)}
                   className="mb-2 h-8 w-32 font-bold text-right pr-2"
                 />
               </div>
@@ -543,7 +637,13 @@ const MoOpenInfo = () => {
             <label htmlFor="" className="mx-2 font-bold ">
               Experience
             </label>
-            <textarea name="" id="" rows="4" className="mb-2 w-full pl-1" />
+            <textarea
+              name=""
+              value={moData?.EXPR}
+              onChange={(e) => setExpr(e.target.value)}
+              rows="4"
+              className="mb-2 w-full pl-2 font-bold"
+            />
           </div>
           <div className="text-center mt-8">
             <button className="bg-slate-200 py-2 w-52 text-gray-600 font-bold shadow-md">
@@ -571,6 +671,7 @@ const MoOpenInfo = () => {
           </p>
           <p
             className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl   `}
+            onClick={handleClear}
           >
             Clear
           </p>

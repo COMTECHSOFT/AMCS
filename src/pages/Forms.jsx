@@ -112,18 +112,32 @@ const Forms = () => {
   const [instlAmt, setInstlAmt] = useState("");
   const [instlNo, setInstlNo] = useState("");
   const [totalDepAmt, setTotalDepAmt] = useState("");
+  const [nomName1, setNomName1] = useState("");
+  const [nomName2, setNomName2] = useState("");
+  const [nomName3, setNomName3] = useState("");
+  const [nomName4, setNomName4] = useState("");
+  const [nomRel1, setNomRel1] = useState("");
+  const [nomRel2, setNomRel2] = useState("");
+  const [nomRel3, setNomRel3] = useState("");
+  const [nomRel4, setNomRel4] = useState("");
+  const [nomAge1, setNomAge1] = useState("");
+  const [nomAge2, setNomAge2] = useState("");
+  const [nomAge3, setNomAge3] = useState("");
+  const [nomAge4, setNomAge4] = useState("");
+  const [nomGarName, setNomGarName] = useState("");
+  const [nomGarRel, setNomGarRel] = useState("");
+  const [nomGarAge, setNomGarAge] = useState("");
+  const [nomGarName1, setNomGarName1] = useState("");
+  const [nomGarRel1, setNomGarRel1] = useState("");
+  const [nomGarAge1, setNomGarAge1] = useState("");
 
   const handleSave = () => {
     const newSaveData = {
       PROPOSER: name,
       FDPS_NO: value,
       PRO_NO: proNo,
-      // SC_CODE: "003",
-      // ENTRY_ZONE_CODE: "01",
-      // BR_CODE: "1122",
       AGE: age,
       SEX: sex,
-      // ADD4: "Refund",
       M_NAME: mName,
       F_NAME: fName,
       H_NAME: sName,
@@ -149,22 +163,36 @@ const Forms = () => {
       LF_PRM: instlAmt,
       INST_NO: instlNo,
       SUM_INS: totalDepAmt,
+      NOMINEE_NAME1: nomName1,
+      NOMINEE_NAME2: nomName2,
+      NOMINEE_NAME3: nomName3,
+      NOMINEE_NAME4: nomName4,
+      NOMINEE_REL1: nomRel1,
+      NOMINEE_REL2: nomRel2,
+      NOMINEE_REL3: nomRel3,
+      NOMINEE_REL4: nomRel4,
+      NOMINEE_AGE1: nomAge1,
+      NOMINEE_AGE2: nomAge2,
+      NOMINEE_AGE3: nomAge3,
+      NOMINEE_AGE4: nomAge4,
+      NOM_GAR_NAME: nomGarName,
+      NOM_GAR_NAME1: nomGarName1,
+      NOM_GAR_REL: nomGarRel,
+      NOM_GAR_REL1: nomGarRel1,
+      NOM_GAR_AGE: nomGarAge,
+      NOM_GAR_AGE1: nomGarAge1,
 
+      // SC_CODE: "003",
+      // ENTRY_ZONE_CODE: "01",
+      // BR_CODE: "1122",
+      // ADD4: "Refund",
       // UNIT: "01",
-      // RATE: "12000",
-      // INST_NO: "01",
-      // LF_PRM: "200",
-      // SUM_INS: "15000",
       // AGE_ADMIT: "22",
-      // SUS_AMT: "124512",
 
-      // NOMINEE_NAME1: "Mayin",
-      // NOMINEE_REL1: "Friend",
       // NOMINEE_AGE1: "27",
       // NOM_GAR_NAME: "Md Majedul Islam",
       // NOM_GAR_REL: "Sir",
       // USER_NAME: "Borhan",
-      // NAT_ID: "123214",
     };
     console.log(newSaveData);
     const url = "http://192.168.31.94/api/insert.php";
@@ -702,7 +730,7 @@ const Forms = () => {
                           type="text"
                           name=""
                           value={NOMINEE_NAME1}
-                          id=""
+                          onChange={(e) => setNomName1(e.target.value)}
                           className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
                       </div>
@@ -712,9 +740,9 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          name=""
                           value={NOMINEE_NAME2}
-                          className="mb-2 h-8 w-full pl-1"
+                          onChange={(e) => setNomName2(e.target.value)}
+                          className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
                       </div>
                       <div className="flex items-center">
@@ -723,9 +751,9 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          name=""
                           value={NOMINEE_NAME3}
-                          className="mb-2 h-8 w-full pl-1"
+                          onChange={(e) => setNomName3(e.target.value)}
+                          className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
                       </div>
                       <div className="flex items-center">
@@ -734,9 +762,9 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          name=""
                           value={NOMINEE_NAME4}
-                          className="mb-2 h-8 w-full pl-1"
+                          onChange={(e) => setNomName4(e.target.value)}
+                          className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
                       </div>
                     </form>
@@ -749,33 +777,33 @@ const Forms = () => {
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_REL1}
+                            onChange={(e) => setNomRel1(e.target.value)}
                             className="mb-2 h-8 w-full pl-2 text-center font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_REL2}
-                            className="mb-2 h-8 w-full pl-2 font-bold"
+                            onChange={(e) => setNomRel2(e.target.value)}
+                            className="mb-2 h-8 w-full pl-2 text-center font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_REL3}
-                            className="mb-2 h-8 w-full pl-2 font-bold"
+                            onChange={(e) => setNomRel3(e.target.value)}
+                            className="mb-2 h-8 w-full pl-2 text-center font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_REL4}
-                            className="mb-2 h-8 w-full pl-2 font-bold"
+                            onChange={(e) => setNomRel4(e.target.value)}
+                            className="mb-2 h-8 w-full pl-2 text-center font-bold"
                           />
                         </div>
                       </form>
@@ -786,33 +814,33 @@ const Forms = () => {
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_AGE1}
+                            onChange={(e) => setNomAge1(e.target.value)}
                             className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_AGE2}
-                            className="mb-2 h-8 w-full pl-1"
+                            onChange={(e) => setNomAge2(e.target.value)}
+                            className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_AGE3}
-                            className="mb-2 h-8 w-full pl-1"
+                            onChange={(e) => setNomAge3(e.target.value)}
+                            className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
                         </div>
                         <div className="">
                           <input
                             type="text"
-                            name=""
                             value={NOMINEE_AGE4}
-                            className="mb-2 h-8 w-full pl-1"
+                            onChange={(e) => setNomAge4(e.target.value)}
+                            className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
                         </div>
                       </form>
@@ -844,9 +872,8 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_NAME}
-                        id=""
+                        onChange={(e) => setNomGarName(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
@@ -856,9 +883,8 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_REL}
-                        id=""
+                        onChange={(e) => setNomGarRel(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
@@ -868,9 +894,8 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_AGE}
-                        id=""
+                        onChange={(e) => setNomGarAge(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
@@ -887,9 +912,9 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_NAME1}
-                        className="mb-2 h-8 w-full pl-1"
+                        onChange={(e) => setNomGarName1(e.target.value)}
+                        className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
                     <div className="flex items-center justify-center">
@@ -898,9 +923,9 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_REL1}
-                        className="mb-2 h-8 w-full pl-1"
+                        onChange={(e) => setNomGarRel1(e.target.value)}
+                        className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
                     <div className="flex items-center justify-center">
@@ -909,9 +934,9 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        name=""
                         value={NOM_GAR_AGE1}
-                        className="mb-2 h-8 w-full pl-1"
+                        onChange={(e) => setNomGarAge1(e.target.value)}
+                        className="mb-2 h-8 w-full text-center font-bold"
                       />
                     </div>
                   </form>

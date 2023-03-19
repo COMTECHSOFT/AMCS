@@ -91,8 +91,8 @@ function CommReport() {
           </div>
           <div className="px-4">
             <h1 className="border border-black p-1 font-bold">
-              Branch Code & Name: {location?.state?.commissionData[0]?.B_CODE} -{" "}
-              {location?.state?.commissionData[0]?.AGENCY_NAME}
+              Branch Code & Name: {location?.state?.commissionData[0]?.OFF_CODE}{" "}
+              - {location?.state?.commissionData[0]?.OFF_NAME}
             </h1>
           </div>
         </div>
@@ -103,10 +103,10 @@ function CommReport() {
                 Sl. No.
               </td>
               <td rowSpan="2" style={tableStyles.style}>
-                MO Code
+                Code
               </td>
               <td rowSpan="2" style={tableStyles.style}>
-                MO Name
+                Name
               </td>
               <td colspan="4" style={tableStyles.style}>
                 Monthly purchase deposit scheme
@@ -145,27 +145,27 @@ function CommReport() {
               return (
                 <tr>
                   <td style={tableStyles.style}>{index + 1}</td>
-                  <td style={tableStyles.style}>{data.A_CODE}</td>
+                  <td style={tableStyles.style}>{data.CODE}</td>
                   <td style={tableStyles.style}>{data.NAME}</td>
                   <td style={tableStyles.style}> {data.NEW_PRM}</td>
-                  <td style={tableStyles.style}> {data.AG_COMM_NEW}</td>
+                  <td style={tableStyles.style}> {data.NEW_COMM}</td>
                   <td style={tableStyles.style}> {data.OTHER_PRM}</td>
-                  <td style={tableStyles.style}> {data.AG_COMM_OTHER}</td>
+                  <td style={tableStyles.style}> {data.OTHER_COMM}</td>
                   <td style={tableStyles.style}>
                     {+data.OTHER_PRM + +data.NEW_PRM}
                   </td>
                   <td style={tableStyles.style}>
                     {" "}
-                    {+data.AG_COMM_OTHER + +data.AG_COMM_NEW}
+                    {+data.NEW_COMM + +data.OTHER_COMM}
                   </td>
                   <td style={tableStyles.style}>{` ${
-                    ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100
+                    ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100
                   }`}</td>
                   <td style={tableStyles.style}>
                     {" "}
-                    {+data.AG_COMM_OTHER +
-                      +data.AG_COMM_NEW -
-                      ((+data.AG_COMM_OTHER + +data.AG_COMM_NEW) * 5) / 100}
+                    {+data.OTHER_COMM +
+                      +data.NEW_COMM -
+                      ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100}
                   </td>
                   <td style={tableStyles.style}></td>
                 </tr>
@@ -176,16 +176,13 @@ function CommReport() {
                 Branch Wise Total:
               </td>
               <td style={tableStyles.style}> {allNewCollection("NEW_PRM")}</td>
-              <td style={tableStyles.style}>
-                {" "}
-                {allNewCommission("AG_COMM_NEW")}
-              </td>
+              <td style={tableStyles.style}> {allNewCommission("NEW_COMM")}</td>
               <td style={tableStyles.style}>
                 {" "}
                 {allRenewalCollection("OTHER_PRM")}
               </td>
               <td style={tableStyles.style}>
-                {allRenewalCommission("AG_COMM_OTHER")}
+                {allRenewalCommission("OTHER_COMM")}
               </td>
               <td style={tableStyles.style}>
                 {" "}
@@ -193,21 +190,21 @@ function CommReport() {
                   allRenewalCollection("OTHER_PRM")}
               </td>
               <td style={tableStyles.style}>
-                {allNewCommission("AG_COMM_NEW") +
-                  allRenewalCommission("AG_COMM_OTHER")}
+                {allNewCommission("NEW_COMM") +
+                  allRenewalCommission("OTHER_COMM")}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {(allNewCommission("AG_COMM_NEW") * 5 +
-                  allRenewalCommission("AG_COMM_OTHER") * 5) /
+                {(allNewCommission("NEW_COMM") * 5 +
+                  allRenewalCommission("OTHER_COMM") * 5) /
                   100}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {allNewCommission("AG_COMM_NEW") +
-                  allRenewalCommission("AG_COMM_OTHER") -
-                  (allNewCommission("AG_COMM_NEW") * 5 +
-                    allRenewalCommission("AG_COMM_OTHER") * 5) /
+                {allNewCommission("NEW_COMM") +
+                  allRenewalCommission("OTHER_COMM") -
+                  (allNewCommission("NEW_COMM") * 5 +
+                    allRenewalCommission("OTHER_COMM") * 5) /
                     100}
               </td>
               <td style={tableStyles.style}></td>
@@ -217,16 +214,13 @@ function CommReport() {
                 Grand Total:
               </td>
               <td style={tableStyles.style}> {allNewCollection("NEW_PRM")}</td>
-              <td style={tableStyles.style}>
-                {" "}
-                {allNewCommission("AG_COMM_NEW")}
-              </td>
+              <td style={tableStyles.style}> {allNewCommission("NEW_COMM")}</td>
               <td style={tableStyles.style}>
                 {" "}
                 {allRenewalCollection("OTHER_PRM")}
               </td>
               <td style={tableStyles.style}>
-                {allRenewalCommission("AG_COMM_OTHER")}
+                {allRenewalCommission("OTHER_COMM")}
               </td>
               <td style={tableStyles.style}>
                 {" "}
@@ -234,21 +228,21 @@ function CommReport() {
                   allRenewalCollection("OTHER_PRM")}
               </td>
               <td style={tableStyles.style}>
-                {allNewCommission("AG_COMM_NEW") +
-                  allRenewalCommission("AG_COMM_OTHER")}
+                {allNewCommission("NEW_COMM") +
+                  allRenewalCommission("OTHER_COMM")}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {(allNewCommission("AG_COMM_NEW") * 5 +
-                  allRenewalCommission("AG_COMM_OTHER") * 5) /
+                {(allNewCommission("NEW_COMM") * 5 +
+                  allRenewalCommission("OTHER_COMM") * 5) /
                   100}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {allNewCommission("AG_COMM_NEW") +
-                  allRenewalCommission("AG_COMM_OTHER") -
-                  (allNewCommission("AG_COMM_NEW") * 5 +
-                    allRenewalCommission("AG_COMM_OTHER") * 5) /
+                {allNewCommission("NEW_COMM") +
+                  allRenewalCommission("OTHER_COMM") -
+                  (allNewCommission("NEW_COMM") * 5 +
+                    allRenewalCommission("OTHER_COMM") * 5) /
                     100}
               </td>
               <td style={tableStyles.style}></td>

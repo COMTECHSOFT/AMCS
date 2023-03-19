@@ -56,7 +56,7 @@ const MOCommissionBill = () => {
   // console.log(allReportData);
   useEffect(() => {
     fetch(
-      `http://192.168.31.94/api/com_report.php?DESIG=${design}&&PMON=${months}&&PYEAR=${year}&&B_CODE=${brCode}`
+      `http://192.168.31.94/api/com_report.php?DESIG=${design}&&PMON=${months}&&PYEAR=${year}&&OFF_CODE=${brCode}`
     )
       .then((res) => res.json())
       .then((data) => setCommissionData(data?.comm_info));
@@ -99,7 +99,7 @@ const MOCommissionBill = () => {
                   <input
                     type="text"
                     name="proposalNo"
-                    value={commissionData[0]?.AGENCY_NAME}
+                    value={commissionData[0]?.OFF_NAME}
                     onChange={(e) => setBrName(e.target.value)}
                     className="mb-2 h-8 w-full pl-2 font-bold"
                   />
@@ -142,6 +142,9 @@ const MOCommissionBill = () => {
                     className="w-full pl-2 mb-2 py-2 focus:outline-none focus:shadow-outline"
                     onChange={(e) => setDesign(e.target.value)}
                   >
+                    <option className="cursor-not-allowed" value="Select">
+                      Select
+                    </option>
                     {desig?.map((item, index) => (
                       <option value={item} key={index}>
                         {item}

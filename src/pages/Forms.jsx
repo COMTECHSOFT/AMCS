@@ -4,14 +4,69 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Forms = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const handleDOB = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setDob(getDate);
+  };
+
+  const handleDate = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setDate(getDate);
+  };
+  const handleLAST_INST_DATE = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setLastDueDate(getDate);
+  };
+  const handleRV_DT1 = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setNextPremDate(getDate);
+  };
+  const handleMATURITY = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setMaturity(getDate);
+  };
+  const handleDATE_TIME = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setEntriesDate(getDate);
+  };
+
   const navigate = useNavigate();
   const gender = ["Male", "Female"];
 
   const [branchName, setBranchName] = useState("");
   const [branchData, setBranchData] = useState([]);
   useEffect(() => {
-    fetch(` http://192.168.31.94/api/agency_code.php?NAME=${branchName}`)
+    fetch(`http://192.168.31.94/api/agency_code.php?NAME=${branchName}`)
       .then((res) => res.json())
       .then((data) => setBranchData(data.CODE));
   }, [branchName]);
@@ -22,11 +77,20 @@ const Forms = () => {
 
   const [datas, setDatas] = useState([]);
   const formDatas = datas?.find((data) => data);
+  console.log(formDatas);
   useEffect(() => {
     fetch(`http://192.168.31.94/api/proposal_no.php?FDPS_NO=${value}`)
       .then((res) => res.json())
       .then((data) => setDatas(data.Proposal_info));
   }, [value]);
+
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/agency_details.php?agency_code=${formDatas?.BR_CODE}`
+    )
+      .then((res) => res.json())
+      .then((data) => setBranchData(data.agency_details));
+  }, [formDatas?.BR_CODE]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,8 +105,6 @@ const Forms = () => {
     "Transfer",
     "No Communication",
   ];
-
-  const [accStatus, setAccStatus] = useState("");
 
   const [payMode, setPayMode] = useState([]);
   useEffect(() => {
@@ -84,14 +146,6 @@ const Forms = () => {
       .then((data) => setAgency(data.AGENCY_NAME));
   }, []);
 
-  const [agencyName, setAgencyName] = useState([]);
-  useEffect(() => {
-    const url = "http://192.168.31.94/api/agency_name.php";
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setAgency(data.AGENCY_NAME));
-  }, []);
-
   const [prEntryInfo, setPrEntryInfo] = useState([]);
   const findPrEntryInfo = prEntryInfo?.find((data) => data);
   useEffect(() => {
@@ -125,12 +179,6 @@ const Forms = () => {
     new Date().getMonth() + 1
   }-${new Date().getFullYear()}`;
 
-  const allDatas = {
-    ...allData,
-    Entry_Date: entryDate,
-    Account_Status: accStatus,
-  };
-
   // save new data start
   const [proNo, setProNo] = useState("");
   // account holder info
@@ -154,9 +202,14 @@ const Forms = () => {
   const [perAdd, setPerAdd] = useState("");
 
   // savings info
-  const [planCode, setPlanCode] = useState("");
   const [planName, setPlanName] = useState("");
-  console.log(planName);
+  const [selectPlanCode, setSelectPlanCode] = useState([]);
+  useEffect(() => {
+    const url = `http://192.168.31.94/api/plan_code.php?NAME=${planName}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setSelectPlanCode(data.CODE));
+  }, [planName]);
   const [term, setTerm] = useState("");
   const [lastDueDate, setLastDueDate] = useState("");
   const [amount, setAmount] = useState("");
@@ -194,7 +247,6 @@ const Forms = () => {
   const [zoneCode, setZoneCode] = useState("");
   // const [zoneName, setZoneName] = useState("");
   const [entriesDate, setEntriesDate] = useState("");
-  console.log(entriesDate);
   const [accountStatus, setAccountStatus] = useState("");
 
   // save new data end
@@ -221,7 +273,7 @@ const Forms = () => {
       EMAIL: email,
       COF_PS: preAdd,
       COF_PER: perAdd,
-      TABLEID: planCode,
+      TABLEID: selectPlanCode[0]?.CODE,
       INSTMODE: planName,
       TERM: term,
       LAST_INST_DATE: lastDueDate,
@@ -249,9 +301,9 @@ const Forms = () => {
       NOM_GAR_REL1: nomGarRel1,
       NOM_GAR_AGE: nomGarAge,
       NOM_GAR_AGE1: nomGarAge1,
-      BR_CODE: agencyCode,
-      SC_CODE: subZoneCode,
-      ENTRY_ZONE_CODE: zoneCode,
+      BR_CODE: branchData[0]?.AGENCY_CODE,
+      SC_CODE: branchData[0]?.SUB_ZONE_CODE,
+      ENTRY_ZONE_CODE: branchData[0]?.Z_CODE,
       ADD4: accountStatus,
       DATE_TIME: entriesDate,
     };
@@ -267,15 +319,6 @@ const Forms = () => {
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
-
-  const [selectPlanCode, setSelectPlanCode] = useState([]);
-  console.log(selectPlanCode);
-  useEffect(() => {
-    const url = `http://192.168.31.94/api/plan_code.php?NAME=${planName}`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setSelectPlanCode(data.CODE));
-  }, [planName]);
 
   const handleCrear = (e) => {
     window.location.reload();
@@ -343,18 +386,19 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Date
                 </label>
-                {/* <input
-                  type="text"
-                  value={formDatas?.RISKDATE}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
-                /> */}
-                <DatePicker
-                  selected={startDate}
-                  value={formDatas?.RISKDATE}
-                  onChange={(date) => setStartDate(date)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
-                />
+                {formDatas?.RISKDATE ? (
+                  <input
+                    type="text"
+                    value={formDatas?.RISKDATE}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
+                ) : (
+                  <input
+                    type="date"
+                    onChange={handleDate}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
+                )}
               </div>
 
               <div className="flex items-center justify-center">
@@ -379,7 +423,6 @@ const Forms = () => {
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
               </div>
-
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Spouse Name
@@ -419,18 +462,19 @@ const Forms = () => {
                   <label htmlFor="" className="mx-2 font-bold w-36 ">
                     Date of Birth
                   </label>
-                  {/* <input
-                    type="text"
-                    value={formDatas?.DOB}
-                    onChange={(e) => setDob(e.target.value)}
-                    className="mb-2 h-8 w-48 pl-2 font-bold"
-                  /> */}
-                  <DatePicker
-                    selected={startDate}
-                    value={formDatas?.DOB}
-                    onChange={(date) => setStartDate(date)}
-                    className="mb-2 h-8 w-48 ml-10 pl-2 font-bold"
-                  />
+                  {formDatas?.DOB ? (
+                    <input
+                      type="text"
+                      value={formDatas?.DOB}
+                      className="mb-2 h-8 w-full ml-16 pl-2 font-bold"
+                    />
+                  ) : (
+                    <input
+                      type="date"
+                      onChange={handleDOB}
+                      className="mb-2 h-8 w-full ml-16 pl-2 font-bold"
+                    />
+                  )}
                 </div>
                 <div className="flex items-center justify-center">
                   <label htmlFor="" className="mx-2 font-bold w- ">
@@ -450,15 +494,16 @@ const Forms = () => {
                   Occupation
                 </label>
                 <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                  className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                   value={formDatas?.OC_NAME}
                   onChange={(e) => setOccpName(e.target.value)}
                 >
+                  <option>Select</option>
                   {formDatas?.OC_NAME ? (
                     <option>{formDatas?.OC_NAME}</option>
                   ) : (
                     occupation?.map((item) => (
-                      <option value={item.CODE} key={item.CODE}>
+                      <option value={item.NAME} key={item.CODE}>
                         {item.NAME}
                       </option>
                     ))
@@ -494,12 +539,12 @@ const Forms = () => {
                 </label>
                 <select
                   className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                  id="gender"
                   value={formDatas?.SEX}
                   onChange={(e) => setSex(e.target.value)}
                 >
+                  <option>Select</option>
                   {formDatas?.SEX ? (
-                    <option value="Choose Branch Code">{formDatas?.SEX}</option>
+                    <option>{formDatas?.SEX}</option>
                   ) : (
                     gender?.map((item) => (
                       <option value={item} key={item}>
@@ -595,54 +640,15 @@ const Forms = () => {
         </p>
         <form
           action=""
-          className="grid grid-cols-1 md:grid-cols-2 gap-2 p-4 border-2"
+          className="grid grid-cols-1 md:grid-cols-2 gap-2 p-4 border-2 "
         >
-          {/* <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 ">
-                Plane Code
-              </label>
-              <select
-                className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                id="gender"
-                name="gender"
-              >
-                {plan?.map((item) => (
-                  <option value={item} key={item.CODE}>
-                    {item.CODE}
-                  </option>
-                ))}
-              </select>
-            </div> */}
-          {/* <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
-                Plan Name
-              </label>
-              <select
-                className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                id="gender"
-                name="gender"
-              >
-                {plan?.map((item) => (
-                  <option value={item} key={item.CODE}>
-                    {item.NAME}
-                  </option>
-                ))}
-              </select>
-            </div> */}
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
               Plan Name
             </label>
-            {/* <input
-              type="text"
-              name="lastDueDate"
-              value={formDatas?.INSTMODE}
-              onChange={(e) => setPlanName(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            /> */}
             <select
               onChange={(e) => setPlanName(e.target.value)}
-              className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+              className="mb-2 h-8 w-full pl-2 font-bold"
             >
               {formDatas?.INSTMODE ? (
                 <option>{formDatas?.INSTMODE}</option>
@@ -661,14 +667,11 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              name="lastDueDate"
-              // value={formDatas?.TABLEID}
               value={
                 formDatas?.TABLEID
                   ? formDatas?.TABLEID
                   : selectPlanCode[0]?.CODE
               }
-              onChange={(e) => setPlanCode(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
           </div>
@@ -678,7 +681,6 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              name="lastDueDate"
               value={formDatas?.TERM}
               onChange={(e) => setTerm(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
@@ -688,19 +690,19 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
               Last Due. Date
             </label>
-            {/* <input
-              type="text"
-              name="lastDueDate"
-              value={formDatas?.LAST_INST_DATE}
-              onChange={(e) => setLastDueDate(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            /> */}
-            <DatePicker
-              selected={startDate}
-              value={formDatas?.LAST_INST_DATE}
-              onChange={(date) => setStartDate(date)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            />
+            {formDatas?.LAST_INST_DATE ? (
+              <input
+                type="text"
+                value={formDatas?.LAST_INST_DATE}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            ) : (
+              <input
+                type="date"
+                onChange={handleLAST_INST_DATE}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            )}
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
@@ -718,19 +720,19 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
               Next Prem. Date
             </label>
-            {/* <input
-              type="text"
-              name="nextPremDate"
-              value={formDatas?.RV_DT1}
-              onChange={(e) => setNextPremDate(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            /> */}
-            <DatePicker
-              selected={startDate}
-              value={formDatas?.RV_DT1}
-              onChange={(date) => setStartDate(date)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            />
+            {formDatas?.RV_DT1 ? (
+              <input
+                type="text"
+                value={formDatas?.RV_DT1}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            ) : (
+              <input
+                type="date"
+                onChange={handleRV_DT1}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            )}
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 ">
@@ -738,7 +740,7 @@ const Forms = () => {
             </label>
             <select
               // onChange={(e) => setPlanName(e.target.value)}
-              className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+              className="mb-2 h-8 w-full pl-2 font-bold"
             >
               {formDatas?.INSTMODE ? (
                 <option>{formDatas?.INSTMODE}</option>
@@ -756,19 +758,19 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
               Maturity
             </label>
-            {/* <input
-              type="phone"
-              name="maturity"
-              value={formDatas?.MATURITY}
-              onChange={(e) => setMaturity(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            /> */}
-            <DatePicker
-              selected={startDate}
-              value={formDatas?.MATURITY}
-              onChange={(date) => setStartDate(date)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
-            />
+            {formDatas?.MATURITY ? (
+              <input
+                type="text"
+                value={formDatas?.MATURITY}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            ) : (
+              <input
+                type="date"
+                onChange={handleMATURITY}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />
+            )}
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
@@ -814,7 +816,7 @@ const Forms = () => {
           {" "}
           Nominee Information
         </p>
-        <div className="bg-emerald-400 p-4 mb-12 mt-8 grid grid-cols-1 lg:grid-cols-12">
+        <div className="bg-emerald-400 p-4 mb-12 mt-8 grid grid-cols-1 lg:grid-cols-12 ">
           {datas?.map((data, index) => {
             const {
               NOMINEE_NAME1,
@@ -893,7 +895,7 @@ const Forms = () => {
                         <div className="">
                           <select
                             onChange={(e) => setNomRel1(e.target.value)}
-                            className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                            className="mb-2 h-8 w-full text-center font-bold"
                           >
                             {NOMINEE_REL1 ? (
                               <option>{NOMINEE_REL1}</option>
@@ -909,7 +911,7 @@ const Forms = () => {
                         <div className="">
                           <select
                             onChange={(e) => setNomRel2(e.target.value)}
-                            className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                            className="mb-2 h-8 w-full text-center font-bold"
                           >
                             {NOMINEE_REL2 ? (
                               <option>{NOMINEE_REL2}</option>
@@ -925,7 +927,7 @@ const Forms = () => {
                         <div className="">
                           <select
                             onChange={(e) => setNomRel3(e.target.value)}
-                            className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                            className="mb-2 h-8 w-full text-center font-bold"
                           >
                             {NOMINEE_REL3 ? (
                               <option>{NOMINEE_REL3}</option>
@@ -941,7 +943,7 @@ const Forms = () => {
                         <div className="">
                           <select
                             onChange={(e) => setNomRel4(e.target.value)}
-                            className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                            className="mb-2 h-8 w-full text-center font-bold"
                           >
                             {NOMINEE_REL4 ? (
                               <option>{NOMINEE_REL4}</option>
@@ -1031,7 +1033,7 @@ const Forms = () => {
                       </label>
                       <select
                         onChange={(e) => setNomGarRel(e.target.value)}
-                        className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                        className="mb-2 h-8 w-full text-center font-bold"
                       >
                         {NOM_GAR_REL ? (
                           <option>{NOM_GAR_REL}</option>
@@ -1079,7 +1081,7 @@ const Forms = () => {
                       </label>
                       <select
                         onChange={(e) => setNomGarRel1(e.target.value)}
-                        className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                        className="mb-2 h-8 w-full text-center font-bold"
                       >
                         {NOM_GAR_REL1 ? (
                           <option>{NOM_GAR_REL1}</option>
@@ -1121,53 +1123,10 @@ const Forms = () => {
             <form action="" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
-                  Branch Code
-                </label>
-                {/* <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                  id="gender"
-                  value={branchCode}
-                  onChange={(e) => setBranchCode(e.target.value)}
-                >
-                  <option value="Choose Branch Code">Choose Branch Code</option>
-                  {agency?.map((item) => (
-                    <option value={item.AGENCY_CODE} key={item.AGENCY_CODE}>
-                      {item.AGENCY_CODE}
-                    </option>
-                  ))}
-                </select> */}
-                <input
-                  type="text"
-                  value={branchData[0]?.AGENCY_CODE}
-                  onChange={(e) => setAgencyCode(e.target.value)}
-                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
-                />
-                {/* <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                  id="gender"
-                  value={branchCode}
-                  onChange={(e) => setBranchCode(e.target.value)}
-                >
-                  <option value="Choose Branch Code">Choose Branch Code</option>
-                  {agency?.map((item) => (
-                    <option value={item.AGENCY_CODE} key={item.AGENCY_CODE}>
-                      {item.AGENCY_CODE}
-                    </option>
-                  ))}
-                </select> */}
-              </div>
-              <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-52 ">
                   Branch Name
                 </label>
-                {/* <input
-                  type="text"
-                  value={allData?.AGENCY_NAME}
-                  className="mb-2 h-8 w-full font-bold bg-white cursor-not-allowed pl-2"
-                  disabled
-                /> */}
                 <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
                   value={allData?.AGENCY_NAME}
                   onChange={(e) => setBranchName(e.target.value)}
                 >
@@ -1183,6 +1142,17 @@ const Forms = () => {
                     ))
                   )}
                 </select>
+              </div>
+              <div className="flex items-center justify-center">
+                <label htmlFor="" className="mx-2 font-bold w-52 ">
+                  Branch Code
+                </label>
+                <input
+                  type="text"
+                  value={branchData[0]?.AGENCY_CODE}
+                  onChange={(e) => setAgencyCode(e.target.value)}
+                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
+                />
               </div>
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48">
@@ -1236,42 +1206,39 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-48">
                   Entry Date
                 </label>
-                {/* <input
-                  type="text"
-                  value={formDatas?.DATE_TIME}
-                  onChange={(e) => setEntriesDate(e.target.value)}
-                  className="mb-2 h-8 w-full pl-1 font-bold bg-white"
-                /> */}
-                <DatePicker
-                  selected={startDate}
-                  value={formDatas?.DATE_TIME}
-                  // onChange={(date) => setStartDate(date)}
-                  onChange={(date) => setEntriesDate(date)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
-                />
+                {formDatas?.DATE_TIME ? (
+                  <input
+                    type="text"
+                    value={formDatas?.DATE_TIME}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
+                ) : (
+                  <input
+                    type="date"
+                    onChange={handleDATE_TIME}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
+                )}
               </div>
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-52">
                   Account Status
                 </label>
-                <input
-                  type="text"
+                <select
+                  className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                   value={formDatas?.ADD4}
                   onChange={(e) => setAccountStatus(e.target.value)}
-                  className="mb-2 h-8 w-full font-bold pl-1 bg-white"
-                />
-                {/* <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                  id="gender"
-                  value={formDatas?.ADD4}
-                  onChange={(e) => setAccStatus(e.target.value)}
                 >
-                  {accountStatusSelect?.map((item, index) => (
-                    <option value={item} key={index}>
-                      {item}
-                    </option>
-                  ))}
-                </select> */}
+                  {formDatas?.ADD4 ? (
+                    <option>{formDatas?.ADD4}</option>
+                  ) : (
+                    accountStatusSelect?.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
             </form>
           </div>
@@ -1350,8 +1317,6 @@ const Forms = () => {
               to="/amanaGroup"
               state={{
                 ...allData,
-                entryDate: entryDate,
-                accStatus: accStatus,
                 findPrEntryInfo,
                 findAllMainData,
               }}

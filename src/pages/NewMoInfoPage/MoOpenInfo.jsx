@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MoOpenInfo = () => {
-  const rct = ["Directly Appointed", "Promoted"];
+  const rct = ["P", "DA"];
   const [moCode, setMoCode] = useState(0);
 
   const [datas, setDatas] = useState([]);
@@ -126,12 +126,7 @@ const MoOpenInfo = () => {
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 PIN No.
               </label>
-              <input
-                type="text"
-                name=""
-                id=""
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              <input type="text" className="mb-2 h-8 w-full pl-2 font-bold" />
             </div>
 
             <div className="flex items-center justify-center">
@@ -140,7 +135,6 @@ const MoOpenInfo = () => {
               </label>
               <input
                 type="text"
-                name=""
                 // value={moData?.CODE}
                 onChange={(e) => {
                   setMoCode(e.target.value);
@@ -154,7 +148,6 @@ const MoOpenInfo = () => {
               </label>
               <input
                 type="text"
-                name="name"
                 value={moData?.NAME}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -326,30 +319,21 @@ const MoOpenInfo = () => {
               </label>
               <select
                 className="w-full pl-2 font-bold mb-2 py-1 focus:outline-none focus:shadow-outline"
-                id="gender"
-                name="gender"
-                value={
-                  moData?.RCT && moData?.RCT === "DA"
-                    ? "Directly Appoinment"
-                    : "Promoted"
-                }
+                value={moData?.RCT}
                 onChange={(e) => setRct(e.target.value)}
               >
-                {rct?.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
+                {moData?.RCT ? (
+                  <option>
+                    {moData?.RCT === "DA" ? "Directly Appointed" : "Promoted"}
                   </option>
-                ))}
+                ) : (
+                  rct?.map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))
+                )}
               </select>
-              {/* <input
-                type="text"
-                name=""
-                value={
-                  moData?.RCT === "DA" ? "Directly Appoinment" : "Promoted"
-                }
-                onChange={(e) => setEffDate(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              /> */}
             </div>
           </form>
         </div>
@@ -675,7 +659,7 @@ const MoOpenInfo = () => {
           >
             Clear
           </p>
-          <Link to="/summary">
+          <Link to="/">
             <p
               className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl `}
             >

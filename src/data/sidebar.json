@@ -1,0 +1,120 @@
+[
+    {
+      "title": "Proposal Entry ( DPS )",
+      "path": "/account"
+    },
+    {
+      "title": "PR Entry",
+      "path": "/prinformation"
+    },
+    {
+      "title": "MO Info. Entry",
+      "path": "/moopeninfo"
+    },
+    {
+      "title": "Commission Bill",
+      "path": "/commissionBill"
+    },
+    {
+      "title": "Code Wise New Business",
+      "path": "/cwnb"
+    },
+    {
+      "title": "Branch Wise Business",
+      "path": "/bwbr"
+    },
+    {
+      "title": "Commission Bill Detail",
+      "path": "/billdetail"
+    },
+    {
+      "title": "Code Wise Promotional Buss.",
+      "path": "/cwsb"
+    },
+    {
+      "title": "Account Info",
+      "path": "/accInfo"
+    },
+    {
+      "title": "Information",
+      "childrens": [
+        {
+          "title": "Account Information",
+          "path": "/accountInfo"
+        },
+        {
+          "title": "Nominee Information",
+          "path": "/nominee"
+        },
+        {
+          "title": "Office & FPR Summary",
+          "path": "/summary"
+        },
+        {
+          "title": "Savings Information",
+          "path": "/savings"
+        }
+      ]
+    },
+    {
+      "title": "Profile",
+      "childrens": [
+        {
+          "title": "Receipt",
+          "path": "/receipt"
+        },
+        {
+          "title": "Settings",
+          "childrens": [
+            {
+              "title": "Account",
+              "path": "/settings/account"
+            },
+            {
+              "title": "Billing",
+              "childrens": [
+                {
+                  "title": "Payment",
+                  "path": "/settings/billing/payment"
+                },
+                {
+                  "title": "Subscription",
+                  "path": "/settings/billing/subscription"
+                }
+              ]
+            },
+            {
+              "title": "Notifications",
+              "path": "/settings/notifications"
+            }
+          ]
+        },
+        {
+          "title": "Logout",
+          "path": "/logout"
+        }
+      ]
+    },
+    {
+      "title": "Advance",
+      "childrens": [
+        {
+          "title": "Search",
+          "path": "/search"
+        },
+        {
+          "title": "History",
+          "path": "/history"
+        }
+      ]
+    },
+    {
+      "title": "Support",
+      "path": "/support"
+    },
+    {
+      "title": "Report Bug",
+      "path": "/report-bug"
+    }
+  ]
+  

@@ -10,6 +10,12 @@ const Forms = () => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
+    let getDateForAGe = year + "-" + month + "-" + day;
+    setDobAge(getDateForAGe);
+    const getAge = Math.floor(
+      (Date.now() - new Date(getDateForAGe)) / 31557600000
+    );
+    setAge(getAge);
     let getDate = day + "-" + month + "-" + year;
     setDob(getDate);
   };
@@ -189,7 +195,8 @@ const Forms = () => {
   const [gName, setGName] = useState("");
   const [mName, setMName] = useState("");
   const [dob, setDob] = useState("");
-  const [age, setAge] = useState("");
+  const [dobAge, setDobAge] = useState("");
+  const [age, setAge] = useState();
   const [occp, setOccp] = useState("");
   const [occpName, setOccpName] = useState("");
   const [nat, setNat] = useState("");
@@ -471,6 +478,7 @@ const Forms = () => {
                   ) : (
                     <input
                       type="date"
+                      formDatas="yyyy-mm-dd"
                       onChange={handleDOB}
                       className="mb-2 h-8 w-full ml-16 pl-2 font-bold"
                     />
@@ -482,10 +490,25 @@ const Forms = () => {
                   </label>
                   <input
                     type="text"
-                    value={formDatas?.AGE}
-                    onChange={(e) => setAge(e.target.value)}
+                    value={
+                      formDatas?.AGE
+                        ? formDatas?.AGE
+                        : dobAge &&
+                          Math.floor(
+                            (Date.now() - new Date(dobAge)) / 31557600000
+                          )
+                    }
                     className="mb-2 h-8 w-24 pl-2 font-bold"
                   />
+                  {/* setAge */}
+                  {/* {dob && (
+                    <p>
+                      {" "}
+                      {Math.floor(
+                        (Date.now() - new Date(dobAge)) / 31557600000
+                      )}{" "}
+                    </p>
+                  )} */}
                 </div>
               </div>
 

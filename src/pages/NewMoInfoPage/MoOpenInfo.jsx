@@ -1,7 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { calcLength } from "framer-motion";
 const MoOpenInfo = () => {
+
+const handleDOB=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setDateOB(getDate)
+}
+
+const handleDOAPT=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setDoapt(getDate)
+}
+
+const handleLICISSUE=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setLicIssDate(getDate)
+}
+
+const handleLIC_EXPIRY=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setLicExpDate(getDate)
+}
+
+const handleLIC_RENEW=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setLicRenwDate(getDate)
+}
+const handleEF_DATE=(e)=>{
+  const selectDate=e.target.value
+  let date = new Date(selectDate);
+  let day = date.getDate();
+  let month = date.getMonth()+1;
+let year = date.getFullYear();
+let getDate=day+"-"+month+"-"+year
+setEffDate(getDate)
+}
+
+
+
+
+
+
+
+
+
   const rct = ["P", "DA"];
   const [moCode, setMoCode] = useState(0);
 
@@ -42,7 +112,7 @@ const MoOpenInfo = () => {
   const [jvp, setJvp] = useState("");
   const [mrNo, setMrNo] = useState("");
   const [mrAmt, setMrAmt] = useState("");
-  const [dob, setDateOB] = useState("");
+  const [dob, setDateOB] = useState('');
   const [doapt, setDoapt] = useState("");
   const [liceNum, setLicNum] = useState("");
   const [licIssDate, setLicIssDate] = useState("");
@@ -107,6 +177,7 @@ const MoOpenInfo = () => {
   const handleClear = () => {
     window.location.reload();
   };
+
   return (
     <div>
       <nav className="bg-cyan-900 text-center py-6">
@@ -195,13 +266,18 @@ const MoOpenInfo = () => {
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Date of Birth
               </label>
-              <input
-                type="text"
-                name=""
+              {moData?.DOB?<input
+                type="text" 
                 value={moData?.DOB}
-                onChange={(e) => setDateOB(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              />:
+               <input
+                type="date" 
+                value={moData?.DOB}
+                onChange={handleDOB}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
+
             </div>
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
@@ -243,13 +319,16 @@ const MoOpenInfo = () => {
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Date of Apoinment
               </label>
-              <input
-                type="text"
-                name=""
+                {moData?.DOAPT?<input
+                type="text" 
                 value={moData?.DOAPT}
-                onChange={(e) => setDoapt(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              />:
+               <input
+                type="date" 
+                onChange={handleDOAPT}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
             </div>
 
             <div className="flex items-center justify-center">
@@ -258,7 +337,6 @@ const MoOpenInfo = () => {
               </label>
               <input
                 type="text"
-                name=""
                 value={moData?.LIC_NO}
                 onChange={(e) => setLicNum(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
@@ -268,49 +346,61 @@ const MoOpenInfo = () => {
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Licence Issue Date
               </label>
-              <input
-                type="text"
-                name=""
+                {moData?.LIC_ISSUE?<input
+                type="text" 
                 value={moData?.LIC_ISSUE}
-                onChange={(e) => setLicIssDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              />:
+               <input
+                type="date" 
+                onChange={handleLICISSUE}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
             </div>
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Licence Expire Date
               </label>
-              <input
-                type="text"
-                name=""
+               {moData?.LIC_EXPIRY?<input
+                type="text" 
                 value={moData?.LIC_EXPIRY}
-                onChange={(e) => setLicExpDate(e.target.value)}
-                className="mb-2 font-bold h-8 w-full pl-1"
-              />
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />:
+               <input
+                type="date" 
+                onChange={handleLIC_EXPIRY}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
             </div>
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Licence Renew Date
               </label>
-              <input
-                type="text"
-                name=""
+                {moData?.LIC_RENEW?<input
+                type="text" 
                 value={moData?.LIC_RENEW}
-                onChange={(e) => setLicRenwDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              />:
+               <input
+                type="date" 
+                onChange={handleLIC_RENEW}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
             </div>
             <div className="flex items-center justify-center">
               <label htmlFor="" className="mx-2 font-bold w-60 ">
                 Effect Date
               </label>
-              <input
-                type="text"
-                name=""
+               {moData?.EF_DATE?<input
+                type="text" 
                 value={moData?.EF_DATE}
-                onChange={(e) => setEffDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
-              />
+              />:
+               <input
+                type="date" 
+                onChange={handleEF_DATE}
+                className="mb-2 h-8 w-full pl-2 font-bold"
+              />}
             </div>
 
             <div className="flex items-center justify-center">

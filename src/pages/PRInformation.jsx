@@ -865,48 +865,15 @@ const PRInformation = () => {
               <div className="mr-2">
                 <p className="font-bold text-center mb-2">Part Inst.</p>
                 <form action="">
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={allData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
+                  {detailsByInst?.map((pInst, index) => (
+                    <div className="">
+                      <input
+                        type="text"
+                        value={pInst?.P_INST}
+                        className="mb-2 h-8 w-24 pl-1 font-bold text-center"
+                      />
+                    </div>
+                  ))}
                 </form>
               </div>
             </div>

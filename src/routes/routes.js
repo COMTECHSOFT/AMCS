@@ -24,6 +24,7 @@ import UMCommissionBill from "../pages/CommissionBill/UMCommissionBill";
 import Forms from "../pages/Forms";
 import Home from "../pages/Home/Home";
 import Welcome from "../pages/Home/Welcome";
+import Login from "../pages/Login/Login";
 import AGMInfo from "../pages/NewMoInfoPage/AGMInfo";
 import BMOpenInfo from "../pages/NewMoInfoPage/BMOpenInfo";
 import DGMInfo from "../pages/NewMoInfoPage/DGMInfo";
@@ -32,6 +33,7 @@ import EDInfo from "../pages/NewMoInfoPage/EDInfo";
 import GMInfo from "../pages/NewMoInfoPage/GMInfo";
 import MoOpenInfo from "../pages/NewMoInfoPage/MoOpenInfo";
 import UnitManager from "../pages/NewMoInfoPage/UnitManager";
+import PRinfoModify from "../pages/PRinfoModify";
 import PRInformation from "../pages/PRInformation";
 
 const routes = createBrowserRouter([
@@ -60,6 +62,10 @@ const routes = createBrowserRouter([
       {
         path: "/prinformation",
         element: <PRInformation />,
+      },
+      {
+        path: "/modify",
+        element: <PRinfoModify />,
       },
       {
         path: "/moopeninfo",
@@ -186,6 +192,10 @@ const routes = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

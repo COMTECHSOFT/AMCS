@@ -1,91 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const PRInformation = () => {
+const PRinfoModify = () => {
+  const location = useLocation();
+  const commData = location?.state?.allData;
+  const propData = location?.state?.proposalInfo;
+  const instNoData = location?.state?.instNO;
+  console.log(instNoData);
+
   const todaysDate = `${new Date().getDate()}-${
     new Date().getMonth() + 1
   }-${new Date().getFullYear()}`;
 
   const payModeSelect = ["Cash", "Cheque"];
-
-  const [value, setValue] = useState(0);
-
-  const [instNO, setInstNO] = useState([]);
-  useEffect(() => {
-    fetch(`http://192.168.31.94/api/inst_no.php?ACC_NO=${value}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setInstNO(data.INST_NO);
-      });
-  }, [value]);
-
-  const [installNumber, setInstallNumber] = useState("");
-
-  const [detailsByInst, setDetailsByInst] = useState([]);
-  const findDetailsByInst = detailsByInst?.find((data) => data);
-  useEffect(() => {
-    fetch(
-      `http://192.168.31.94/api/inst_details.php?ACC_NO=${value}&&INST_NO=${installNumber}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setDetailsByInst(data.INST_DETAILS);
-      });
-  }, [value, installNumber]);
-
-  const [datas, setDatas] = useState([]);
-  const allData = datas?.find((data) => data);
-  useEffect(() => {
-    fetch(`http://192.168.31.94/api/commission_info.php?FDPS_NO=${value}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setDatas(data.COMM_info);
-      });
-  }, [value]);
-
-  const [accName, setAccName] = useState([]);
-  const proposalInfo = accName?.find((data) => data);
-  useEffect(() => {
-    fetch(`http://192.168.31.94/api/proposal_no.php?FDPS_NO=${value}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAccName(data.Proposal_info);
-      });
-  }, [value]);
-
-  const [agentCode, setAgentCode] = useState([]);
-  const commCode = agentCode.slice(0, 20);
-  useEffect(() => {
-    fetch("http://192.168.31.94/api/agent_code.php")
-      .then((res) => res.json())
-      .then((data) => {
-        setAgentCode(data?.agent_code);
-      });
-  }, []);
-
-  const [selectCommCode, setSelectCommCode] = useState("");
-  const [agentInfo, setAgentInfo] = useState([]);
-  const allAgentInfo = agentInfo?.find((data) => data);
-  useEffect(() => {
-    fetch(`http://192.168.31.94/api/agent_details.php?CODE=${selectCommCode}`) // 000123 000466
-      // fetch(`http://192.168.31.94/api/agent_details.php?CODE=${""}`) // 000123 000466
-      .then((res) => res.json())
-      .then((data) => {
-        setAgentInfo(data?.agent_details);
-      });
-  }, [selectCommCode, allData?.A_CODE]);
-
-  const [agencyData, setAgencyData] = useState([]);
-  const allAgencyData = agencyData?.find((data) => data);
-  useEffect(() => {
-    fetch(
-      `http://192.168.31.94/api/agency_details.php?agency_code=${proposalInfo?.BR_CODE}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setAgencyData(data.agency_details);
-      });
-  }, [proposalInfo?.BR_CODE]);
 
   // save new data start
   const [prNo, setPrNo] = useState("");
@@ -97,53 +24,52 @@ const PRInformation = () => {
   const [partial, setPartial] = useState("");
   const [commYear, setCommYear] = useState("");
   const [reTypePrNo, setRetypePrNo] = useState("");
-  const [me, setMe] = useState("");
 
   // save new data end
 
   const handleSave = () => {
     const newSaveData = {
-      FDPS_NO: value,
-      PRO_NO: value,
-      B_CODE: allAgencyData?.AGENCY_CODE,
-      B_NAME: allAgencyData?.AGENCY_NAME,
-      Z_CODE: allAgencyData?.Z_CODE,
-      Z_NAME: allAgencyData?.Z_NAME,
-      SUB_Z_CODE: allAgencyData?.SUB_ZONE_CODE,
-      SUB_NAME: allAgencyData?.SUB_ZONE_NAME,
+      FDPS_NO: propData?.FDPS_NO,
+      PRO_NO: propData?.FDPS_NO,
+      B_CODE: commData?.B_CODE,
+      B_NAME: commData?.B_NAME,
+      Z_CODE: commData?.Z_CODE,
+      Z_NAME: commData?.Z_NAME,
+      SUB_Z_CODE: commData?.SUB_Z_CODE,
+      SUB_NAME: commData?.SUB_NAME,
       PR_NO: prNo,
       PR_DATE: prDate,
-      PR_AMT: proposalInfo?.RATE,
-      OR_DATE: entryDate,
-      TERM: proposalInfo?.TERM,
-      A_CODE: allAgentInfo?.CODE,
-      MO_CODE: allAgentInfo?.A_MO,
-      MM_CODE: allAgentInfo?.A_MM,
-      BM_CODE: allAgentInfo?.A_BM,
-      ZM_CODE: allAgentInfo?.A_ZM,
-      AVP_CODE: allAgentInfo?.A_AVP,
-      JVPCODE: allAgentInfo?.JVP,
-      VP_CODE: allAgentInfo?.A_VP,
-      AG_NAME: allAgentInfo?.NAME,
-      MO_NAME: allAgentInfo?.MO_NAME,
-      MM_NAME: allAgentInfo?.MM_NAME,
-      BM_NAME: allAgentInfo?.BM_NAME,
-      ZM_NAME: allAgentInfo?.ZM_NAME,
-      AVP_NAME: allAgentInfo?.AVP_NAME,
-      JVPNAME: allAgentInfo?.JVP_NAME,
-      VP_NAME: allAgentInfo?.VP_NAME,
+      PR_AMT: prAmt,
+      OR_DATE: commData?.OR_DATE,
+      TERM: propData?.TERM,
+      A_CODE: commData?.A_CODE,
+      MO_CODE: commData?.MO_CODE,
+      MM_CODE: commData?.MM_CODE,
+      BM_CODE: commData?.BM_CODE,
+      ZM_CODE: commData?.ZM_CODE,
+      AVP_CODE: commData?.AVP_CODE,
+      JVPCODE: commData?.JVPCODE,
+      VP_CODE: commData?.VP_CODE,
+      AG_NAME: commData?.AG_NAME,
+      MO_NAME: commData?.MO_NAME,
+      MM_NAME: commData?.MM_NAME,
+      BM_NAME: commData?.BM_NAME,
+      ZM_NAME: commData?.ZM_NAME,
+      AVP_NAME: commData?.AVP_NAME,
+      JVPNAME: commData?.JVPNAME,
+      VP_NAME: commData?.VP_NAME,
       PAY_MODE: payMode,
-      LAST_PAY_DATE: proposalInfo?.LAST_INST_DATE,
-      NEXT_DATE: proposalInfo?.RV_DT1,
-      NOTICE_DATE: proposalInfo?.MATURITY,
-      SUS_AMT: proposalInfo?.SUS_AMT,
-      INST_NO: proposalInfo?.INST_NO,
+      LAST_PAY_DATE: propData?.LAST_INST_DATE,
+      NEXT_DATE: propData?.RV_DT1,
+      NOTICE_DATE: propData?.MATURITY,
+      SUS_AMT: propData?.SUS_AMT,
+      INST_NO: instllNO,
       P_INST: partial,
-      PR_RISK_DATE: proposalInfo?.RISKDATE,
-      COMM_YEAR: commYear,
-      INSTMODE: proposalInfo?.INSTMODE,
-      MONTHLY_PRM: proposalInfo?.RATE,
-      TABLEID: proposalInfo?.TABLEID,
+      PR_RISK_DATE: propData?.RISKDATE,
+      COMM_YEAR: commData?.COMM_YEAR,
+      INSTMODE: propData?.INSTMODE,
+      MONTHLY_PRM: propData?.RATE,
+      TABLEID: propData?.TABLEID,
       ORNO: reTypePrNo,
     };
     console.log(newSaveData);
@@ -163,13 +89,6 @@ const PRInformation = () => {
     e.preventDefault();
   };
 
-  const modifyAllDatas = { proposalInfo, allData, instNO };
-
-  const navigate = useNavigate();
-  const getItem = JSON.parse(localStorage.getItem("item"));
-  if (!getItem) {
-    return navigate("/login");
-  }
   return (
     <div>
       <nav className="bg-purple-900 text-center py-2">
@@ -190,17 +109,9 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
+              value={propData?.FDPS_NO}
               className="w-full border border-gray-400 p-2 font-bold"
             />
-            {/* <input
-              type="submit"
-              className="bg-gray-300 hidden text-gray-600 px-3 py-1 cursor-pointer uppercase font-bold"
-              value="submit"
-            /> */}
           </div>
           <div className="mb-4 flex justify-center gap-2 items-center ">
             <label
@@ -212,8 +123,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
-              value={proposalInfo?.PROPOSER}
+              value={propData?.PROPOSER}
               className="w-full border border-gray-400 p-2 font-bold"
             />
           </div>
@@ -227,8 +137,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
-              value={proposalInfo?.ADD4}
+              value={propData?.ADD4}
               className="w-full border border-gray-400 p-2 font-bold"
             />
           </div>
@@ -241,8 +150,7 @@ const PRInformation = () => {
               </label>
               <input
                 type="text"
-                value={allAgencyData?.AGENCY_CODE}
-                // onChange={(e) => setAgencyCode(e.target.value)}
+                value={commData?.B_CODE}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -252,8 +160,7 @@ const PRInformation = () => {
               </label>
               <input
                 type="text"
-                value={allAgencyData?.SUB_ZONE_CODE}
-                // onChange={(e) => setSubZoneCode(e.target.value)}
+                value={commData?.SUB_Z_CODE}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -263,8 +170,7 @@ const PRInformation = () => {
               </label>
               <input
                 type="text"
-                value={allAgencyData?.Z_CODE}
-                // onChange={(e) => setZoneCode(e.target.value)}
+                value={commData?.Z_CODE}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
@@ -273,24 +179,21 @@ const PRInformation = () => {
             <div className="flex items-center justify-center">
               <input
                 type="text"
-                value={allAgencyData?.AGENCY_NAME}
-                // onChange={(e) => setAgencyName(e.target.value)}
+                value={commData?.B_NAME}
                 className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
               <input
                 type="text"
-                value={allAgencyData?.SUB_ZONE_NAME}
-                // onChange={(e) => setSubZoneName(e.target.value)}
+                value={commData?.SUB_NAME}
                 className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
               <input
                 type="text"
-                value={allAgencyData?.Z_NAME}
-                // onChange={(e) => setZoneName(e.target.value)}
+                value={commData?.Z_NAME}
                 className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
               />
             </div>
@@ -306,11 +209,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.PR_NO
-                  ? findDetailsByInst?.PR_NO
-                  : allData?.PR_NO
-              }
               onChange={(e) => setPrNo(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -321,11 +219,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.PR_DATE
-                  ? findDetailsByInst?.PR_DATE
-                  : allData?.PR_DATE
-              }
               onChange={(e) => setPrDate(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -337,7 +230,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={allData?.OR_DATE}
+              value={commData?.OR_DATE}
               onChange={(e) => setEntryDate(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -351,13 +244,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.PR_AMT
-                  ? findDetailsByInst?.PR_AMT
-                  : allData?.PR_AMT
-                  ? allData?.PR_AMT
-                  : proposalInfo?.RATE
-              }
               onChange={(e) => setPrAmt(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -368,23 +254,14 @@ const PRInformation = () => {
             </label>
             <select
               className="mb-2 h-8 w-full text-center font-bold"
-              value={
-                findDetailsByInst?.PAY_MODE
-                  ? findDetailsByInst?.PAY_MODE
-                  : allData?.PAY_MODE
-              }
               onChange={(e) => setPayMode(e.target.value)}
             >
               <option>Select</option>
-              {allData?.PAY_MODE ? (
-                <option>{allData?.PAY_MODE}</option>
-              ) : (
-                payModeSelect?.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
-                  </option>
-                ))
-              )}
+              {payModeSelect?.map((item, index) => (
+                <option value={item} key={index}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex items-center justify-center">
@@ -393,11 +270,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.INST_NO
-                  ? findDetailsByInst?.INST_NO
-                  : proposalInfo?.INST_NO
-              }
               onChange={(e) => setInstllNO(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -411,11 +283,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.P_INST
-                  ? findDetailsByInst?.P_INST
-                  : allData?.P_INST
-              }
               onChange={(e) => setPartial(e.target.value)}
               className="mb-2 h-8 w-full text-center font-bold"
             />
@@ -426,8 +293,8 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={allData?.COMM_YEAR}
-              onChange={(e) => setCommYear(e.target.value)}
+              value={commData?.COMM_YEAR}
+              //   onChange={(e) => setCommYear(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold text-center"
             />
           </div>
@@ -437,11 +304,6 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
-                findDetailsByInst?.PR_NO
-                  ? findDetailsByInst?.PR_NO
-                  : allData?.ORNO
-              }
               onChange={(e) => setRetypePrNo(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold text-center"
             />
@@ -455,34 +317,13 @@ const PRInformation = () => {
             <div className="px-2">
               <p className="font-bold text-center mb-2">Code</p>
               <form action="">
-                {/* <div className="flex items-center">
-                  <label htmlFor="" className="mx-2 w-12 font-bold">
-                    ME
-                  </label>
-
-                  <select
-                    className="mb-2 h-8 w-24 pl-1"
-                    id="gender"
-                    name="gender"
-                    value={selectCommCode}
-                    onChange={(e) => setSelectCommCode(e.target.value)}
-                  >
-                    {commCode?.map((item) => (
-                      <option value={item?.CODE} key={item.CODE}>
-                        {item?.CODE}
-                      </option>
-                    ))}
-                  </select>
-                </div> */}
                 <div className="flex items-center">
                   <label htmlFor="" className="mx-2 w-12 font-bold">
                     ME
                   </label>
                   <input
                     type="text"
-                    // value={allAgentInfo?.CODE}
-                    value={allData?.A_CODE}
-                    onChange={(e) => setSelectCommCode(e.target.value)}
+                    value={commData?.A_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -492,9 +333,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.MO_CODE ? allData?.MO_CODE : allAgentInfo?.A_MO
-                    }
+                    value={commData?.MO_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -504,9 +343,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.MM_CODE ? allData?.MM_CODE : allAgentInfo?.A_MM
-                    }
+                    value={commData?.MM_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -516,9 +353,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.BM_CODE ? allData?.BM_CODE : allAgentInfo?.A_BM
-                    }
+                    value={commData?.BM_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -528,9 +363,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.ZM_CODE ? allData?.ZM_CODE : allAgentInfo?.A_ZM
-                    }
+                    value={commData?.ZM_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -540,11 +373,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.AVP_CODE
-                        ? allData?.AVP_CODE
-                        : allAgentInfo?.A_AVP
-                    }
+                    value={commData?.AVP_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -554,9 +383,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.JVPCODE ? allData?.JVPCODE : allAgentInfo?.JVP
-                    }
+                    value={commData?.JVPCODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -566,9 +393,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      allData?.VP_CODE ? allData?.VP_CODE : allAgentInfo?.A_VP
-                    }
+                    value={commData?.VP_CODE}
                     className="mb-2 h-8 w-24 text-center font-bold"
                   />
                 </div>
@@ -582,86 +407,56 @@ const PRInformation = () => {
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.AG_NAME ? allData?.AG_NAME : allAgentInfo?.NAME
-                      }
+                      value={commData?.AG_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.MO_NAME
-                          ? allData?.MO_NAME
-                          : allAgentInfo?.MO_NAME
-                      }
+                      value={commData?.MO_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.MM_NAME
-                          ? allData?.MM_NAME
-                          : allAgentInfo?.MM_NAME
-                      }
+                      value={commData?.MM_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.BM_NAME
-                          ? allData?.BM_NAME
-                          : allAgentInfo?.BM_NAME
-                      }
+                      value={commData?.BM_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.ZM_NAME
-                          ? allData?.ZM_NAME
-                          : allAgentInfo?.ZM_NAME
-                      }
+                      value={commData?.ZM_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.AVP_NAME
-                          ? allData?.AVP_NAME
-                          : allAgentInfo?.AVP_NAME
-                      }
+                      value={commData?.AVP_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.JVPNAME
-                          ? allData?.JVPNAME
-                          : allAgentInfo?.JVP_NAME
-                      }
+                      value={commData?.JVPNAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={
-                        allData?.VP_NAME
-                          ? allData?.VP_NAME
-                          : allAgentInfo?.VP_NAME
-                      }
+                      value={commData?.VP_NAME}
                       className="mb-2 h-8 w-60 pl-2 font-bold"
                     />
                   </div>
@@ -768,7 +563,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.RISKDATE}
+                    value={propData?.RISKDATE}
                     className="mb-2 h-8 w-32 pl-1 text-center font-bold"
                   />
                 </div>
@@ -778,7 +573,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.LAST_INST_DATE}
+                    value={propData?.LAST_INST_DATE}
                     className="mb-2 h-8 w-32 text-center font-bold"
                   />
                 </div>
@@ -788,7 +583,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.RV_DT1}
+                    value={propData?.RV_DT1}
                     className="mb-2 h-8 w-32 text-center font-bold"
                   />
                 </div>
@@ -798,7 +593,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.MATURITY}
+                    value={propData?.MATURITY}
                     className="mb-2 h-8 w-32 text-center font-bold"
                   />
                 </div>
@@ -808,7 +603,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.TABLEID}
+                    value={propData?.TABLEID}
                     className="mb-2 h-8 w-32 pl-1 text-center font-bold"
                   />
                 </div>
@@ -818,7 +613,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.TERM}
+                    value={propData?.TERM}
                     className="mb-2 h-8 w-32 pl-1 text-center font-bold"
                   />
                 </div>
@@ -828,7 +623,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.RATE}
+                    value={propData?.RATE}
                     className="mb-2 h-8 w-32 pl-1 text-center font-bold"
                   />
                 </div>
@@ -838,7 +633,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.SUS_AMT}
+                    value={propData?.SUS_AMT}
                     className="mb-2 h-8 w-32 pl-1 text-center font-bold"
                   />
                 </div>
@@ -849,12 +644,9 @@ const PRInformation = () => {
               <div className="mr-2">
                 <p className="font-bold text-center mb-2">Given Inst.</p>
                 <form action="">
-                  <select
-                    className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
-                    onChange={(e) => setInstallNumber(e.target.value)}
-                  >
+                  <select className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline">
                     <option>Inst No.</option>
-                    {instNO?.map((instList, index) => (
+                    {instNoData?.map((instList, index) => (
                       <option value={instList?.INST_NO} key={index}>
                         {instList?.INST_NO}
                       </option>
@@ -868,42 +660,42 @@ const PRInformation = () => {
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
                   <div className="">
                     <input
                       type="text"
-                      value={allData?.P_INST}
+                      value={commData?.P_INST}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>
@@ -918,8 +710,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={proposalInfo?.INSTMODE}
-              // onChange={(e) => setInstallMode(e.target.value)}
+              value={propData?.INSTMODE}
               className="mb-2 h-8 w-[352px] pl-1 text-center font-bold"
             />
           </div>
@@ -933,30 +724,17 @@ const PRInformation = () => {
           >
             Save
           </p>
-          <Link
-            to="/modify"
-            state={modifyAllDatas}
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
-          >
-            {" "}
-            <p>New Inst</p>
-          </Link>
-          <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
-          >
-            Delete
-          </p>
           <p
             className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl   `}
             onClick={() => window.location.reload()}
           >
             Clear
           </p>
-          <Link to="/">
+          <Link to="/prinformation">
             <p
               className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl `}
             >
-              Exit
+              Back
             </p>
           </Link>
         </div>
@@ -966,4 +744,4 @@ const PRInformation = () => {
   );
 };
 
-export default PRInformation;
+export default PRinfoModify;

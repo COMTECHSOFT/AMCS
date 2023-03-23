@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const BranchWiseBussiReport = () => {
+  const [brCode, setBrCode] = useState("");
+  const [brName, setBrName] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const dataPassByLink = { fromDate, toDate };
+
+  const handleFromDate = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setFromDate(getDate);
+  };
+  const handleToDate = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setToDate(getDate);
+  };
+
+  const handleReset = () => {
+    setBrCode("");
+    setBrName("");
+  };
   return (
-    <div className="bg-teal-500 p-12 h-screen">
-      <div className="w-[1000px] m-auto border-4 border-white mt-12">
+    <div className="bg-teal-500 p-6 ">
+      <div className="w-[1000px] m-auto border-4 border-white">
         <h1 className="text-center text-3xl font-bold py-10 border-b-4 border-white">
           BRANCH WISE BUSINESS REPORT
         </h1>
@@ -22,12 +53,14 @@ const BranchWiseBussiReport = () => {
               <div className="flex gap-x-2 w-full">
                 <input
                   type="text"
-                  name="proposalNo"
+                  value={brCode}
+                  onChange={(e) => setBrCode(e.target.value)}
                   className="mb-2 h-8 w-28 pl-2 font-bold"
                 />
                 <input
                   type="text"
-                  name="proposalNo"
+                  value={brName}
+                  onChange={(e) => setBrName(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
               </div>
@@ -40,9 +73,10 @@ const BranchWiseBussiReport = () => {
                 >
                   From Date
                 </label>
+
                 <input
-                  type="text"
-                  name="proposalNo"
+                  type="date"
+                  onChange={handleFromDate}
                   className="mb-2 h-8 ml-1 pl-2 font-bold"
                 />
               </div>
@@ -51,24 +85,70 @@ const BranchWiseBussiReport = () => {
                   To
                 </label>
                 <input
-                  type="text"
-                  name="proposalNo"
+                  type="date"
+                  onChange={handleToDate}
                   className="mb-2 h-8 pl-2 font-bold"
                 />
               </div>
             </div>
           </form>
         </div>
-        <div className="justify-center gap-x-1 py-12 border-t-4 border-white flex">
-          <button className="bg-white shadow w-[300px] text-center  py-2 text-xl font-bold shadow-gray-600">
-            REPORT VIEW
-          </button>
-          <button className="bg-white shadow w-[300px] text-center  py-2 text-xl font-bold shadow-gray-600">
+        <div className="justify-center gap-x-1 py-12 border-t-4 border-white flex flex-col items-center gap-y-1">
+          <Link
+            to="/branchWiseSummReport"
+            state={dataPassByLink}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise Summary Report</button>
+          </Link>
+          <Link
+            to="/branchWiseDetReport"
+            state={dataPassByLink}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise Details Report</button>
+          </Link>
+          <Link
+            to="/braWisePlanCodeWiseSummReport"
+            state={dataPassByLink}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise Plan Code Wise Summary Report</button>
+          </Link>
+          <Link
+            to="/braWisePlanCodeWiseDetReport"
+            state={dataPassByLink}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise Plan Code Wise Details Report</button>
+          </Link>
+          <Link
+            to="/braWiseMRDetReport"
+            state={dataPassByLink}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise MR Details Report</button>
+          </Link>
+          <button
+            // onClick={() => window.location.reload()}
+            type="button"
+            onClick={handleReset}
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
             CLEAR
           </button>
-          <button className="bg-white shadow w-[300px] text-center  py-2 text-xl font-bold shadow-gray-600">
-            EXIT
-          </button>
+          <Link
+            to="/"
+            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>EXIT</button>
+          </Link>
         </div>
       </div>
     </div>

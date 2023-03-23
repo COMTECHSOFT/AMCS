@@ -20,6 +20,7 @@ const PRInformation = () => {
   }, [value]);
 
   const [installNumber, setInstallNumber] = useState("");
+  console.log(installNumber);
 
   const [detailsByInst, setDetailsByInst] = useState([]);
   const findDetailsByInst = detailsByInst?.find((data) => data);
@@ -847,9 +848,9 @@ const PRInformation = () => {
 
             <div className="flex gap-2 px-2">
               <div className="mr-2">
-                <p className="font-bold text-center mb-2">Given Inst.</p>
-                <form action="">
-                  <select
+                <p className="font-bold mb-2">Given Inst.</p>
+                <form action="" className="overflow-auto h-72">
+                  {/* <select
                     className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                     onChange={(e) => setInstallNumber(e.target.value)}
                   >
@@ -859,7 +860,16 @@ const PRInformation = () => {
                         {instList?.INST_NO}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
+                  {instNO?.map((instList, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      value={instList?.INST_NO}
+                      onFocus={(e) => setInstallNumber(e.target.value)}
+                      className="mb-2 h-8 w-32 pl-1 text-center font-bold "
+                    />
+                  ))}
                 </form>
               </div>
               <div className="mr-2">

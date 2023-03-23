@@ -10,6 +10,11 @@ import MRRemove from "../pages/AccountInfo/MRRemove";
 import AmanaGroup from "../pages/AmanaGroup";
 import BillDetailReport from "../pages/BillDetailReport/BillDetailReport";
 import BranchWiseBussiReport from "../pages/branchWiseBussiReport/BranchWiseBussiReport";
+import BranchWiseDetailReport from "../pages/branchWiseBussiReport/BranchWiseDetailReport";
+import BranchWSReport from "../pages/branchWiseBussiReport/BranchWSReport";
+import BraWiseMRDetReport from "../pages/branchWiseBussiReport/BraWiseMRDetReport";
+import BraWisePlanCodeWiseDetReport from "../pages/branchWiseBussiReport/BraWisePlanCodeWiseDetReport";
+import BraWisePlanCodeWiseSummReport from "../pages/branchWiseBussiReport/BraWisePlanCodeWiseSummReport";
 import CodeWiseNewBusiness from "../pages/CodeWiseNewBusiness/CodeWiseNewBusiness";
 import CodeWiseSummBuss from "../pages/CodeWiseSummBuss/CodeWiseSummBuss";
 import AGMCommissionBill from "../pages/CommissionBill/AGMCommissionBill";
@@ -142,6 +147,26 @@ const routes = createBrowserRouter([
       {
         path: "/bwbr",
         element: <BranchWiseBussiReport />,
+      },
+      {
+        path: "/branchWiseSummReport",
+        element: <BranchWSReport />,
+      },
+      {
+        path: "/branchWiseDetReport",
+        element: <BranchWiseDetailReport />,
+      },
+      {
+        path: "/braWisePlanCodeWiseSummReport",
+        element: <BraWisePlanCodeWiseSummReport />,
+      },
+      {
+        path: "/braWisePlanCodeWiseDetReport",
+        element: <BraWisePlanCodeWiseDetReport />,
+      },
+      {
+        path: "/braWiseMRDetReport",
+        element: <BraWiseMRDetReport />,
       },
       {
         path: "/billdetail",

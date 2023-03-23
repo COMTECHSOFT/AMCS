@@ -51,8 +51,8 @@ function CommReport() {
               src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png"
               className="w-96 h-20"
             />
-            <div className="mb-4">
-              <p className="text-center">
+            <div className="mb-4 text-xs">
+              <p className="text-center ">
                 Head Office: J.S Plaza (3rd Floor), Kanaikhali, Natore,
                 01771-62766
               </p>
@@ -89,14 +89,14 @@ function CommReport() {
               </p>
             </div>
           </div>
-          <div className="px-4">
+          <div className="px-4 text-xs">
             <h1 className="border border-black p-1 font-bold">
               Branch Code & Name: {location?.state?.commissionData[0]?.OFF_CODE}{" "}
               - {location?.state?.commissionData[0]?.OFF_NAME}
             </h1>
           </div>
         </div>
-        <div className="px-4">
+        <div className="px-4 text-xs">
           <table style={tableStyles.style} className="w-full text-center">
             <tr>
               <td rowSpan="2" style={tableStyles.style}>

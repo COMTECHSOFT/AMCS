@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const PRinfoModify = () => {
   const location = useLocation();
   const commData = location?.state?.allData;
   const propData = location?.state?.proposalInfo;
   const instNoData = location?.state?.instNO;
-  console.log(instNoData);
 
   const todaysDate = `${new Date().getDate()}-${
     new Date().getMonth() + 1
@@ -26,6 +25,8 @@ const PRinfoModify = () => {
   const [reTypePrNo, setRetypePrNo] = useState("");
 
   // save new data end
+
+  const navigate = useNavigate();
 
   const handleSave = () => {
     const newSaveData = {
@@ -82,7 +83,10 @@ const PRinfoModify = () => {
       body: JSON.stringify(newSaveData),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data);
+        navigate("/prinformation");
+      });
   };
 
   const handleSubmit = (e) => {
@@ -643,15 +647,23 @@ const PRinfoModify = () => {
             <div className="flex gap-2 px-2">
               <div className="mr-2">
                 <p className="font-bold text-center mb-2">Given Inst.</p>
-                <form action="">
-                  <select className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline">
+                <form action="" className="overflow-auto h-72">
+                  {/* <select className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline">
                     <option>Inst No.</option>
                     {instNoData?.map((instList, index) => (
                       <option value={instList?.INST_NO} key={index}>
                         {instList?.INST_NO}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
+                  {instNoData?.map((instList, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      value={instList?.INST_NO}
+                      className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    />
+                  ))}
                 </form>
               </div>
               <div className="mr-2">
@@ -660,42 +672,7 @@ const PRinfoModify = () => {
                   <div className="">
                     <input
                       type="text"
-                      value={commData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={commData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={commData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={commData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={commData?.P_INST}
-                      className="mb-2 h-8 w-24 pl-1 font-bold text-center"
-                    />
-                  </div>
-                  <div className="">
-                    <input
-                      type="text"
-                      value={commData?.P_INST}
+                      value={""}
                       className="mb-2 h-8 w-24 pl-1 font-bold text-center"
                     />
                   </div>

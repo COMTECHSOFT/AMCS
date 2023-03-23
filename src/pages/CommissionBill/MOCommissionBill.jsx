@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MOCommissionBill = () => {
   const todaysDate = `${new Date().getDate()}-${
@@ -61,6 +61,12 @@ const MOCommissionBill = () => {
       .then((res) => res.json())
       .then((data) => setCommissionData(data?.comm_info));
   }, [design, months, brCode, year]);
+
+  const navigate = useNavigate();
+  const getItem = JSON.parse(localStorage.getItem("item"));
+  if (!getItem) {
+    return navigate("/login");
+  }
   return (
     <div>
       <nav className="bg-gray-300 px-4 py-2">
@@ -83,26 +89,21 @@ const MOCommissionBill = () => {
               <form action="" className="col-span-5 px-6 w-[600px] m-auto">
                 <div className="flex items-center justify-center">
                   <label htmlFor="" className="mx-2 font-bold w-32">
-                    Branch Code
+                    Designation
                   </label>
-                  <input
-                    type="text"
-                    name="proposalNo"
-                    onChange={(e) => setBrCode(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
-                  />
-                </div>
-                <div className="flex items-center justify-center">
-                  <label htmlFor="" className="mx-2 font-bold w-32">
-                    Zone Name
-                  </label>
-                  <input
-                    type="text"
-                    name="proposalNo"
-                    value={commissionData[0]?.OFF_NAME}
-                    onChange={(e) => setBrName(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
-                  />
+                  <select
+                    className="w-full pl-2 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                    onChange={(e) => setDesign(e.target.value)}
+                  >
+                    <option className="cursor-not-allowed" value="Select">
+                      Select
+                    </option>
+                    {desig?.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center justify-center">
@@ -136,22 +137,28 @@ const MOCommissionBill = () => {
                 </div>
                 <div className="flex items-center justify-center">
                   <label htmlFor="" className="mx-2 font-bold w-32">
-                    Designation
+                    Branch Code
                   </label>
-                  <select
-                    className="w-full pl-2 mb-2 py-2 focus:outline-none focus:shadow-outline"
-                    onChange={(e) => setDesign(e.target.value)}
-                  >
-                    <option className="cursor-not-allowed" value="Select">
-                      Select
-                    </option>
-                    {desig?.map((item, index) => (
-                      <option value={item} key={index}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
+                  <input
+                    type="text"
+                    name="proposalNo"
+                    onChange={(e) => setBrCode(e.target.value)}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
                 </div>
+                <div className="flex items-center justify-center">
+                  <label htmlFor="" className="mx-2 font-bold w-32">
+                    Zone Name
+                  </label>
+                  <input
+                    type="text"
+                    name="proposalNo"
+                    value={commissionData[0]?.OFF_NAME}
+                    onChange={(e) => setBrName(e.target.value)}
+                    className="mb-2 h-8 w-full pl-2 font-bold"
+                  />
+                </div>
+
                 <div className="flex items-center justify-center">
                   <label htmlFor="" className="mx-2 font-bold w-32">
                     Bill No
@@ -182,7 +189,7 @@ const MOCommissionBill = () => {
                   View Report
                 </button>
               </Link>
-              <Link to="/commissionBill">
+              <Link to="/">
                 {" "}
                 <button className="bg-white w-[300px]    py-2 text-xl font-bold shadow">
                   Exit

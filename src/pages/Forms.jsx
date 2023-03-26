@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Forms = () => {
+  const navigate = useNavigate();
+
   const handleDOB = (e) => {
     const selectDate = e.target.value;
     let date = new Date(selectDate);
@@ -66,7 +68,6 @@ const Forms = () => {
     setEntriesDate(getDate);
   };
 
-  const navigate = useNavigate();
   const gender = ["Male", "Female"];
 
   const [branchName, setBranchName] = useState("");
@@ -83,7 +84,6 @@ const Forms = () => {
 
   const [datas, setDatas] = useState([]);
   const formDatas = datas?.find((data) => data);
-  console.log(formDatas);
   useEffect(() => {
     fetch(`http://192.168.31.94/api/proposal_no.php?FDPS_NO=${value}`)
       .then((res) => res.json())
@@ -221,6 +221,7 @@ const Forms = () => {
   const [lastDueDate, setLastDueDate] = useState("");
   const [amount, setAmount] = useState("");
   const [nextPremDate, setNextPremDate] = useState("");
+  const [selectPayMode, setSelectPayMode] = useState("");
   const [maturity, setMaturity] = useState("");
   const [instlAmt, setInstlAmt] = useState("");
   const [instlNo, setInstlNo] = useState("");
@@ -281,7 +282,7 @@ const Forms = () => {
       COF_PS: preAdd,
       COF_PER: perAdd,
       TABLEID: selectPlanCode[0]?.CODE,
-      INSTMODE: planName,
+      INSTMODE: selectPayMode,
       TERM: term,
       LAST_INST_DATE: lastDueDate,
       RATE: amount,
@@ -315,17 +316,38 @@ const Forms = () => {
       DATE_TIME: entriesDate,
     };
     console.log(newSaveData);
-    const url = "http://192.168.31.94/api/insert.php";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newSaveData),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    if (!value) {
+    alert('Please Give FDPS Value')
+    }else{
+      const url = "http://192.168.31.94/api/insert.php";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(newSaveData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+      toast.success("Data saved successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    }
   };
+  const [nextDateTrigger, setNextDateTrigger] = useState([]);
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/next_pay.php?PAYMODE=${formDatas?.INSTMODE}&&DATE=${formDatas?.RISKDATE}&&INST_NO=1`
+    )
+      .then((res) => res.json())
+      .then((data) => setNextDateTrigger(data?.Next_pay_date));
+  }, [formDatas?.INSTMODE, formDatas?.RISKDATE]);
 
   const handleCrear = (e) => {
     window.location.reload();
@@ -339,12 +361,12 @@ const Forms = () => {
     <div className="p-4 bg-gray-200">
       <form
         onSubmit={handleSubmit}
-        className="flex-col md:flex-row flex md:justify-between md:px-12 my-4"
+        className="flex-col md:flex-row lg:flex-row flex md:justify-between lg:justify-between md:px-12 lg:px-12 my-4"
       >
         <div className="mb-4 flex justify-center gap-2 items-center ">
           <label
             htmlFor="membershipNo"
-            className="block text-gray-700 w-60 md:w-48 font-bold"
+            className="block text-gray-700 w-60 md:w-40 font-bold"
           >
             {" "}
             Account No
@@ -354,7 +376,7 @@ const Forms = () => {
             onChange={(e) => {
               setValue(e.target.value);
             }}
-            className="w-full border border-gray-400 py-2 text-center font-bold"
+            className="w-full border border-gray-400 py-1 text-center font-bold"
           />
           {/* <Link to={"/account"} state={formDatas}>
             {" "}
@@ -369,7 +391,7 @@ const Forms = () => {
         <div className="mb-4 flex justify-center gap-2 items-center ">
           <label
             htmlFor="membershipNo"
-            className="block text-gray-700 w-60 md:w-48 font-bold"
+            className="block text-gray-700 w-60 md:w-48 lg:w-48 font-bold"
           >
             Membership No
           </label>
@@ -377,13 +399,13 @@ const Forms = () => {
             type="text"
             value={formDatas?.FDPS_NO}
             onChange={(e) => setProNo(e.target.value)}
-            className="w-full border border-gray-400 py-2 text-center font-bold"
+            className="w-full border border-gray-400 py-1 text-center font-bold"
           />
         </div>
       </form>
 
       <div>
-        <p className="font-bold text-xl bg-gray-600 text-white text-center py-2">
+        <p className="font-bold text-xl bg-gray-600 text-white text-center py-1">
           {" "}
           Account Holder Information
         </p>
@@ -391,7 +413,7 @@ const Forms = () => {
           <div className=" p-2 lg:p-8">
             <form
               action=""
-              className="grid grid-cols-1 md:grid-cols-2 gap-2 p-4 border-2"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 p-4 border-2"
             >
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
@@ -468,23 +490,22 @@ const Forms = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center justify-center">
-                  <label htmlFor="" className="mx-2 font-bold w-36 ">
+              <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between">
+                <div className="flex items-center ">
+                  <label htmlFor="" className="mx-2 font-bold md:w-48 lg:w-48 ">
                     Date of Birth
                   </label>
                   {formDatas?.DOB ? (
                     <input
                       type="text"
                       value={formDatas?.DOB}
-                      className="mb-2 h-8 w-full ml-16 pl-2 font-bold"
+                      className="mb-2 h-8 md:w-full lg:w-full md:ml-8 lg:ml-8 pl-2 font-bold"
                     />
                   ) : (
                     <input
                       type="date"
-                      formDatas="yyyy-mm-dd"
                       onChange={handleDOB}
-                      className="mb-2 h-8 w-full ml-16 pl-2 font-bold"
+                      className="mb-2 h-8 md:w-44 md:ml-[-60px] pl-2 font-bold"
                     />
                   )}
                 </div>
@@ -494,6 +515,7 @@ const Forms = () => {
                   </label>
                   <input
                     type="text"
+                    className="mb-2 h-8 w-24 pl-2 font-bold"
                     value={
                       formDatas?.AGE
                         ? formDatas?.AGE
@@ -502,17 +524,7 @@ const Forms = () => {
                             (Date.now() - new Date(dobAge)) / 31557600000
                           )
                     }
-                    className="mb-2 h-8 w-24 pl-2 font-bold"
                   />
-                  {/* setAge */}
-                  {/* {dob && (
-                    <p>
-                      {" "}
-                      {Math.floor(
-                        (Date.now() - new Date(dobAge)) / 31557600000
-                      )}{" "}
-                    </p>
-                  )} */}
                 </div>
               </div>
 
@@ -521,7 +533,7 @@ const Forms = () => {
                   Occupation
                 </label>
                 <select
-                  className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
+                  className="w-full pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
                   value={formDatas?.OC_NAME}
                   onChange={(e) => setOccpName(e.target.value)}
                 >
@@ -565,7 +577,7 @@ const Forms = () => {
                   Gender
                 </label>
                 <select
-                  className="w-full pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                  className="w-full pl-1 mb-2 h-8 focus:outline-none focus:shadow-outline"
                   value={formDatas?.SEX}
                   onChange={(e) => setSex(e.target.value)}
                 >
@@ -617,7 +629,7 @@ const Forms = () => {
             </form>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center p-2 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-center items-center p-2 pb-8">
             <div className="flex flex-col mb-6 lg:mb-0 justify-center items-center">
               <p className="font-bold text-center mb-2 ">Present Address</p>
               <textarea
@@ -633,7 +645,7 @@ const Forms = () => {
                 name=""
                 value={formDatas?.COF_PS}
                 onChange={(e) => setPreADd(e.target.value)}
-                cols="60"
+                cols="40"
                 rows="4"
               ></textarea>
             </div>
@@ -652,7 +664,7 @@ const Forms = () => {
                 name=""
                 value={formDatas?.COF_PER}
                 onChange={(e) => setPerAdd(e.target.value)}
-                cols="60"
+                cols="40"
                 rows="4"
               ></textarea>
             </div>
@@ -667,7 +679,7 @@ const Forms = () => {
         </p>
         <form
           action=""
-          className="grid grid-cols-1 md:grid-cols-2 gap-2 p-4 border-2 "
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 p-4 border-2 "
         >
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
@@ -694,16 +706,16 @@ const Forms = () => {
             </label>
             <input
               type="text"
+              className="mb-2 h-8 w-full pl-2 font-bold"
               value={
                 formDatas?.TABLEID
                   ? formDatas?.TABLEID
                   : selectPlanCode[0]?.CODE
               }
-              className="mb-2 h-8 w-full pl-2 font-bold"
             />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Term
             </label>
             <input
@@ -714,7 +726,7 @@ const Forms = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Last Due. Date
             </label>
             {formDatas?.LAST_INST_DATE ? (
@@ -732,7 +744,7 @@ const Forms = () => {
             )}
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Amount
             </label>
             <input
@@ -744,31 +756,25 @@ const Forms = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Next Prem. Date
             </label>
-            {formDatas?.RV_DT1 ? (
-              <input
-                type="text"
-                value={formDatas?.RV_DT1}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />
-            ) : (
-              <input
-                type="date"
-                onChange={handleRV_DT1}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />
-            )}
+            <input
+              type="text"
+              value={nextDateTrigger[0]?.NEXTPAY}
+              disabled
+              className="mb-2 h-8 bg-white w-full pl-2 font-bold"
+            />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 ">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Pay mode
             </label>
             <select
-              // onChange={(e) => setPlanName(e.target.value)}
+              onChange={(e) => setSelectPayMode(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             >
+              <option>Select</option>
               {formDatas?.INSTMODE ? (
                 <option>{formDatas?.INSTMODE}</option>
               ) : (
@@ -782,7 +788,7 @@ const Forms = () => {
           </div>
 
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Maturity
             </label>
             {formDatas?.MATURITY ? (
@@ -800,7 +806,7 @@ const Forms = () => {
             )}
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Installment Amount
             </label>
             <input
@@ -812,7 +818,7 @@ const Forms = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Installment No
             </label>
             <input
@@ -824,7 +830,7 @@ const Forms = () => {
             />
           </div>
           <div className="flex items-center justify-center">
-            <label htmlFor="" className="mx-2 font-bold w-48 md:w-60">
+            <label htmlFor="" className="mx-2 font-bold w-48 md:w-60 lg:w-60">
               Total Depositable Amt
             </label>
             <input
@@ -864,7 +870,7 @@ const Forms = () => {
                 <h1 className="text-center text-xl py-6 border-b-2 font-bold">
                   Nominee Information
                 </h1>
-                <div className="flex flex-col justify-center mt-4 md:flex-row gap-4">
+                <div className="flex flex-col justify-center mt-4 md:flex-row lg:flex-row gap-4">
                   <div className=" px-2">
                     <p className="font-bold text-center mb-2">Name</p>
                     <form action="">
@@ -1147,13 +1153,16 @@ const Forms = () => {
         </p>
         <div className="p-4" style={{ backgroundColor: "#E5E7EB" }}>
           <div className="mt-4 border-2 border-gray-400 p-4 2 bg-gray-300">
-            <form action="" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form
+              action=""
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
+            >
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Branch Name
                 </label>
                 <select
-                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
+                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
                   value={allData?.AGENCY_NAME}
                   onChange={(e) => setBranchName(e.target.value)}
                 >
@@ -1178,7 +1187,7 @@ const Forms = () => {
                   type="text"
                   value={branchData[0]?.AGENCY_CODE}
                   onChange={(e) => setAgencyCode(e.target.value)}
-                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
+                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1190,7 +1199,7 @@ const Forms = () => {
                   // value={allData?.SUB_ZONE_CODE}
                   value={branchData[0]?.SUB_ZONE_CODE}
                   onChange={(e) => setSubZoneCode(e.target.value)}
-                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
+                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1214,7 +1223,7 @@ const Forms = () => {
                   // value={allData?.Z_CODE}
                   value={branchData[0]?.Z_CODE}
                   onChange={(e) => setZoneCode(e.target.value)}
-                  className="mb-2 h-8 w-full font-bold bg-white  pl-2"
+                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -1252,7 +1261,7 @@ const Forms = () => {
                   Account Status
                 </label>
                 <select
-                  className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
+                  className="w-full pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
                   value={formDatas?.ADD4}
                   onChange={(e) => setAccountStatus(e.target.value)}
                 >
@@ -1329,15 +1338,15 @@ const Forms = () => {
           </div>
         </div>
       </div> */}
-      <div className="bg-indigo-300 p-10 mt-12">
-        <div className="flex flex-col md:flex-row justify-center cursor-pointer gap-1">
+      <div className="bg-indigo-300 p-6 mt-8">
+        <div className="flex flex-col md:flex-row lg:flex-row justify-center cursor-pointer gap-1">
           <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}
             onClick={handleSave}
           >
             Save
           </p>
-          <p
+          {/* <p
             className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
           >
             <Link
@@ -1350,9 +1359,9 @@ const Forms = () => {
             >
               First PR Entry
             </Link>
-          </p>
+          </p> */}
           <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl   `}
+            className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}
             onClick={handleCrear}
           >
             Clear
@@ -1360,13 +1369,14 @@ const Forms = () => {
           <Link to="/">
             {" "}
             <p
-              className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl `}
+              className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}
             >
               Exit
             </p>
           </Link>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

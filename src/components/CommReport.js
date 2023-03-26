@@ -146,7 +146,7 @@ function CommReport() {
                 <tr>
                   <td style={tableStyles.style}>{index + 1}</td>
                   <td style={tableStyles.style}>{data.CODE}</td>
-                  <td style={tableStyles.style}>{data.NAME}</td>
+                  <td style={tableStyles.style} className='text-left pl-2'>{data.NAME}</td>
                   <td style={tableStyles.style}> {data.NEW_PRM}</td>
                   <td style={tableStyles.style}> {data.NEW_COMM}</td>
                   <td style={tableStyles.style}> {data.OTHER_PRM}</td>
@@ -163,9 +163,9 @@ function CommReport() {
                   }`}</td>
                   <td style={tableStyles.style}>
                     {" "}
-                    {+data.OTHER_COMM +
+                    {Math.round(+data.OTHER_COMM +
                       +data.NEW_COMM -
-                      ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100}
+                      ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100)}
                   </td>
                   <td style={tableStyles.style}></td>
                 </tr>

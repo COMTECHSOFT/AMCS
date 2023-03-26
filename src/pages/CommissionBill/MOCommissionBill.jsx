@@ -7,18 +7,6 @@ const MOCommissionBill = () => {
   }-${new Date().getFullYear()}`;
 
   const month = [
-    // "January",
-    // "February",
-    // "March",
-    // "April",
-    // "May",
-    // "June",
-    // "July",
-    // "August",
-    // "September",
-    // "October",
-    // "November",
-    // "December",
     "jan",
     "feb",
     "mar",
@@ -70,21 +58,19 @@ const MOCommissionBill = () => {
   return (
     <div>
       <nav className="bg-gray-300 px-4 py-2">
-        <h1 className="text-black text-xl font-bold uppercase">
-          Commission Bill
-        </h1>
+        <h1 className="text-black font-bold uppercase">Commission Bill</h1>
       </nav>
       <div
-        className="bg-sky-400 pb-[10%] flex justify-center py-10 px-32 ]"
+        className="bg-sky-400 pb-[10%] flex justify-center py-8 px-32 ]"
         style={{ height: "" }}
       >
         <div className="border-4 border-white bg-emerald-500 w-full">
           <div className="border-b-4 text-center bg-blue-700 border-white">
-            <h1 className="py-8 text-4xl font-bold text-white">
+            <h1 className="py-4 text-2xl font-bold text-white">
               Chain Code Wise Commission Bill
             </h1>
           </div>
-          <div className=" py-24">
+          <div className=" py-12">
             <div>
               <form action="" className="col-span-5 px-6 w-[600px] m-auto">
                 <div className="flex items-center justify-center">
@@ -92,7 +78,7 @@ const MOCommissionBill = () => {
                     Designation
                   </label>
                   <select
-                    className="w-full pl-2 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                    className="w-full pl-2 mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
                     onChange={(e) => setDesign(e.target.value)}
                   >
                     <option className="cursor-not-allowed" value="Select">
@@ -111,7 +97,7 @@ const MOCommissionBill = () => {
                       Month
                     </label>
                     <select
-                      className="w-full ml-10 pl-1 mb-2 py-2 focus:outline-none focus:shadow-outline"
+                      className="w-full ml-10 pl-1 mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
                       id="gender"
                       name="gender"
                       onChange={(e) => setMonths(e.target.value)}
@@ -131,7 +117,7 @@ const MOCommissionBill = () => {
                       type="text"
                       name="proposalNo"
                       onChange={(e) => setYear(e.target.value)}
-                      className="mb-2 h-8 w-full pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                     />
                   </div>
                 </div>
@@ -143,7 +129,7 @@ const MOCommissionBill = () => {
                     type="text"
                     name="proposalNo"
                     onChange={(e) => setBrCode(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                   />
                 </div>
                 <div className="flex items-center justify-center">
@@ -155,7 +141,7 @@ const MOCommissionBill = () => {
                     name="proposalNo"
                     value={commissionData[0]?.OFF_NAME}
                     onChange={(e) => setBrName(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                   />
                 </div>
 
@@ -172,7 +158,7 @@ const MOCommissionBill = () => {
                         : ""
                     }
                     onChange={(e) => setBill(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                   />
                 </div>
               </form>
@@ -184,19 +170,19 @@ const MOCommissionBill = () => {
                 {" "}
                 <button
                   // onClick={viewReportdata}
-                  className="bg-white w-[300px]  mb-[-40px]  py-2 text-xl font-bold shadow"
+                  className="bg-white w-48  mb-[-40px] h-8 font-bold shadow"
                 >
                   View Report
                 </button>
               </Link>
               <Link to="/">
                 {" "}
-                <button className="bg-white w-[300px]    py-2 text-xl font-bold shadow">
+                <button className="bg-white w-48 mb-[-40px] h-8 font-bold shadow">
                   Exit
                 </button>
               </Link>
             </div>
-            <p className="text-xl float-right text-white font-bold mr-8">
+            <p className=" float-right text-white font-bold mr-8">
               {todaysDate}
             </p>
           </div>

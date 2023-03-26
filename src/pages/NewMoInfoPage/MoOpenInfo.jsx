@@ -1,76 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { calcLength } from "framer-motion";
 const MoOpenInfo = () => {
+  const handleDOB = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setDateOB(getDate);
+  };
 
-const handleDOB=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setDateOB(getDate)
-}
+  const handleDOAPT = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setDoapt(getDate);
+  };
 
-const handleDOAPT=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setDoapt(getDate)
-}
+  const handleLICISSUE = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setLicIssDate(getDate);
+  };
 
-const handleLICISSUE=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setLicIssDate(getDate)
-}
+  const handleLIC_EXPIRY = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setLicExpDate(getDate);
+  };
 
-const handleLIC_EXPIRY=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setLicExpDate(getDate)
-}
-
-const handleLIC_RENEW=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setLicRenwDate(getDate)
-}
-const handleEF_DATE=(e)=>{
-  const selectDate=e.target.value
-  let date = new Date(selectDate);
-  let day = date.getDate();
-  let month = date.getMonth()+1;
-let year = date.getFullYear();
-let getDate=day+"-"+month+"-"+year
-setEffDate(getDate)
-}
-
-
-
-
-
-
-
-
+  const handleLIC_RENEW = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setLicRenwDate(getDate);
+  };
+  const handleEF_DATE = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setEffDate(getDate);
+  };
 
   const rct = ["P", "DA"];
   const [moCode, setMoCode] = useState(0);
@@ -112,7 +103,7 @@ setEffDate(getDate)
   const [jvp, setJvp] = useState("");
   const [mrNo, setMrNo] = useState("");
   const [mrAmt, setMrAmt] = useState("");
-  const [dob, setDateOB] = useState('');
+  const [dob, setDateOB] = useState("");
   const [doapt, setDoapt] = useState("");
   const [liceNum, setLicNum] = useState("");
   const [licIssDate, setLicIssDate] = useState("");
@@ -178,6 +169,11 @@ setEffDate(getDate)
     window.location.reload();
   };
 
+  const navigate = useNavigate();
+  const getItem = JSON.parse(localStorage.getItem("item"));
+  if (!getItem) {
+    return navigate("/login");
+  }
   return (
     <div>
       <nav className="bg-cyan-900 text-center py-6">
@@ -194,14 +190,17 @@ setEffDate(getDate)
             className="grid grid-cols-1 p-4  "
           >
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 PIN No.
               </label>
-              <input type="text" className="mb-2 h-8 w-full pl-2 font-bold" />
+              <input
+                type="text"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+              />
             </div>
 
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 MO Code No.
               </label>
               <input
@@ -210,11 +209,11 @@ setEffDate(getDate)
                 onChange={(e) => {
                   setMoCode(e.target.value);
                 }}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Name
               </label>
               <input
@@ -223,11 +222,11 @@ setEffDate(getDate)
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 father's Name
               </label>
               <input
@@ -235,11 +234,11 @@ setEffDate(getDate)
                 name=""
                 value={moData?.F_NAME}
                 onChange={(e) => setFName(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Present Address
               </label>
               <textarea
@@ -247,11 +246,11 @@ setEffDate(getDate)
                 onChange={(e) => setAddress1(e.target.value)}
                 value={moData?.ADDRESS1}
                 rows="4"
-                className="mb-2 w-full pl-2 font-bold"
+                className="mb-2 w-full text-xs pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Permanent Address
               </label>
               <textarea
@@ -259,28 +258,30 @@ setEffDate(getDate)
                 onChange={(e) => setAddress2(e.target.value)}
                 value={moData?.ADDRESS2}
                 rows="4"
-                className="mb-2 w-full pl-2 font-bold"
+                className="mb-2 w-full text-xs pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Date of Birth
               </label>
-              {moData?.DOB?<input
-                type="text" 
-                value={moData?.DOB}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                value={moData?.DOB}
-                onChange={handleDOB}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
-
+              {moData?.DOB ? (
+                <input
+                  type="text"
+                  value={moData?.DOB}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  value={moData?.DOB}
+                  onChange={handleDOB}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Mobile Number
               </label>
               <input
@@ -288,11 +289,11 @@ setEffDate(getDate)
                 name=""
                 value={moData?.PHONE2}
                 onChange={(e) => setPhone2(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 MR No.
               </label>
               <input
@@ -300,11 +301,11 @@ setEffDate(getDate)
                 name=""
                 value={moData?.MRNO}
                 onChange={(e) => setMrNo(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 MR Amount
               </label>
               <input
@@ -312,106 +313,122 @@ setEffDate(getDate)
                 name=""
                 value={moData?.MR_AMT}
                 onChange={(e) => setMrAmt(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Date of Apoinment
               </label>
-                {moData?.DOAPT?<input
-                type="text" 
-                value={moData?.DOAPT}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                onChange={handleDOAPT}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
+              {moData?.DOAPT ? (
+                <input
+                  type="text"
+                  value={moData?.DOAPT}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  onChange={handleDOAPT}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
 
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Licence Number
               </label>
               <input
                 type="text"
                 value={moData?.LIC_NO}
                 onChange={(e) => setLicNum(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Licence Issue Date
               </label>
-                {moData?.LIC_ISSUE?<input
-                type="text" 
-                value={moData?.LIC_ISSUE}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                onChange={handleLICISSUE}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
+              {moData?.LIC_ISSUE ? (
+                <input
+                  type="text"
+                  value={moData?.LIC_ISSUE}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  onChange={handleLICISSUE}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Licence Expire Date
               </label>
-               {moData?.LIC_EXPIRY?<input
-                type="text" 
-                value={moData?.LIC_EXPIRY}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                onChange={handleLIC_EXPIRY}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
+              {moData?.LIC_EXPIRY ? (
+                <input
+                  type="text"
+                  value={moData?.LIC_EXPIRY}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  onChange={handleLIC_EXPIRY}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px] ">
                 Licence Renew Date
               </label>
-                {moData?.LIC_RENEW?<input
-                type="text" 
-                value={moData?.LIC_RENEW}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                onChange={handleLIC_RENEW}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
+              {moData?.LIC_RENEW ? (
+                <input
+                  type="text"
+                  value={moData?.LIC_RENEW}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  onChange={handleLIC_RENEW}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px]">
                 Effect Date
               </label>
-               {moData?.EF_DATE?<input
-                type="text" 
-                value={moData?.EF_DATE}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />:
-               <input
-                type="date" 
-                onChange={handleEF_DATE}
-                className="mb-2 h-8 w-full pl-2 font-bold"
-              />}
+              {moData?.EF_DATE ? (
+                <input
+                  type="text"
+                  value={moData?.EF_DATE}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <input
+                  type="date"
+                  onChange={handleEF_DATE}
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              )}
             </div>
 
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-60 ">
+              <label htmlFor="" className="mx-2 font-bold w-[300px] ">
                 Recruiment Type
               </label>
               <select
-                className="w-full pl-2 font-bold mb-2 py-1 focus:outline-none focus:shadow-outline"
+                className="w-full pl-2 font-bold mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
                 value={moData?.RCT}
                 onChange={(e) => setRct(e.target.value)}
               >
+                <option>Select</option>
                 {moData?.RCT ? (
                   <option>
                     {moData?.RCT === "DA" ? "Directly Appointed" : "Promoted"}
@@ -431,7 +448,7 @@ setEffDate(getDate)
           <div className="flex flex-col md:flex-row gap-4 border-b-2 border-white p-10">
             <form action="" className="">
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-[330px]">
+                <label htmlFor="" className="mx-2 font-bold w-[350px]">
                   Branch Code & Name
                 </label>
                 <input
@@ -439,11 +456,11 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.AGENCY_CODE}
                   onChange={(e) => setAgencyCode(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-[330px]">
+                <label htmlFor="" className="mx-2 font-bold w-[350px]">
                   District Office
                 </label>
                 <input
@@ -451,11 +468,11 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.SUB_ZONE_CODE}
                   onChange={(e) => setSubZone(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-[330px]">
+                <label htmlFor="" className="mx-2 font-bold w-[350px]">
                   Head office Code
                 </label>
                 <input
@@ -463,7 +480,7 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.Z_CODE}
                   onChange={(e) => setZone(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 />
               </div>
             </form>
@@ -474,7 +491,7 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.AGENCY_NAME}
                   disabled
-                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
+                  className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -483,7 +500,7 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.SUB_ZONE_NAME}
                   disabled
-                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
+                  className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -492,7 +509,7 @@ setEffDate(getDate)
                   name=""
                   value={branchData?.Z_NAME}
                   disabled
-                  className="mb-2 bg-white h-8 w-48 md:w-full pl-2 font-bold"
+                  className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
               </div>
             </form>
@@ -500,7 +517,7 @@ setEffDate(getDate)
           <div className="flex flex-col md:flex-row gap-4 p-10 justify-center">
             <form action="" className="">
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   UM Code
                 </label>
                 <input
@@ -508,11 +525,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_MO}
                   onChange={(e) => setAmo(e.target.value)}
-                  className="mb-2 h-8 font-bold text-right pr-2 w-32 pl-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   BM Code
                 </label>
                 <input
@@ -520,11 +537,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_MM}
                   onChange={(e) => setAmm(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   AGM Code
                 </label>
                 <input
@@ -532,11 +549,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_BM}
                   onChange={(e) => setAbm(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   DGM Code
                 </label>
                 <input
@@ -544,11 +561,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_ZM}
                   onChange={(e) => setAzm(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   GM Code
                 </label>
                 <input
@@ -556,11 +573,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_AVP}
                   onChange={(e) => setAAvp(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   ED Code
                 </label>
                 <input
@@ -568,11 +585,11 @@ setEffDate(getDate)
                   name=""
                   value={moData?.JVP}
                   onChange={(e) => setJvp(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-32">
+                <label htmlFor="" className="mx-2 font-bold w-24">
                   D Code
                 </label>
                 <input
@@ -580,7 +597,7 @@ setEffDate(getDate)
                   name=""
                   value={moData?.A_VP}
                   onChange={(e) => setAvp(e.target.value)}
-                  className="mb-2 h-8 w-32 font-bold text-right pr-2"
+                  className="mb-2 h-6 text-xs w-16 font-bold text-center"
                 />
               </div>
             </form>
@@ -589,55 +606,53 @@ setEffDate(getDate)
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
               <div className="flex items-center justify-center">
                 <input
                   type="text"
                   name=""
-                  className="mb-2 h-8 w-48 md:w-full pl-2"
+                  className="mb-2 h-6 text-xs w-48 md:w-full pl-2"
                 />
               </div>
             </form>
             <form
-              action=""
-              className=""
               onSubmit={(e) => {
                 e.preventDefault();
               }}
@@ -647,7 +662,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="UM"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -656,7 +671,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="BM"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -665,7 +680,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="AGM"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -674,7 +689,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="DGM"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -683,7 +698,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="GM"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2 "
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2 "
                   />
                 </Link>
               </div>
@@ -692,7 +707,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="ED"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -701,7 +716,7 @@ setEffDate(getDate)
                   <input
                     type="submit"
                     value="D"
-                    className="mb-2 bg-white font-bold cursor-pointer h-8 w-24 pl-2"
+                    className="mb-2 bg-white font-bold cursor-pointer h-6 text-xs w-16 pl-2"
                   />
                 </Link>
               </div>
@@ -715,15 +730,15 @@ setEffDate(getDate)
               name=""
               value={moData?.EXPR}
               onChange={(e) => setExpr(e.target.value)}
-              rows="4"
+              rows="3"
               className="mb-2 w-full pl-2 font-bold"
             />
           </div>
           <div className="text-center mt-8">
-            <button className="bg-slate-200 py-2 w-52 text-gray-600 font-bold shadow-md">
+            <button className="bg-slate-200 h-8 w-52 text-gray-600 font-bold shadow-md">
               Educational Qualification
             </button>
-            <button className="bg-slate-200 py-2 w-52 text-gray-600 font-bold ml-1 shadow-md">
+            <button className="bg-slate-200 h-8 w-52 text-gray-600 font-bold ml-1 shadow-md">
               Attachment
             </button>
           </div>
@@ -733,25 +748,25 @@ setEffDate(getDate)
       <div className="bg-sky-400 py-2">
         <div className="flex flex-col md:flex-row justify-center cursor-pointer gap-1">
           <p
-            className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-40 text-center h-8 text-xl  `}
             onClick={handleSave}
           >
             Save
           </p>
           <p
-            className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-40 text-center h-8 text-xl  `}
           >
             Delete
           </p>
           <p
-            className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl   `}
+            className={`bg-white text-black font-bold w-40 text-center h-8 text-xl   `}
             onClick={handleClear}
           >
             Clear
           </p>
           <Link to="/">
             <p
-              className={`bg-white text-black font-bold w-60 text-center py-2 px-6 text-xl `}
+              className={`bg-white text-black font-bold w-40 text-center h-8 text-xl `}
             >
               Exit
             </p>

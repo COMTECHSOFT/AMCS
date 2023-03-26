@@ -1,11 +1,13 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 
 const BranchWSR = () => {
   const componentRef = useRef();
   const location = useLocation();
-  console.log(location?.state?.formDate);
+  console.log(location);
+  const getData = location?.state?.bwsr;
+  console.log(location?.state?.datePassByLink);
 
   const tableStyles = {
     style: {
@@ -13,6 +15,7 @@ const BranchWSR = () => {
       borderCollapse: "collapse",
     },
   };
+
   return (
     <div>
       <ReactToPrint
@@ -33,13 +36,16 @@ const BranchWSR = () => {
               </p>
               <p className="text-center">Branch Wise Business Summary Report</p>
               <p className="text-center">
-                MR Date : {location?.state?.fromDate} To{" "}
-                {location?.state?.toDate}
+                MR Date : {location?.state?.datePassByLink?.fromDate} To{" "}
+                {location?.state?.datePassByLink?.toDate}
               </p>
             </div>
           </div>
           <div className="px-4 ">
-            <h1 className=" mb-1 p-1 font-bold">Branch Code & Name:</h1>
+            <h1 className=" mb-1 p-1 font-bold">
+              Branch Code & Name: {getData[0]?.OFF_CODE} &{" "}
+              {getData[0]?.OFF_NAME}
+            </h1>
           </div>
         </div>
         <div className="px-4 ">
@@ -48,21 +54,28 @@ const BranchWSR = () => {
               <td style={tableStyles.style}>Sl. No.</td>
               <td style={tableStyles.style}>Plan NO.</td>
               <td style={tableStyles.style}>Name of Plan</td>
+              <td style={tableStyles.style}>New Collection</td>
+              <td style={tableStyles.style}>Renewal Collection</td>
               <td style={tableStyles.style}>Total Amount</td>
             </tr>
-            {location?.state?.commissionData?.map((data, index) => {
+            {getData?.map((data, index) => {
               return (
                 <tr>
                   <td style={tableStyles.style}>{index + 1}</td>
-                  <td style={tableStyles.style}>{data.CODE}</td>
-                  <td style={tableStyles.style}> {data.NEW_PRM}</td>
-                  <td style={tableStyles.style}> {data.NEW_COMM}</td>
+                  <td style={tableStyles.style}>{data.PLAN}</td>
+                  <td style={tableStyles.style}> {data.PLAN_NAME}</td>
+                  <td style={tableStyles.style}> {data.NEW_BUS}</td>
+                  <td style={tableStyles.style}> {data.OTH_BUS}</td>
+                  <td style={tableStyles.style}>
+                    {" "}
+                    {+data.NEW_BUS + +data.OTH_BUS}
+                  </td>
                 </tr>
               );
             })}
             <tr>
               <td
-                colSpan="3"
+                colSpan="5"
                 style={tableStyles.style}
                 className="text-right pr-2"
               >

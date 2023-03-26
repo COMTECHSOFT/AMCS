@@ -27,36 +27,41 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      <div className="bg-slate- flex-1 justify-center items-center flex">
+    <div className=" h-screen p-12 bg-indigo-50">
+      <div className="shadow-xl bg-slate-50 flex flex-col md:flex-row rounded">
+      <div className=" p-8 flex-1 justify-center items-center flex">
         <img
-          className=" md:h-[300px] "
-          src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png"
+          className=""
+          // src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png"
+          src="https://lh3.googleusercontent.com/p/AF1QipPgKvyVYsnl_ilL0-LrxZPSfnE4fDCIKUgbrOwM=s680-w680-h510"
         />
       </div>
-      <div className="bg-white flex-1 justify-center items-center flex">
-        <form className="bg-slate-50 h-[80vh] w-[80%] flex flex-col justify-center p-6 rounded-lg shadow-md">
+      <div className="bg-white flex-1 justify-center items-center flex flex-col">
+        <img width={200} src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png" />
+        <h1 className="text-gray-600 font-bold my-8">Welcome to AMANA Group</h1>
+        <form className="  w-[80%] flex flex-col justify-center p-6 ">
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-500 font-bold mb-2"
             >
-              Username
+              
             </label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder='Username'
+              className="border-b-2 appearance-none rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-500 font-bold mb-2"
             >
-              Password
+              
             </label>
             <div>
               <input
@@ -64,7 +69,8 @@ const Login = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder='password'
+                className="border-b-2 appearance-none rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
           </div>
@@ -99,6 +105,7 @@ const Login = () => {
             </div>
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

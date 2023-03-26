@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const BranchWiseBussiReport = () => {
@@ -7,7 +7,7 @@ const BranchWiseBussiReport = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  const dataPassByLink = { fromDate, toDate };
+  const datePassByLink = { fromDate, toDate };
 
   const handleFromDate = (e) => {
     const selectDate = e.target.value;
@@ -29,19 +29,47 @@ const BranchWiseBussiReport = () => {
   };
 
   const handleReset = () => {
-    setBrCode("");
-    setBrName("");
+    window.location.reload();
   };
+
+  const [offCode, steOffCode] = useState([]);
+  useEffect(() => {
+    fetch(`http://192.168.31.94/api/agency_details.php?agency_code=${brCode}`)
+      .then((res) => res.json())
+      .then((data) => steOffCode(data?.agency_details));
+  }, [brCode]);
+
+  const [bwsr, setBwsr] = useState([]);
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/b_summery.php?FROM_DATE=${fromDate}&&TO_DATE=${toDate}&&OFF_CODE=${brCode}`
+    )
+      .then((res) => res.json())
+      .then((data) => setBwsr(data.Branch_summery));
+  }, [fromDate, toDate, brCode]);
+
+  const [bwmrd, setBwmrd] = useState([]);
+  useEffect(() => {
+    fetch(
+      // `http://192.168.31.94/api/b_summery.php?FROM_DATE=${fromDate}&&TO_DATE=${toDate}&&OFF_CODE=${brCode}`
+      `http://192.168.31.94/api/mr_details_report.php?FROM_DATE=${fromDate}&&TO_DATE=${toDate}&&OFF_CODE=${brCode}`
+    )
+      .then((res) => res.json())
+      .then((data) => setBwmrd(data.MR_Details));
+  }, [fromDate, toDate, brCode]);
+
+  const dataPassForBwsr = { datePassByLink, bwsr };
+  const dataPassForBwmrd = { datePassByLink, bwmrd, offCode };
   return (
     <div className="bg-teal-500 p-6 ">
       <div className="w-[1000px] m-auto border-4 border-white">
-        <h1 className="text-center text-3xl font-bold py-10 border-b-4 border-white">
+        <h1 className="text-center text-xl font-bold py-6 border-b-4 border-white">
           BRANCH WISE BUSINESS REPORT
         </h1>
         <div>
           <form
             action=""
-            className="col-span-5 gap-y-12 grid px-6 w-[920px] m-auto py-10"
+            className="col-span-5 gap-y-6 grid px-6 w-[920px] m-auto py-10"
           >
             <div className="flex items-center justify-center">
               <label
@@ -59,9 +87,10 @@ const BranchWiseBussiReport = () => {
                 />
                 <input
                   type="text"
-                  value={brName}
+                  value={offCode[0]?.AGENCY_NAME}
                   onChange={(e) => setBrName(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  className="mb-2 h-8 w-full pl-2 font-bold bg-white"
+                  disabled
                 />
               </div>
             </div>
@@ -93,43 +122,43 @@ const BranchWiseBussiReport = () => {
             </div>
           </form>
         </div>
-        <div className="justify-center gap-x-1 py-12 border-t-4 border-white flex flex-col items-center gap-y-1">
+        <div className="justify-center py-8 border-t-4 border-white flex flex-col items-center gap-y-2">
           <Link
             to="/branchWiseSummReport"
-            state={dataPassByLink}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            state={dataPassForBwsr}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>Branch Wise Summary Report</button>
           </Link>
           <Link
             to="/branchWiseDetReport"
-            state={dataPassByLink}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            state={datePassByLink}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>Branch Wise Details Report</button>
           </Link>
           <Link
             to="/braWisePlanCodeWiseSummReport"
-            state={dataPassByLink}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            state={datePassByLink}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>Branch Wise Plan Code Wise Summary Report</button>
           </Link>
           <Link
             to="/braWisePlanCodeWiseDetReport"
-            state={dataPassByLink}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            state={datePassByLink}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>Branch Wise Plan Code Wise Details Report</button>
           </Link>
           <Link
             to="/braWiseMRDetReport"
-            state={dataPassByLink}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            state={dataPassForBwmrd}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>Branch Wise MR Details Report</button>
@@ -138,13 +167,13 @@ const BranchWiseBussiReport = () => {
             // onClick={() => window.location.reload()}
             type="button"
             onClick={handleReset}
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             CLEAR
           </button>
           <Link
             to="/"
-            className="bg-white shadow w-[450px] text-center  py-2 text-xl font-bold shadow-gray-600"
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
           >
             {" "}
             <button>EXIT</button>

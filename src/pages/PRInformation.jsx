@@ -20,7 +20,6 @@ const PRInformation = () => {
   }, [value]);
 
   const [installNumber, setInstallNumber] = useState("");
-  console.log(installNumber);
 
   const [detailsByInst, setDetailsByInst] = useState([]);
   const findDetailsByInst = detailsByInst?.find((data) => data);
@@ -87,6 +86,16 @@ const PRInformation = () => {
         setAgencyData(data.agency_details);
       });
   }, [proposalInfo?.BR_CODE]);
+
+  const handle_PR_DATE = (e) => {
+    const selectDate = e.target.value;
+    let date = new Date(selectDate);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let getDate = day + "-" + month + "-" + year;
+    setPrDate(getDate);
+  };
 
   // save new data start
   const [prNo, setPrNo] = useState("");
@@ -164,6 +173,24 @@ const PRInformation = () => {
     e.preventDefault();
   };
 
+  const [nextDateTriggerOfComm, setNextDateTriggerOfComm] = useState([]);
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/next_pay.php?PAYMODE=${proposalInfo?.INSTMODE}&&DATE=${allData?.PR_DATE}&&INST_NO=1`
+    )
+      .then((res) => res.json())
+      .then((data) => setNextDateTriggerOfComm(data?.Next_pay_date));
+  }, [proposalInfo?.INSTMODE, allData?.PR_DATE]);
+
+  const [nextDateTrigger, setNextDateTrigger] = useState([]);
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/next_pay.php?PAYMODE=${proposalInfo?.INSTMODE}&&DATE=${findDetailsByInst?.PR_DATE}&&INST_NO=1`
+    )
+      .then((res) => res.json())
+      .then((data) => setNextDateTrigger(data?.Next_pay_date));
+  }, [proposalInfo?.INSTMODE, findDetailsByInst?.PR_DATE]);
+
   const modifyAllDatas = { proposalInfo, allData, instNO };
 
   const navigate = useNavigate();
@@ -174,14 +201,14 @@ const PRInformation = () => {
   return (
     <div>
       <nav className="bg-purple-900 text-center py-2">
-        <h1 className="text-pink-300 text-2xl lg:px-[450px] font-bold uppercase">
+        <h1 className="text-pink-300 text-2xl font-bold uppercase">
           AMANA Group <br /> PR Entry Information
         </h1>
       </nav>
 
-      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-12 border-y-2">
-        <form onSubmit={handleSubmit} action="" className="col-span-5 px-6">
-          <div className="mb-4 flex justify-center gap-2 items-center ">
+      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-12 gap-x-8 border-y-2">
+        <form onSubmit={handleSubmit} action="" className="col-span-5">
+          <div className="mb-2 flex justify-center gap-2 items-center ">
             <label
               htmlFor="membershipNo"
               className="block text-gray-700 w-60 md:w-48 font-bold"
@@ -191,11 +218,10 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
+              className="w-full border h-6 text-xs border-gray-400 p-2 font-bold"
               onChange={(e) => {
                 setValue(e.target.value);
               }}
-              className="w-full border border-gray-400 p-2 font-bold"
             />
             {/* <input
               type="submit"
@@ -203,7 +229,7 @@ const PRInformation = () => {
               value="submit"
             /> */}
           </div>
-          <div className="mb-4 flex justify-center gap-2 items-center ">
+          <div className="mb-2 flex justify-center gap-2 items-center ">
             <label
               htmlFor="membershipNo"
               className="block text-gray-700 w-60 md:w-48 font-bold"
@@ -213,12 +239,11 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
+              className="w-full border h-6 text-xs border-gray-400 p-2 font-bold"
               value={proposalInfo?.PROPOSER}
-              className="w-full border border-gray-400 p-2 font-bold"
             />
           </div>
-          <div className="mb-4 flex justify-center gap-2 items-center ">
+          <div className="mb-2 flex justify-center gap-2 items-center ">
             <label
               htmlFor="membershipNo"
               className="block text-gray-700 w-60 md:w-48 font-bold"
@@ -228,45 +253,42 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              name="accountNo"
+              className="w-full border h-6 text-xs border-gray-400 p-2 font-bold"
               value={proposalInfo?.ADD4}
-              className="w-full border border-gray-400 p-2 font-bold"
             />
           </div>
         </form>
         <div className="col-span-7 flex flex-col md:flex-row gap-4">
           <form action="" className="">
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-56">
+              <label htmlFor="" className="mx-2 font-bold w-72">
                 Branch Code
               </label>
               <input
                 type="text"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 value={allAgencyData?.AGENCY_CODE}
                 // onChange={(e) => setAgencyCode(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-56">
+              <label htmlFor="" className="mx-2 font-bold w-72">
                 District Code
               </label>
               <input
                 type="text"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 value={allAgencyData?.SUB_ZONE_CODE}
-                // onChange={(e) => setSubZoneCode(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
-              <label htmlFor="" className="mx-2 font-bold w-56">
+              <label htmlFor="" className="mx-2 font-bold w-72">
                 Head office Code
               </label>
               <input
                 type="text"
+                className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 value={allAgencyData?.Z_CODE}
-                // onChange={(e) => setZoneCode(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
               />
             </div>
           </form>
@@ -276,7 +298,7 @@ const PRInformation = () => {
                 type="text"
                 value={allAgencyData?.AGENCY_NAME}
                 // onChange={(e) => setAgencyName(e.target.value)}
-                className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-48 md:w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -284,7 +306,7 @@ const PRInformation = () => {
                 type="text"
                 value={allAgencyData?.SUB_ZONE_NAME}
                 // onChange={(e) => setSubZoneName(e.target.value)}
-                className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-48 md:w-full pl-2 font-bold"
               />
             </div>
             <div className="flex items-center justify-center">
@@ -292,7 +314,7 @@ const PRInformation = () => {
                 type="text"
                 value={allAgencyData?.Z_NAME}
                 // onChange={(e) => setZoneName(e.target.value)}
-                className="mb-2 h-8 w-48 md:w-full pl-2 font-bold"
+                className="mb-2 h-6 text-xs w-48 md:w-full pl-2 font-bold"
               />
             </div>
           </form>
@@ -313,23 +335,32 @@ const PRInformation = () => {
                   : allData?.PR_NO
               }
               onChange={(e) => setPrNo(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
             />
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold w-40">
               PR Date
             </label>
-            <input
-              type="text"
-              value={
-                findDetailsByInst?.PR_DATE
-                  ? findDetailsByInst?.PR_DATE
-                  : allData?.PR_DATE
-              }
-              onChange={(e) => setPrDate(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
-            />
+            {findDetailsByInst?.PR_DATE ? (
+              <input
+                type="text"
+                className="mb-2 h-6 text-xs w-full text-center font-bold"
+                value={findDetailsByInst?.PR_DATE}
+              />
+            ) : allData?.PR_DATE ? (
+              <input
+                type="text"
+                className="mb-2 h-6 text-xs w-full text-center font-bold"
+                value={allData?.PR_DATE}
+              />
+            ) : (
+              <input
+                type="date"
+                onChange={handle_PR_DATE}
+                className="mb-2 h-6 text-xs w-full text-center font-bold"
+              />
+            )}
           </div>
 
           <div className="flex items-center justify-center">
@@ -338,9 +369,9 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={allData?.OR_DATE}
+              value={proposalInfo?.DATE_TIME}
               onChange={(e) => setEntryDate(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
             />
           </div>
         </form>
@@ -360,7 +391,7 @@ const PRInformation = () => {
                   : proposalInfo?.RATE
               }
               onChange={(e) => setPrAmt(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
             />
           </div>
           <div className="flex items-center justify-center">
@@ -368,7 +399,7 @@ const PRInformation = () => {
               Pay Mode
             </label>
             <select
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
               value={
                 findDetailsByInst?.PAY_MODE
                   ? findDetailsByInst?.PAY_MODE
@@ -377,7 +408,9 @@ const PRInformation = () => {
               onChange={(e) => setPayMode(e.target.value)}
             >
               <option>Select</option>
-              {allData?.PAY_MODE ? (
+              {findDetailsByInst?.PAY_MODE ? (
+                <option>{findDetailsByInst?.PAY_MODE}</option>
+              ) : allData?.PAY_MODE ? (
                 <option>{allData?.PAY_MODE}</option>
               ) : (
                 payModeSelect?.map((item, index) => (
@@ -400,7 +433,7 @@ const PRInformation = () => {
                   : proposalInfo?.INST_NO
               }
               onChange={(e) => setInstllNO(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
             />
           </div>
         </form>
@@ -418,7 +451,7 @@ const PRInformation = () => {
                   : allData?.P_INST
               }
               onChange={(e) => setPartial(e.target.value)}
-              className="mb-2 h-8 w-full text-center font-bold"
+              className="mb-2 h-6 text-xs w-full text-center font-bold"
             />
           </div>
           <div className="flex items-center justify-center">
@@ -429,7 +462,7 @@ const PRInformation = () => {
               type="text"
               value={allData?.COMM_YEAR}
               onChange={(e) => setCommYear(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold text-center"
+              className="mb-2 h-6 text-xs w-full pl-2 font-bold text-center"
             />
           </div>
           <div className="flex items-center justify-center">
@@ -444,7 +477,7 @@ const PRInformation = () => {
                   : allData?.ORNO
               }
               onChange={(e) => setRetypePrNo(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold text-center"
+              className="mb-2 h-6 text-xs w-full pl-2 font-bold text-center"
             />
           </div>
         </form>
@@ -454,7 +487,7 @@ const PRInformation = () => {
         <div className="col-span-7 p-6">
           <div className="flex flex-col md:flex-row">
             <div className="px-2">
-              <p className="font-bold text-center mb-2">Code</p>
+              <p className="font-bold text-center mb-2 md:ml-14">Code</p>
               <form action="">
                 {/* <div className="flex items-center">
                   <label htmlFor="" className="mx-2 w-12 font-bold">
@@ -484,7 +517,7 @@ const PRInformation = () => {
                     // value={allAgentInfo?.CODE}
                     value={allData?.A_CODE}
                     onChange={(e) => setSelectCommCode(e.target.value)}
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -496,7 +529,7 @@ const PRInformation = () => {
                     value={
                       allData?.MO_CODE ? allData?.MO_CODE : allAgentInfo?.A_MO
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -508,7 +541,7 @@ const PRInformation = () => {
                     value={
                       allData?.MM_CODE ? allData?.MM_CODE : allAgentInfo?.A_MM
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -520,7 +553,7 @@ const PRInformation = () => {
                     value={
                       allData?.BM_CODE ? allData?.BM_CODE : allAgentInfo?.A_BM
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -532,7 +565,7 @@ const PRInformation = () => {
                     value={
                       allData?.ZM_CODE ? allData?.ZM_CODE : allAgentInfo?.A_ZM
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -546,7 +579,7 @@ const PRInformation = () => {
                         ? allData?.AVP_CODE
                         : allAgentInfo?.A_AVP
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -558,7 +591,7 @@ const PRInformation = () => {
                     value={
                       allData?.JVPCODE ? allData?.JVPCODE : allAgentInfo?.JVP
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -570,7 +603,7 @@ const PRInformation = () => {
                     value={
                       allData?.VP_CODE ? allData?.VP_CODE : allAgentInfo?.A_VP
                     }
-                    className="mb-2 h-8 w-24 text-center font-bold"
+                    className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
                 </div>
               </form>
@@ -586,7 +619,7 @@ const PRInformation = () => {
                       value={
                         allData?.AG_NAME ? allData?.AG_NAME : allAgentInfo?.NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -597,7 +630,7 @@ const PRInformation = () => {
                           ? allData?.MO_NAME
                           : allAgentInfo?.MO_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -608,7 +641,7 @@ const PRInformation = () => {
                           ? allData?.MM_NAME
                           : allAgentInfo?.MM_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -619,7 +652,7 @@ const PRInformation = () => {
                           ? allData?.BM_NAME
                           : allAgentInfo?.BM_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -630,7 +663,7 @@ const PRInformation = () => {
                           ? allData?.ZM_NAME
                           : allAgentInfo?.ZM_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -641,7 +674,7 @@ const PRInformation = () => {
                           ? allData?.AVP_NAME
                           : allAgentInfo?.AVP_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -652,7 +685,7 @@ const PRInformation = () => {
                           ? allData?.JVPNAME
                           : allAgentInfo?.JVP_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                   <div className="">
@@ -663,7 +696,7 @@ const PRInformation = () => {
                           ? allData?.VP_NAME
                           : allAgentInfo?.VP_NAME
                       }
-                      className="mb-2 h-8 w-60 pl-2 font-bold"
+                      className="mb-2 h-6 text-xs w-48 pl-2 font-bold"
                     />
                   </div>
                 </form>
@@ -672,28 +705,28 @@ const PRInformation = () => {
                 <p className="font-bold text-center mb-2">Rate</p>
                 <form action="">
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                 </form>
               </div>
@@ -701,57 +734,57 @@ const PRInformation = () => {
                 <p className="font-bold text-center mb-2">Comm.</p>
                 <form action="">
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                 </form>
               </div>
               <div className="mr-2">
-                <p className="font-bold text-center mb-2">Final Comm.</p>
+                <p className="font-bold w-24 text-center mb-2">Final Comm.</p>
                 <form action="">
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                   <div className="">
-                    <input type="text" className="mb-2 h-8 w-24 pl-1" />
+                    <input type="text" className="mb-2 h-6 text-xs w-16 pl-1" />
                   </div>
                 </form>
               </div>
@@ -759,7 +792,7 @@ const PRInformation = () => {
           </div>
         </div>
 
-        <div className="col-span-5 p-6">
+        <div className="col-span-5 p-">
           <div className="flex flex-col md:flex-row">
             <div className="px-2">
               <form action="">
@@ -770,7 +803,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.RISKDATE}
-                    className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -780,18 +813,28 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.LAST_INST_DATE}
-                    className="mb-2 h-8 w-32 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
                   <label htmlFor="" className="mx-2 w-32 font-bold">
                     Next Inst. Date
                   </label>
-                  <input
-                    type="text"
-                    value={proposalInfo?.RV_DT1}
-                    className="mb-2 h-8 w-32 text-center font-bold"
-                  />
+                  {nextDateTrigger[0]?.NEXTPAY ? (
+                    <input
+                      type="text"
+                      className="mb-2 text-xs h-6 w-28 text-center font-bold"
+                      // value={proposalInfo?.RV_DT1}
+                      value={nextDateTrigger[0]?.NEXTPAY}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="mb-2 text-xs h-6 w-28 text-center font-bold"
+                      // value={proposalInfo?.RV_DT1}
+                      value={nextDateTriggerOfComm[0]?.NEXTPAY}
+                    />
+                  )}
                 </div>
                 <div className="flex items-center">
                   <label htmlFor="" className="mx-2 w-32 font-bold">
@@ -800,7 +843,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.MATURITY}
-                    className="mb-2 h-8 w-32 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -810,7 +853,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.TABLEID}
-                    className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -820,7 +863,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.TERM}
-                    className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -830,7 +873,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.RATE}
-                    className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
                 <div className="flex items-center">
@@ -840,16 +883,16 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={proposalInfo?.SUS_AMT}
-                    className="mb-2 h-8 w-32 pl-1 text-center font-bold"
+                    className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
               </form>
             </div>
 
-            <div className="flex gap-2 px-2">
+            <div className="flex">
               <div className="mr-2">
                 <p className="font-bold mb-2">Given Inst.</p>
-                <form action="" className="overflow-auto h-72">
+                <form action="" className="flex flex-col">
                   {/* <select
                     className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                     onChange={(e) => setInstallNumber(e.target.value)}
@@ -867,20 +910,20 @@ const PRInformation = () => {
                       type="text"
                       value={instList?.INST_NO}
                       onFocus={(e) => setInstallNumber(e.target.value)}
-                      className="mb-2 h-8 w-32 pl-1 text-center font-bold "
+                      className="mb-2 text-xs h-6 w-16 pl-1 text-center font-bold"
                     />
                   ))}
                 </form>
               </div>
               <div className="mr-2">
-                <p className="font-bold text-center mb-2">Part Inst.</p>
+                <p className="font-bold  mb-2">Part Inst.</p>
                 <form action="">
                   {detailsByInst?.map((pInst, index) => (
                     <div className="">
                       <input
                         type="text"
                         value={pInst?.P_INST}
-                        className="mb-2 h-8 w-24 pl-1 font-bold text-center"
+                        className="mb-2 text-xs h-6 w-16 pl-1 font-bold text-center"
                       />
                     </div>
                   ))}
@@ -895,9 +938,8 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
+              className="mb-2 text-xs h-6 pl-1 text-center font-bold"
               value={proposalInfo?.INSTMODE}
-              // onChange={(e) => setInstallMode(e.target.value)}
-              className="mb-2 h-8 w-[352px] pl-1 text-center font-bold"
             />
           </div>
         </div>
@@ -905,7 +947,7 @@ const PRInformation = () => {
       <div className="bg-cyan-800 py-2 mt-12">
         <div className="flex flex-col md:flex-row justify-center cursor-pointer gap-1">
           <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-36 text-center h-8 text-xl`}
             onClick={handleSave}
           >
             Save
@@ -913,25 +955,25 @@ const PRInformation = () => {
           <Link
             to="/modify"
             state={modifyAllDatas}
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-36 text-center h-8 text-xl`}
           >
             {" "}
             <p>New Inst</p>
           </Link>
           <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}
+            className={`bg-white text-black font-bold w-36 text-center h-8 text-xl`}
           >
             Delete
           </p>
           <p
-            className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl   `}
+            className={`bg-white text-black font-bold w-36 text-center h-8 text-xl`}
             onClick={() => window.location.reload()}
           >
             Clear
           </p>
           <Link to="/">
             <p
-              className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl `}
+              className={`bg-white text-black font-bold w-36 text-center h-8 text-xl`}
             >
               Exit
             </p>

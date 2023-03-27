@@ -317,7 +317,13 @@ const Forms = () => {
     };
     console.log(newSaveData);
     if (!value) {
-    alert('Please Give FDPS Value')
+      toast.error("Data not saved !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
     }else{
       const url = "http://192.168.31.94/api/insert.php";
       fetch(url, {

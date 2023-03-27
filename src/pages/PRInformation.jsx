@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PRInformation = () => {
   const todaysDate = `${new Date().getDate()}-${
@@ -157,16 +159,35 @@ const PRInformation = () => {
       ORNO: reTypePrNo,
     };
     console.log(newSaveData);
-    const url = "http://192.168.31.94/api/commission_insert.php";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newSaveData),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    if (prNo) {
+      const url = "http://192.168.31.94/api/commission_insert.php";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(newSaveData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+      toast.success("Data saved successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    } else {
+      toast.error("Data not saved!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -892,7 +913,7 @@ const PRInformation = () => {
             <div className="flex">
               <div className="mr-2">
                 <p className="font-bold mb-2">Given Inst.</p>
-                <form action="" className="flex flex-col">
+                <form action="" className="flex flex-col h-64 overflow-y-scroll">
                   {/* <select
                     className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                     onChange={(e) => setInstallNumber(e.target.value)}
@@ -910,7 +931,7 @@ const PRInformation = () => {
                       type="text"
                       value={instList?.INST_NO}
                       onFocus={(e) => setInstallNumber(e.target.value)}
-                      className="mb-2 text-xs h-6 w-16 pl-1 text-center font-bold"
+                      className="mb-2 text-xs py-1 w-16 pl-1 text-center font-bold"
                     />
                   ))}
                 </form>
@@ -981,6 +1002,7 @@ const PRInformation = () => {
         </div>
         <p className="text-white float-right mt-[-32px] mr-8">{todaysDate}</p>
       </div>
+      <ToastContainer />
     </div>
   );
 };

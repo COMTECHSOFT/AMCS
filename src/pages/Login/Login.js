@@ -27,19 +27,19 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
   return (
-    <div className=" h-screen p-12 bg-indigo-50">
-      <div className="shadow-xl bg-slate-50 flex flex-col md:flex-row rounded">
+    <div className=" h-screen flex bg-indigo-50">
+      <div className="shadow-xl bg-slate-50 flex flex-col md:flex-row rounded lg:w-[800px] m-auto">
       <div className=" p-8 flex-1 justify-center items-center flex">
         <img
-          className=""
+          className="w-[200px] lg:w-[400px]"
           // src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png"
           src="https://lh3.googleusercontent.com/p/AF1QipPgKvyVYsnl_ilL0-LrxZPSfnE4fDCIKUgbrOwM=s680-w680-h510"
         />
       </div>
       <div className="bg-white flex-1 justify-center items-center flex flex-col">
-        <img width={200} src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png" />
-        <h1 className="text-gray-600 font-bold my-8">Welcome to AMANA Group</h1>
-        <form className="  w-[80%] flex flex-col justify-center p-6 ">
+        <img className="w-[200px] pt-8" src="https://amanagroupbd.com/wp-content/uploads/2021/09/logo-1.png" />
+        <h1 className="text-gray-600 font-bold my-6">Welcome to AMANA Group</h1>
+        <form className="w-full lg:w-[72%] flex flex-col justify-center p-6 ">
           <div className="mb-4">
             <label
               htmlFor="username"

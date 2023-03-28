@@ -29,6 +29,18 @@ const BraWiseMRDetReport = () => {
       <ReactToPrint
         trigger={() => <h1 className="cursor-pointer absolute">Print</h1>}
         content={() => componentRef.current}
+        pageStyle="@page { size: A4;  margin: 1cm; } @media print { body { -webkit-print-color-adjust: exact; } }"
+        // pageStyle={`@page { size: A4; margin: 1cm; }
+        //               @media print {
+        //                 .page-number:before {
+        //                   content: "Page " counter(page) " of " counter(pages);
+        //                   position: absolute;
+        //                   bottom: 0;
+        //                   width: 100%;
+        //                   text-align: center;
+        //                   font-size: 10pt;
+        //                 }
+        //               }`}
       />
       <div ref={componentRef}>
         <div>
@@ -63,12 +75,20 @@ const BraWiseMRDetReport = () => {
             <tr>
               <td style={tableStyles.style}>Sl. No.</td>
               <td style={tableStyles.style}>Account NO.</td>
-              <td style={tableStyles.style}>Membership No.</td>
-              <td style={tableStyles.style}>Account Holder Name</td>
-              <td style={tableStyles.style}>Plan Name</td>
+              {/* <td style={tableStyles.style}>Membership No.</td> */}
+              <td style={tableStyles.style} className="">
+                Account Holder Name
+              </td>
+              <td style={tableStyles.style} className="w-28">
+                Plan Name
+              </td>
               <td style={tableStyles.style}>MR No.</td>
-              <td style={tableStyles.style}>MR Date</td>
-              <td style={tableStyles.style}>Comm. Date</td>
+              <td style={tableStyles.style} className="w-20">
+                MR Date
+              </td>
+              <td style={tableStyles.style} className="w-20">
+                Comm. Date
+              </td>
               <td style={tableStyles.style}>MR Amount</td>
               <td style={tableStyles.style}>Install No.</td>
             </tr>
@@ -77,12 +97,15 @@ const BraWiseMRDetReport = () => {
                 <tr>
                   <td style={tableStyles.style}>{index + 1}</td>
                   <td style={tableStyles.style}>{data.FDPS_NO}</td>
-                  <td style={tableStyles.style}> {data.FDPS_NO}</td>
+                  {/* <td style={tableStyles.style}> {data.FDPS_NO}</td> */}
                   <td style={tableStyles.style} className="text-left pl-2">
                     {" "}
                     {data.ACC_HOL_NAME}
                   </td>
-                  <td style={tableStyles.style}> {data.PLAN_NAME}</td>
+                  <td style={tableStyles.style} className="w-28">
+                    {" "}
+                    {data.PLAN_NAME}
+                  </td>
                   <td style={tableStyles.style}> {data.PR_NO}</td>
                   <td style={tableStyles.style}> {data.PR_DATE}</td>
                   {/* <td style={tableStyles.style}> {hiddenDate(data.PR_DATE)}</td> */}
@@ -94,7 +117,7 @@ const BraWiseMRDetReport = () => {
             })}
             <tr>
               <td
-                colSpan="8"
+                colSpan="7"
                 style={tableStyles.style}
                 className="text-right pr-2"
               >

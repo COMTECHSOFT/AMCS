@@ -221,13 +221,13 @@ const PRInformation = () => {
   }
   return (
     <div>
-      <nav className="bg-purple-900 text-center py-2">
-        <h1 className="text-pink-300 text-2xl font-bold uppercase">
+      <nav className="bg-cyan-900 text-center py-2">
+        <h1 className="text-white text-xl font-bold uppercase">
           AMANA Group <br /> PR Entry Information
         </h1>
       </nav>
 
-      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-12 gap-x-8 border-y-2">
+      <div className="bg-slate-300 p-6 grid grid-cols-1 md:grid-cols-12 gap-x-8 border-y-2">
         <form onSubmit={handleSubmit} action="" className="col-span-5">
           <div className="mb-2 flex justify-center gap-2 items-center ">
             <label
@@ -342,7 +342,7 @@ const PRInformation = () => {
         </div>
       </div>
 
-      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-3 border-y-2">
+      <div className="bg-slate-300 p-6 grid grid-cols-1 md:grid-cols-3 border-y">
         <form action="" className=" px-6">
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold w-40">
@@ -420,7 +420,7 @@ const PRInformation = () => {
               Pay Mode
             </label>
             <select
-              className="mb-2 h-6 text-xs w-full text-center font-bold"
+              className="mb-2 h-6 text-xs bg-white w-full text-center font-bold"
               value={
                 findDetailsByInst?.PAY_MODE
                   ? findDetailsByInst?.PAY_MODE
@@ -504,7 +504,7 @@ const PRInformation = () => {
         </form>
       </div>
 
-      <div className="bg-sky-400 grid grid-cols-1 md:grid-cols-12 border-y-2">
+      <div className="bg-slate-300 grid grid-cols-1 md:grid-cols-12 border-y-2">
         <div className="col-span-7 p-6">
           <div className="flex flex-col md:flex-row">
             <div className="px-2">

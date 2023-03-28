@@ -132,6 +132,14 @@ const BranchWiseBussiReport = () => {
             <button>Branch Wise Summary Report</button>
           </Link>
           <Link
+            to="/branchWiseMRDetReport"
+            state={dataPassForBwmrd}
+            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
+          >
+            {" "}
+            <button>Branch Wise MR Details Report</button>
+          </Link>
+          <Link
             to="/branchWiseDetReport"
             state={datePassByLink}
             className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
@@ -155,14 +163,7 @@ const BranchWiseBussiReport = () => {
             {" "}
             <button>Branch Wise Plan Code Wise Details Report</button>
           </Link>
-          <Link
-            to="/braWiseMRDetReport"
-            state={dataPassForBwmrd}
-            className="bg-white shadow w-[450px] text-center py-1 font-bold shadow-gray-600"
-          >
-            {" "}
-            <button>Branch Wise MR Details Report</button>
-          </Link>
+
           <button
             // onClick={() => window.location.reload()}
             type="button"

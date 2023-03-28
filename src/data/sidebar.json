@@ -12,6 +12,10 @@
     "path": "/moopeninfo"
   },
   {
+    "title": "Commission Process",
+    "path": "/mocommprocess"
+  },
+  {
     "title": "Commission Bill",
     "path": "/mocommbill"
   },

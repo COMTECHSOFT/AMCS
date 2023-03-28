@@ -16,6 +16,17 @@ const BranchWSR = () => {
     },
   };
 
+  const allNewAmount = (columnKey) => {
+    return location?.state?.bwsr?.reduce((total, row) => {
+      return total + parseFloat(row[columnKey]);
+    }, 0);
+  };
+  const allRenCollection = (columnKey) => {
+    return location?.state?.bwsr?.reduce((total, row) => {
+      return total + parseFloat(row[columnKey]);
+    }, 0);
+  };
+
   return (
     <div>
       <ReactToPrint
@@ -81,7 +92,9 @@ const BranchWSR = () => {
               >
                 Branch Wise Total:
               </td>
-              <td style={tableStyles.style}></td>
+              <td style={tableStyles.style}>
+                {allNewAmount("NEW_BUS") + allRenCollection("OTH_BUS")}
+              </td>
             </tr>
           </table>
         </div>

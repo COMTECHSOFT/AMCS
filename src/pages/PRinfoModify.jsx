@@ -660,7 +660,7 @@ const PRinfoModify = () => {
             <div className="flex">
               <div className="mr-2">
                 <p className="font-bold mb-2">Given Inst.</p>
-                <form action="" className="flex flex-col">
+                <form action="" className="flex flex-col h-64 overflow-y-scroll">
                   {/* <select className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline">
                     <option>Inst No.</option>
                     {instNoData?.map((instList, index) => (
@@ -674,7 +674,7 @@ const PRinfoModify = () => {
                       key={index}
                       type="text"
                       value={instList?.INST_NO}
-                      className="mb-2 h-6 text-xs w-16 pl-1 text-center font-bold"
+                      className="mb-2 py-1 text-xs w-16 pl-1 text-center font-bold"
                     />
                   ))}
                 </form>

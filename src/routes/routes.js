@@ -26,6 +26,7 @@ import EDCommissionBill from "../pages/CommissionBill/EDCommissionBill";
 import GMCommissionBill from "../pages/CommissionBill/GMCommissionBill";
 import MOCommissionBill from "../pages/CommissionBill/MOCommissionBill";
 import UMCommissionBill from "../pages/CommissionBill/UMCommissionBill";
+import CommissionProcess from "../pages/CommProcess/CommissionProcess";
 import Forms from "../pages/Forms";
 import Home from "../pages/Home/Home";
 import Welcome from "../pages/Home/Welcome";
@@ -113,6 +114,10 @@ const routes = createBrowserRouter([
         element: <MOCommissionBill />,
       },
       {
+        path: "/mocommprocess",
+        element: <CommissionProcess />,
+      },
+      {
         path: "/umcommbill",
         element: <UMCommissionBill />,
       },
@@ -165,7 +170,7 @@ const routes = createBrowserRouter([
         element: <BraWisePlanCodeWiseDetReport />,
       },
       {
-        path: "/braWiseMRDetReport",
+        path: "/branchWiseMRDetReport",
         element: <BraWiseMRDetReport />,
       },
       {

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CommissionProcess = () => {
   const todaysDate = `${new Date().getDate()}-${
@@ -29,7 +31,59 @@ const CommissionProcess = () => {
   const [months, setMonths] = useState();
   const [year, setYear] = useState();
   const [design, setDesign] = useState();
-  const [bill, setBill] = useState();
+
+  const mon =
+    months === "january"
+      ? "01"
+      : months === "february"
+      ? "02"
+      : months === "march"
+      ? "03"
+      : months === "april"
+      ? "04"
+      : months === "may"
+      ? "05"
+      : months === "june"
+      ? "06"
+      : months === "july"
+      ? "07"
+      : months === "august"
+      ? "08"
+      : months === "september"
+      ? "09"
+      : months === "october"
+      ? "10"
+      : months === "november"
+      ? "11"
+      : months === "december"
+      ? "12"
+      : "";
+
+  const handleCommissionProcess = () => {
+    const commProcess = year + mon;
+    const passCommProcess = {
+      MYEAR: commProcess,
+    };
+    const url = "http://192.168.31.94/api/all_submit.php";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(passCommProcess),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+    // toast.success("Process Completed successfully!", {
+    //   position: toast.POSITION.TOP_CENTER,
+    //   autoClose: 2000,
+    //   hideProgressBar: true,
+    //   closeOnClick: true,
+    //   pauseOnHover: false,
+    // });
+  };
 
   // const viewReportdata = () => {
   //   console.log(brCode, brName, months, year, bill);
@@ -164,35 +218,34 @@ const CommissionProcess = () => {
                     value={
                       year && months
                         ? `${year}${
-                            months == "january"
+                            months === "january"
                               ? "01"
-                              : months == "february"
+                              : months === "february"
                               ? "02"
-                              : months == "march"
+                              : months === "march"
                               ? "03"
-                              : months == "april"
+                              : months === "april"
                               ? "04"
-                              : months == "may"
+                              : months === "may"
                               ? "05"
-                              : months == "june"
+                              : months === "june"
                               ? "06"
-                              : months == "july"
+                              : months === "july"
                               ? "07"
-                              : months == "august"
+                              : months === "august"
                               ? "08"
-                              : months == "september"
+                              : months === "september"
                               ? "09"
-                              : months == "october"
+                              : months === "october"
                               ? "10"
-                              : months == "november"
+                              : months === "november"
                               ? "11"
-                              : months == "december"
+                              : months === "december"
                               ? "12"
                               : ""
                           }`
                         : ""
                     }
-                    onChange={(e) => setBill(e.target.value)}
                     className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                   />
                 </div>
@@ -201,15 +254,14 @@ const CommissionProcess = () => {
           </div>
           <div className="border-t-4 bg-cyan-600 py-8 border-white">
             <div className="flex gap-2 justify-center">
-              <Link to={`/commReport `} state={""}>
-                {" "}
-                <button
-                  // onClick={viewReportdata}
-                  className="bg-white w-48  mb-[-40px] h-8 font-bold shadow"
-                >
-                  View Report
-                </button>
-              </Link>
+              {/* <Link to={`/commReport `} state={""}> */}{" "}
+              <button
+                onClick={handleCommissionProcess}
+                className="bg-white w-48  mb-[-40px] h-8 font-bold shadow"
+              >
+                Commission Process
+              </button>
+              {/* </Link> */}
               <Link to="/">
                 {" "}
                 <button className="bg-white w-48 mb-[-40px] h-8 font-bold shadow">
@@ -223,6 +275,7 @@ const CommissionProcess = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

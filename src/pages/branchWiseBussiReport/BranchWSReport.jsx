@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 const BranchWSR = () => {
   const componentRef = useRef();
@@ -30,8 +31,20 @@ const BranchWSR = () => {
   return (
     <div>
       <ReactToPrint
-        trigger={() => <h1 className="cursor-pointer absolute">Print</h1>}
+        trigger={() => (
+          <h1 className="cursor-pointer absolute bg-cyan-900 text-white font-bold rounded px-1">
+            Print
+          </h1>
+        )}
         content={() => componentRef.current}
+      />
+      <ReactHTMLTableToExcel
+        id="test-table-xls-button"
+        className="download-table-xls-button ml-12 absolute bg-cyan-900 rounded px-1 text-white font-bold"
+        table="table-to-xls"
+        filename="tablexls"
+        sheet="tablexls"
+        buttonText="Download Excel Sheet"
       />
       <div ref={componentRef}>
         <div>
@@ -60,7 +73,11 @@ const BranchWSR = () => {
           </div>
         </div>
         <div className="px-4 ">
-          <table style={tableStyles.style} className="w-full text-center">
+          <table
+            style={tableStyles.style}
+            className="w-full text-center"
+            id="table-to-xls"
+          >
             <tr>
               <td style={tableStyles.style}>Sl. No.</td>
               <td style={tableStyles.style}>Plan NO.</td>

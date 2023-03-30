@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 const BraWiseMRDetReport = () => {
   const componentRef = useRef();
@@ -27,7 +28,11 @@ const BraWiseMRDetReport = () => {
   return (
     <div>
       <ReactToPrint
-        trigger={() => <h1 className="cursor-pointer absolute">Print</h1>}
+        trigger={() => (
+          <h1 className="cursor-pointer absolute bg-cyan-900 text-white font-bold rounded px-1">
+            Print
+          </h1>
+        )}
         content={() => componentRef.current}
         pageStyle="@page { size: A4;  margin: 1cm; } @media print { body { -webkit-print-color-adjust: exact; } }"
         // pageStyle={`@page { size: A4; margin: 1cm; }
@@ -41,6 +46,14 @@ const BraWiseMRDetReport = () => {
         //                   font-size: 10pt;
         //                 }
         //               }`}
+      />
+      <ReactHTMLTableToExcel
+        id="test-table-xls-button"
+        className="download-table-xls-button ml-12 absolute bg-cyan-900 rounded px-1 text-white font-bold"
+        table="table-to-xls"
+        filename="tablexls"
+        sheet="tablexls"
+        buttonText="Download Excel Sheet"
       />
       <div ref={componentRef}>
         <div>
@@ -71,6 +84,7 @@ const BraWiseMRDetReport = () => {
           <table
             style={tableStyles.style}
             className="w-full text-center text-xs"
+            id="table-to-xls"
           >
             <tr>
               <td style={tableStyles.style}>Sl. No.</td>

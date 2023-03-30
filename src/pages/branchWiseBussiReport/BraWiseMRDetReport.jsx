@@ -29,8 +29,8 @@ const BraWiseMRDetReport = () => {
     <div>
       <ReactToPrint
         trigger={() => (
-          <h1 className="cursor-pointer absolute bg-cyan-900 text-white font-bold rounded px-1">
-            Print
+          <h1 className="cursor-pointer absolute bg-cyan-900 text-white font-bold rounded px-2">
+            pdf
           </h1>
         )}
         content={() => componentRef.current}
@@ -53,7 +53,7 @@ const BraWiseMRDetReport = () => {
         table="table-to-xls"
         filename="tablexls"
         sheet="tablexls"
-        buttonText="Download Excel Sheet"
+        buttonText="Excel Sheet"
       />
       <div ref={componentRef}>
         <div>

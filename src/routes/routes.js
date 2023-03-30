@@ -27,6 +27,7 @@ import GMCommissionBill from "../pages/CommissionBill/GMCommissionBill";
 import MOCommissionBill from "../pages/CommissionBill/MOCommissionBill";
 import UMCommissionBill from "../pages/CommissionBill/UMCommissionBill";
 import CommissionProcess from "../pages/CommProcess/CommissionProcess";
+import DepositReport from "../pages/DepositReport.jsx";
 import Forms from "../pages/Forms";
 import Home from "../pages/Home/Home";
 import Welcome from "../pages/Home/Welcome";
@@ -104,6 +105,10 @@ const routes = createBrowserRouter([
       {
         path: "/dInfo",
         element: <DirectorInfo />,
+      },
+      {
+        path: "/depositreport",
+        element: <DepositReport />,
       },
       {
         path: "/commissionBill",

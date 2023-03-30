@@ -12,6 +12,10 @@
     "path": "/moopeninfo"
   },
   {
+    "title": "Deposit Statement",
+    "path": "/depositreport"
+  },
+  {
     "title": "Commission Process",
     "path": "/mocommprocess"
   },

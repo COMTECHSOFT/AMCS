@@ -265,6 +265,17 @@ const Forms = () => {
   const [entriesDate, setEntriesDate] = useState("");
   const [accountStatus, setAccountStatus] = useState("");
 
+let totalDepositAmount;
+let instlMAmount;
+if(selectPayMode==='Monthly'){
+
+   totalDepositAmount=(term*12)*amount;
+   instlMAmount=amount;
+}else if(selectPayMode==='Quarterly'){
+  totalDepositAmount=(term*3)*amount;
+   instlMAmount=amount;
+}
+
   // save new data end
 
   const handleSave = () => {
@@ -280,7 +291,7 @@ const Forms = () => {
       G_NAME: gName,
       OCCUPATION: occp,
       OC_NAME: occpName,
-      NAT: nat,
+      NAT: 'Bangladeshi',
       NAT_ID: natId,
       RV1: mobNo,
       TELEPHONE: tele,
@@ -296,9 +307,9 @@ const Forms = () => {
       RATE: amount,
       RV_DT1: nextPremDate,
       MATURITY: maturity,
-      LF_PRM: instlAmt,
-      INST_NO: instlNo,
-      SUM_INS: totalDepAmt,
+      LF_PRM: amount,
+      INST_NO: instlNo?instlNo:'1',
+      SUM_INS: totalDepositAmount,
       NOMINEE_NAME1: nomName1,
       NOMINEE_NAME2: nomName2,
       NOMINEE_NAME3: nomName3,
@@ -321,7 +332,7 @@ const Forms = () => {
       SC_CODE: branchData[0]?.SUB_ZONE_CODE,
       ENTRY_ZONE_CODE: branchData[0]?.Z_CODE,
       ADD4: accountStatus,
-      DATE_TIME: entriesDate,
+      DATE_TIME: entryDate,
     };
     console.log(newSaveData);
     if (!value) {
@@ -362,6 +373,7 @@ const Forms = () => {
       });
     }
   };
+
 
   const handleUpdate = () => {
     const updateData = {
@@ -488,7 +500,7 @@ const Forms = () => {
           </label>
           <input
             type="text"
-            defaultValue={formDatas?.FDPS_NO}
+            defaultValue={value?value: formDatas?.FDPS_NO}
             onChange={(e) => setProNo(e.target.value)}
             className="w-full border border-gray-400 py-1 text-center font-bold"
           />
@@ -627,6 +639,7 @@ const Forms = () => {
                 <input
                   type="text"
                   defaultValue={formDatas?.OC_NAME}
+                  disabled
                   className="mb-2 h-8 w-[50%] pl-2 font-bold"
                 />
                 {
@@ -650,9 +663,9 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  defaultValue={formDatas?.NAT}
-                  onChange={(e) => setNat(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  defaultValue={formDatas?.NAT?formDatas?.NAT:'Bangladeshi'}
+                  disabled
+                  className="mb-2 h-8 w-full bg-white pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -673,6 +686,7 @@ const Forms = () => {
                 <input
                   type="phone"
                   defaultValue={formDatas?.SEX}
+                  disabled
                   onChange={(e) => setSex(e.target.value)}
                   className="mb-2 h-8 w-[50%] pl-2 font-bold"
                 />
@@ -866,7 +880,7 @@ const Forms = () => {
             <input
               type="text"
               defaultValue={formDatas?.INSTMODE}
-              onChange={(e) => setSelectPayMode(e.target.value)}
+              // onChange={(e) => setSelectPayMode(e.target.value)}
               className="mb-2 h-8 w-[50%] pl-2 font-bold"
             />
             <select
@@ -907,7 +921,8 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              defaultValue={formDatas?.LF_PRM}
+              // defaultValue={formDatas?.LF_PRM}
+              defaultValue={formDatas?.LF_PRM?formDatas?.LF_PRM:instlMAmount}
               onChange={(e) => setInstlAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -918,7 +933,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              defaultValue={formDatas?.INST_NO}
+              defaultValue={formDatas?.INST_NO?formDatas?.INST_NO:'1'}
               onChange={(e) => setInstlNo(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -927,9 +942,9 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold w-48 md:w-60 lg:w-60">
               Total Depositable Amt
             </label>
-            <input
-              type="email"
-              defaultValue={formDatas?.SUM_INS}
+             <input
+              type="text"
+              defaultValue={totalDepositAmount?totalDepositAmount: formDatas?.SUM_INS}
               onChange={(e) => setTotalDepAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -1353,14 +1368,17 @@ const Forms = () => {
                   <input
                     type="text"
                     defaultValue={formDatas?.DATE_TIME}
-                    onChange={(e) => setEntriesDate(e.target.value)}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    // onChange={(e) => setEntriesDate(e.target.value)}
+                    disabled
+                    className="mb-2 bg-white h-8 w-full pl-2 font-bold"
                   />
                 ) : (
                   <input
-                    type="date"
+                    type="text"
+                    defaultValue={entryDate}
                     onChange={handleDATE_TIME}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    disabled
+                    className="mb-2 h-8 w-full bg-white pl-2 font-bold"
                   />
                 )}
               </div>
@@ -1371,7 +1389,8 @@ const Forms = () => {
                 <input
                   type="text"
                   defaultValue={formDatas?.ADD4}
-                  className="mb-2 h-8 w-[50%] pl-2 font-bold"
+                  disabled
+                  className="mb-2 h-8 w-[50%] bg-white pl-2 font-bold"
                 />
                 <select
                   className="w-[50%] pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"

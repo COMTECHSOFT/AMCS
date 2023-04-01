@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -79,6 +79,7 @@ const Forms = () => {
   }, [branchName]);
 
   const [value, setValue] = useState(0);
+  // const prevValueRef = useRef("");
   // const [datas, setDatas] = useDatas(value);
   // console.log(datas);
 
@@ -89,6 +90,13 @@ const Forms = () => {
       .then((res) => res.json())
       .then((data) => setDatas(data.Proposal_info));
   }, [value]);
+
+  // useEffect(() => {
+  //   // Simulate fetching data from an API
+  //   const fetchedData = datas;
+
+  //   prevValueRef.current = fetchedData;
+  // }, []);
 
   useEffect(() => {
     fetch(
@@ -317,14 +325,22 @@ const Forms = () => {
     };
     console.log(newSaveData);
     if (!value) {
-      toast.error("Data not saved !", {
+      toast.error("Please give the account no !", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
       });
-    }else{
+    } else if (datas[0]?.FDPS_NO === value) {
+      toast.error("Data already have !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    } else {
       const url = "http://192.168.31.94/api/insert.php";
       fetch(url, {
         method: "POST",
@@ -346,6 +362,66 @@ const Forms = () => {
       });
     }
   };
+
+  const handleUpdate = () => {
+    const updateData = {
+      PROPOSER: name ? name : formDatas?.PROPOSER,
+      FDPS_NO: value,
+      PRO_NO: proNo ? proNo : formDatas?.PRO_NO,
+      AGE: age ? age : formDatas?.AGE,
+      SEX: sex ? sex : formDatas?.SEX,
+      M_NAME: mName ? mName : formDatas?.M_NAME,
+      F_NAME: fName ? fName : formDatas?.F_NAME,
+      H_NAME: sName ? sName : formDatas?.H_NAME,
+      G_NAME: gName ? gName : formDatas?.G_NAME,
+      OCCUPATION: occp ? occp : formDatas?.OCCUPATION,
+      OC_NAME: occpName ? occpName : formDatas?.OC_NAME,
+      NAT: nat ? nat : formDatas?.NAT,
+      NAT_ID: natId ? natId : formDatas?.NAT_ID,
+      RV1: mobNo ? mobNo : formDatas?.RV1,
+      TELEPHONE: tele,
+      RISKDATE: date ? date : formDatas?.RISKDATE,
+      DOB: dob ? dob : formDatas?.DOB,
+      EMAIL: email ? email : formDatas?.EMAIL,
+      COF_PS: preAdd ? preAdd : formDatas?.COF_PS,
+      COF_PER: perAdd ? perAdd : formDatas?.COF_PER,
+      TABLEID: selectPlanCode[0]?.CODE,
+      INSTMODE: selectPayMode ? selectPayMode : formDatas?.INSTMODE,
+      TERM: term ? term : formDatas?.TERM,
+      LAST_INST_DATE: lastDueDate ? lastDueDate : formDatas?.LAST_INST_DATE,
+      RATE: amount ? amount : formDatas?.RATE,
+      RV_DT1: nextPremDate,
+      MATURITY: maturity ? maturity : formDatas?.MATURITY,
+      LF_PRM: instlAmt ? instlAmt : formDatas?.LF_PRM,
+      INST_NO: instlNo ? instlNo : formDatas?.INST_NO,
+      SUM_INS: totalDepAmt ? totalDepAmt : formDatas?.SUM_INS,
+      NOMINEE_NAME1: nomName1 ? nomName1 : formDatas?.NOMINEE_NAME1,
+      NOMINEE_NAME2: nomName2 ? nomName2 : formDatas?.NOMINEE_NAME2,
+      NOMINEE_NAME3: nomName3 ? nomName3 : formDatas?.NOMINEE_NAME3,
+      NOMINEE_NAME4: nomName4 ? nomName4 : formDatas?.NOMINEE_NAME4,
+      NOMINEE_REL1: nomRel1 ? nomRel1 : formDatas?.NOMINEE_REL1,
+      NOMINEE_REL2: nomRel2 ? nomRel2 : formDatas?.NOMINEE_REL2,
+      NOMINEE_REL3: nomRel3 ? nomRel3 : formDatas?.NOMINEE_REL3,
+      NOMINEE_REL4: nomRel4 ? nomRel4 : formDatas?.NOMINEE_REL4,
+      NOMINEE_AGE1: nomAge1 ? nomAge1 : formDatas?.NOMINEE_AGE1,
+      NOMINEE_AGE2: nomAge2 ? nomAge2 : formDatas?.NOMINEE_AGE2,
+      NOMINEE_AGE3: nomAge3 ? nomAge3 : formDatas?.NOMINEE_AGE3,
+      NOMINEE_AGE4: nomAge4 ? nomAge4 : formDatas?.NOMINEE_AGE4,
+      NOM_GAR_NAME: nomGarName ? nomGarName : formDatas?.NOM_GAR_NAME,
+      NOM_GAR_NAME1: nomGarName1 ? nomGarName1 : formDatas?.NOM_GAR_NAME1,
+      NOM_GAR_REL: nomGarRel ? nomGarRel : formDatas?.NOM_GAR_REL,
+      NOM_GAR_REL1: nomGarRel1 ? nomGarRel1 : formDatas?.NOM_GAR_REL1,
+      NOM_GAR_AGE: nomGarAge ? nomGarAge : formDatas?.NOM_GAR_AGE,
+      NOM_GAR_AGE1: nomGarAge1 ? nomGarAge1 : formDatas?.NOM_GAR_AGE1,
+      BR_CODE: branchData[0]?.AGENCY_CODE,
+      SC_CODE: branchData[0]?.SUB_ZONE_CODE,
+      ENTRY_ZONE_CODE: branchData[0]?.Z_CODE,
+      ADD4: accountStatus ? accountStatus : formDatas?.ADD4,
+      DATE_TIME: entriesDate ? entriesDate : formDatas?.DATE_TIME,
+    };
+    console.log(updateData);
+  };
+
   const [nextDateTrigger, setNextDateTrigger] = useState([]);
   useEffect(() => {
     fetch(
@@ -354,6 +430,15 @@ const Forms = () => {
       .then((res) => res.json())
       .then((data) => setNextDateTrigger(data?.Next_pay_date));
   }, [formDatas?.INSTMODE, formDatas?.RISKDATE]);
+
+  // function handleKeyDown(e) {
+  //   // If the backspace or delete key is pressed
+  //   if (e.keyCode === 8 || e.keyCode === 46) {
+  //     // Clear the value of the input field by updating state
+  //     setDatas(prevValueRef.current.slice(0, -1));
+  //     prevValueRef.current = prevValueRef.current.slice(0, -1);
+  //   }
+  // }
 
   const handleCrear = (e) => {
     window.location.reload();
@@ -403,7 +488,7 @@ const Forms = () => {
           </label>
           <input
             type="text"
-            value={formDatas?.FDPS_NO}
+            defaultValue={formDatas?.FDPS_NO}
             onChange={(e) => setProNo(e.target.value)}
             className="w-full border border-gray-400 py-1 text-center font-bold"
           />
@@ -428,8 +513,9 @@ const Forms = () => {
                 {formDatas?.RISKDATE ? (
                   <input
                     type="text"
-                    value={formDatas?.RISKDATE}
-                    className="mb-2 h-8 w-full pl-2 font-bold"
+                    defaultValue={formDatas?.RISKDATE}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="mb-2 h-8 w-full placeholder:text-black pl-2 font-bold"
                   />
                 ) : (
                   <input
@@ -441,14 +527,12 @@ const Forms = () => {
               </div>
 
               <div className="flex items-center justify-center">
-                <label htmlFor="" className="mx-2 font-bold w-48 ">
-                  Father's Name
-                </label>
+                <label className="mx-2 font-bold w-48 ">Father's Name</label>
                 <input
                   type="text"
-                  value={formDatas?.F_NAME}
+                  defaultValue={formDatas?.F_NAME}
                   onChange={(e) => setFName(e.target.value)}
-                  className="mb-2 h-8 w-full pl-2 font-bold"
+                  className="mb-2 h-8 w-full placeholder:text-black pl-2 font-bold"
                 />
               </div>
               <div className="flex items-center justify-center">
@@ -457,7 +541,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.PROPOSER}
+                  defaultValue={formDatas?.PROPOSER}
                   onChange={(e) => setName(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -468,7 +552,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.H_NAME}
+                  defaultValue={formDatas?.H_NAME}
                   onChange={(e) => setSName(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -479,7 +563,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.G_NAME}
+                  defaultValue={formDatas?.G_NAME}
                   onChange={(e) => setGName(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -490,7 +574,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.M_NAME}
+                  defaultValue={formDatas?.M_NAME}
                   onChange={(e) => setMName(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -504,7 +588,8 @@ const Forms = () => {
                   {formDatas?.DOB ? (
                     <input
                       type="text"
-                      value={formDatas?.DOB}
+                      defaultValue={formDatas?.DOB}
+                      onChange={(e) => setDob(e.target.value)}
                       className="mb-2 h-8 md:w-full lg:w-full md:ml-8 lg:ml-8 pl-2 font-bold"
                     />
                   ) : (
@@ -522,7 +607,7 @@ const Forms = () => {
                   <input
                     type="text"
                     className="mb-2 h-8 w-24 pl-2 font-bold"
-                    value={
+                    defaultValue={
                       formDatas?.AGE
                         ? formDatas?.AGE
                         : dobAge &&
@@ -530,6 +615,7 @@ const Forms = () => {
                             (Date.now() - new Date(dobAge)) / 31557600000
                           )
                     }
+                    onChange={(e) => setAge(e.target.value)}
                   />
                 </div>
               </div>
@@ -538,22 +624,24 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Occupation
                 </label>
-                <select
-                  className="w-full pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
-                  value={formDatas?.OC_NAME}
-                  onChange={(e) => setOccpName(e.target.value)}
-                >
-                  <option>Select</option>
-                  {formDatas?.OC_NAME ? (
-                    <option>{formDatas?.OC_NAME}</option>
-                  ) : (
-                    occupation?.map((item) => (
-                      <option value={item.NAME} key={item.CODE}>
+                <input
+                  type="text"
+                  defaultValue={formDatas?.OC_NAME}
+                  className="mb-2 h-8 w-[50%] pl-2 font-bold"
+                />
+                {
+                  <select
+                    className="w-[50%] pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
+                    onChange={(e) => setOccpName(e.target.value)}
+                  >
+                    <option>Select</option>
+                    {occupation?.map((item) => (
+                      <option defaultValue={item.NAME} key={item.CODE}>
                         {item.NAME}
                       </option>
-                    ))
-                  )}
-                </select>
+                    ))}
+                  </select>
+                }
               </div>
 
               <div className="flex items-center justify-center">
@@ -562,7 +650,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.NAT}
+                  defaultValue={formDatas?.NAT}
                   onChange={(e) => setNat(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -573,7 +661,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.NAT_ID}
+                  defaultValue={formDatas?.NAT_ID}
                   onChange={(e) => setNatId(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -582,22 +670,25 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Gender
                 </label>
-                <select
-                  className="w-full pl-1 mb-2 h-8 focus:outline-none focus:shadow-outline"
-                  value={formDatas?.SEX}
+                <input
+                  type="phone"
+                  defaultValue={formDatas?.SEX}
                   onChange={(e) => setSex(e.target.value)}
-                >
-                  <option>Select</option>
-                  {formDatas?.SEX ? (
-                    <option>{formDatas?.SEX}</option>
-                  ) : (
-                    gender?.map((item) => (
+                  className="mb-2 h-8 w-[50%] pl-2 font-bold"
+                />
+                {
+                  <select
+                    className="w-[50%] font-bold pl-1 mb-2 h-8 focus:outline-none focus:shadow-outline"
+                    onChange={(e) => setSex(e.target.value)}
+                  >
+                    <option>Select</option>
+                    {gender?.map((item) => (
                       <option value={item} key={item}>
                         {item}
                       </option>
-                    ))
-                  )}
-                </select>
+                    ))}
+                  </select>
+                }
               </div>
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
@@ -605,7 +696,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="phone"
-                  value={formDatas?.RV1}
+                  defaultValue={formDatas?.RV1}
                   onChange={(e) => setMobNo(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -616,7 +707,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={formDatas?.TELEPHONE}
+                  defaultValue={formDatas?.TELEPHONE}
                   onChange={(e) => setTele(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -627,7 +718,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="email"
-                  value={formDatas?.EMAIL}
+                  defaultValue={formDatas?.EMAIL}
                   onChange={(e) => setEmail(e.target.value)}
                   className="mb-2 h-8 w-full pl-2 font-bold"
                 />
@@ -640,16 +731,14 @@ const Forms = () => {
               <p className="font-bold text-center mb-2 ">Present Address</p>
               <textarea
                 className="block lg:hidden font-bold p-2"
-                name=""
-                value={formDatas?.COF_PS}
+                defaultValue={formDatas?.COF_PS}
                 onChange={(e) => setPreADd(e.target.value)}
                 cols="30"
                 rows="3"
               ></textarea>
               <textarea
                 className="hidden lg:block font-bold p-2"
-                name=""
-                value={formDatas?.COF_PS}
+                defaultValue={formDatas?.COF_PS}
                 onChange={(e) => setPreADd(e.target.value)}
                 cols="40"
                 rows="4"
@@ -659,16 +748,14 @@ const Forms = () => {
               <p className="font-bold text-center mb-2 ">Permanent Address</p>
               <textarea
                 className="block lg:hidden font-bold p-2"
-                name=""
-                value={formDatas?.COF_PER}
+                defaultValue={formDatas?.COF_PER}
                 onChange={(e) => setPerAdd(e.target.value)}
                 cols="30"
                 rows="3"
               ></textarea>
               <textarea
                 className="hidden lg:block font-bold p-2"
-                name=""
-                value={formDatas?.COF_PER}
+                defaultValue={formDatas?.COF_PER}
                 onChange={(e) => setPerAdd(e.target.value)}
                 cols="40"
                 rows="4"
@@ -699,7 +786,7 @@ const Forms = () => {
                 <option>{formDatas?.INSTMODE}</option>
               ) : (
                 plan?.map((item) => (
-                  <option value={item.NAME} key={item.CODE}>
+                  <option defaultValue={item.NAME} key={item.CODE}>
                     {item.NAME}
                   </option>
                 ))
@@ -713,7 +800,7 @@ const Forms = () => {
             <input
               type="text"
               className="mb-2 h-8 w-full pl-2 font-bold"
-              value={
+              defaultValue={
                 formDatas?.TABLEID
                   ? formDatas?.TABLEID
                   : selectPlanCode[0]?.CODE
@@ -726,7 +813,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              value={formDatas?.TERM}
+              defaultValue={formDatas?.TERM}
               onChange={(e) => setTerm(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -738,7 +825,8 @@ const Forms = () => {
             {formDatas?.LAST_INST_DATE ? (
               <input
                 type="text"
-                value={formDatas?.LAST_INST_DATE}
+                defaultValue={formDatas?.LAST_INST_DATE}
+                onChange={(e) => setLastDueDate(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             ) : (
@@ -755,8 +843,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              name="amount"
-              value={formDatas?.RATE}
+              defaultValue={formDatas?.RATE}
               onChange={(e) => setAmount(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -767,7 +854,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              value={nextDateTrigger[0]?.NEXTPAY}
+              defaultValue={nextDateTrigger[0]?.NEXTPAY}
               disabled
               className="mb-2 h-8 bg-white w-full pl-2 font-bold"
             />
@@ -776,20 +863,22 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Pay mode
             </label>
+            <input
+              type="text"
+              defaultValue={formDatas?.INSTMODE}
+              onChange={(e) => setSelectPayMode(e.target.value)}
+              className="mb-2 h-8 w-[50%] pl-2 font-bold"
+            />
             <select
               onChange={(e) => setSelectPayMode(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
+              className="mb-2 h-8 w-[50%] pl-2 font-bold"
             >
               <option>Select</option>
-              {formDatas?.INSTMODE ? (
-                <option>{formDatas?.INSTMODE}</option>
-              ) : (
-                payMode?.map((item) => (
-                  <option value={item.NAME} key={item.CODE}>
-                    {item.NAME}
-                  </option>
-                ))
-              )}
+              {payMode?.map((item) => (
+                <option defaultValue={item.NAME} key={item.CODE}>
+                  {item.NAME}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -800,7 +889,8 @@ const Forms = () => {
             {formDatas?.MATURITY ? (
               <input
                 type="text"
-                value={formDatas?.MATURITY}
+                defaultValue={formDatas?.MATURITY}
+                onChange={(e) => setMaturity(e.target.value)}
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             ) : (
@@ -817,8 +907,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              name="installmentAmount"
-              value={formDatas?.LF_PRM}
+              defaultValue={formDatas?.LF_PRM}
               onChange={(e) => setInstlAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -829,8 +918,7 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              name="installmentNo"
-              value={formDatas?.INST_NO}
+              defaultValue={formDatas?.INST_NO}
               onChange={(e) => setInstlNo(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -841,8 +929,7 @@ const Forms = () => {
             </label>
             <input
               type="email"
-              name=""
-              value={formDatas?.SUM_INS}
+              defaultValue={formDatas?.SUM_INS}
               onChange={(e) => setTotalDepAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -877,7 +964,7 @@ const Forms = () => {
                   Nominee Information
                 </h1>
                 <div className="flex flex-col justify-center mt-4 md:flex-row lg:flex-row gap-4">
-                  <div className=" px-2">
+                  <div className="text-xs px-2">
                     <p className="font-bold text-center mb-2">Name</p>
                     <form action="">
                       <div className="flex items-center">
@@ -886,7 +973,7 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          value={NOMINEE_NAME1}
+                          defaultValue={NOMINEE_NAME1}
                           onChange={(e) => setNomName1(e.target.value)}
                           className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
@@ -897,7 +984,7 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          value={NOMINEE_NAME2}
+                          defaultValue={NOMINEE_NAME2}
                           onChange={(e) => setNomName2(e.target.value)}
                           className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
@@ -908,7 +995,7 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          value={NOMINEE_NAME3}
+                          defaultValue={NOMINEE_NAME3}
                           onChange={(e) => setNomName3(e.target.value)}
                           className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
@@ -919,7 +1006,7 @@ const Forms = () => {
                         </label>
                         <input
                           type="text"
-                          value={NOMINEE_NAME4}
+                          defaultValue={NOMINEE_NAME4}
                           onChange={(e) => setNomName4(e.target.value)}
                           className="mb-2 h-8 w-full text-center pl-2 font-bold"
                         />
@@ -927,83 +1014,91 @@ const Forms = () => {
                     </form>
                   </div>
 
-                  <div className="flex gap-2 px-2">
-                    <div className="w-[200px] ">
+                  <div className="flex gap-2 px-2 text-xs">
+                    <div className="w-[280px] ">
                       <p className="font-bold text-center mb-2">Relation</p>
                       <form action="">
                         <div className="">
+                          <input
+                            type="text"
+                            defaultValue={NOMINEE_REL1}
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                          />
                           <select
                             onChange={(e) => setNomRel1(e.target.value)}
-                            className="mb-2 h-8 w-full text-center font-bold"
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
                           >
-                            {NOMINEE_REL1 ? (
-                              <option>{NOMINEE_REL1}</option>
-                            ) : (
-                              relation?.map((item) => (
-                                <option value={item.NAME} key={item.CODE}>
-                                  {item.NAME}
-                                </option>
-                              ))
-                            )}
+                            <option>Select</option>
+                            {relation?.map((item) => (
+                              <option defaultValue={item.NAME} key={item.CODE}>
+                                {item.NAME}
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <div className="">
+                          <input
+                            type="text"
+                            defaultValue={NOMINEE_REL2}
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                          />
                           <select
                             onChange={(e) => setNomRel2(e.target.value)}
-                            className="mb-2 h-8 w-full text-center font-bold"
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
                           >
-                            {NOMINEE_REL2 ? (
-                              <option>{NOMINEE_REL2}</option>
-                            ) : (
-                              relation?.map((item) => (
-                                <option value={item.NAME} key={item.CODE}>
-                                  {item.NAME}
-                                </option>
-                              ))
-                            )}
+                            <option>Select</option>
+                            {relation?.map((item) => (
+                              <option defaultValue={item.NAME} key={item.CODE}>
+                                {item.NAME}
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <div className="">
+                          <input
+                            type="text"
+                            defaultValue={NOMINEE_REL3}
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                          />
                           <select
                             onChange={(e) => setNomRel3(e.target.value)}
-                            className="mb-2 h-8 w-full text-center font-bold"
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
                           >
-                            {NOMINEE_REL3 ? (
-                              <option>{NOMINEE_REL3}</option>
-                            ) : (
-                              relation?.map((item) => (
-                                <option value={item.NAME} key={item.CODE}>
-                                  {item.NAME}
-                                </option>
-                              ))
-                            )}
+                            <option>Select</option>
+                            {relation?.map((item) => (
+                              <option defaultValue={item.NAME} key={item.CODE}>
+                                {item.NAME}
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <div className="">
+                          <input
+                            type="text"
+                            defaultValue={NOMINEE_REL4}
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                          />
                           <select
                             onChange={(e) => setNomRel4(e.target.value)}
-                            className="mb-2 h-8 w-full text-center font-bold"
+                            className="mb-2 h-8 w-[50%] text-center font-bold"
                           >
-                            {NOMINEE_REL4 ? (
-                              <option>{NOMINEE_REL4}</option>
-                            ) : (
-                              relation?.map((item) => (
-                                <option value={item.NAME} key={item.CODE}>
-                                  {item.NAME}
-                                </option>
-                              ))
-                            )}
+                            <option>Select</option>
+                            {relation?.map((item) => (
+                              <option defaultValue={item.NAME} key={item.CODE}>
+                                {item.NAME}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </form>
                     </div>
-                    <div className="w-40 mr-2">
+                    <div className="w-16 mr-2">
                       <p className="font-bold text-center mb-2">Age</p>
                       <form action="">
                         <div className="">
                           <input
                             type="text"
-                            value={NOMINEE_AGE1}
+                            defaultValue={NOMINEE_AGE1}
                             onChange={(e) => setNomAge1(e.target.value)}
                             className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
@@ -1011,7 +1106,7 @@ const Forms = () => {
                         <div className="">
                           <input
                             type="text"
-                            value={NOMINEE_AGE2}
+                            defaultValue={NOMINEE_AGE2}
                             onChange={(e) => setNomAge2(e.target.value)}
                             className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
@@ -1019,7 +1114,7 @@ const Forms = () => {
                         <div className="">
                           <input
                             type="text"
-                            value={NOMINEE_AGE3}
+                            defaultValue={NOMINEE_AGE3}
                             onChange={(e) => setNomAge3(e.target.value)}
                             className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
@@ -1027,7 +1122,7 @@ const Forms = () => {
                         <div className="">
                           <input
                             type="text"
-                            value={NOMINEE_AGE4}
+                            defaultValue={NOMINEE_AGE4}
                             onChange={(e) => setNomAge4(e.target.value)}
                             className="mb-2 h-8 w-full text-center pl-2 font-bold"
                           />
@@ -1049,7 +1144,7 @@ const Forms = () => {
               NOM_GAR_AGE1,
             } = data;
             return (
-              <div className="col-span-4 border-2 p-4" key={index}>
+              <div className="col-span-4 border-2 p-4 text-xs" key={index}>
                 <div>
                   <h1 className="font-bold text-center mb-4">
                     Guardian Information-1
@@ -1061,7 +1156,7 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        value={NOM_GAR_NAME}
+                        defaultValue={NOM_GAR_NAME}
                         onChange={(e) => setNomGarName(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
@@ -1070,19 +1165,21 @@ const Forms = () => {
                       <label htmlFor="" className="mx-2 font-bold w-20">
                         Relation
                       </label>
+                      <input
+                        type="text"
+                        defaultValue={NOM_GAR_REL}
+                        className="mb-2 h-8 w-[50%] text-center font-bold"
+                      />
                       <select
                         onChange={(e) => setNomGarRel(e.target.value)}
-                        className="mb-2 h-8 w-full text-center font-bold"
+                        className="mb-2 h-8 w-[50%] text-center font-bold"
                       >
-                        {NOM_GAR_REL ? (
-                          <option>{NOM_GAR_REL}</option>
-                        ) : (
-                          relation?.map((item) => (
-                            <option value={item.NAME} key={item.CODE}>
-                              {item.NAME}
-                            </option>
-                          ))
-                        )}
+                        <option>Select</option>
+                        {relation?.map((item) => (
+                          <option defaultValue={item.NAME} key={item.CODE}>
+                            {item.NAME}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className="flex items-center justify-center">
@@ -1091,7 +1188,7 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        value={NOM_GAR_AGE}
+                        defaultValue={NOM_GAR_AGE}
                         onChange={(e) => setNomGarAge(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
@@ -1109,7 +1206,7 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        value={NOM_GAR_NAME1}
+                        defaultValue={NOM_GAR_NAME1}
                         onChange={(e) => setNomGarName1(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
@@ -1118,19 +1215,21 @@ const Forms = () => {
                       <label htmlFor="" className="mx-2 font-bold w-20">
                         Relation
                       </label>
+                      <input
+                        type="text"
+                        defaultValue={NOM_GAR_REL1}
+                        className="mb-2 h-8 w-[50%] text-center font-bold"
+                      />
                       <select
                         onChange={(e) => setNomGarRel1(e.target.value)}
-                        className="mb-2 h-8 w-full text-center font-bold"
+                        className="mb-2 h-8 w-[50%] text-center  font-bold"
                       >
-                        {NOM_GAR_REL1 ? (
-                          <option>{NOM_GAR_REL1}</option>
-                        ) : (
-                          relation?.map((item) => (
-                            <option value={item.NAME} key={item.CODE}>
-                              {item.NAME}
-                            </option>
-                          ))
-                        )}
+                        <option>Select</option>
+                        {relation?.map((item) => (
+                          <option defaultValue={item.NAME} key={item.CODE}>
+                            {item.NAME}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className="flex items-center justify-center">
@@ -1139,7 +1238,7 @@ const Forms = () => {
                       </label>
                       <input
                         type="text"
-                        value={NOM_GAR_AGE1}
+                        defaultValue={NOM_GAR_AGE1}
                         onChange={(e) => setNomGarAge1(e.target.value)}
                         className="mb-2 h-8 w-full text-center font-bold"
                       />
@@ -1167,22 +1266,24 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-48 ">
                   Branch Name
                 </label>
+                <input
+                  type="text"
+                  defaultValue={allData?.AGENCY_NAME}
+                  className="mb-2 h-8 w-[40%] font-bold bg-white pl-2"
+                />
                 <select
-                  className="mb-2 h-8 w-full font-bold bg-white pl-2"
-                  value={allData?.AGENCY_NAME}
+                  className="mb-2 h-8 w-[60%] font-bold bg-white pl-2"
                   onChange={(e) => setBranchName(e.target.value)}
                 >
-                  {allData?.AGENCY_NAME ? (
-                    <option value="Choose Branch Code">
-                      {allData?.AGENCY_NAME}
+                  <option>Select</option>
+                  {agency?.map((item) => (
+                    <option
+                      defaultValue={item.AGENCY_NAME}
+                      key={item.AGENCY_CODE}
+                    >
+                      {item.AGENCY_NAME}
                     </option>
-                  ) : (
-                    agency?.map((item) => (
-                      <option value={item.AGENCY_NAME} key={item.AGENCY_CODE}>
-                        {item.AGENCY_NAME}
-                      </option>
-                    ))
-                  )}
+                  ))}
                 </select>
               </div>
               <div className="flex items-center justify-center">
@@ -1191,7 +1292,7 @@ const Forms = () => {
                 </label>
                 <input
                   type="text"
-                  value={branchData[0]?.AGENCY_CODE}
+                  defaultValue={branchData[0]?.AGENCY_CODE}
                   onChange={(e) => setAgencyCode(e.target.value)}
                   className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
@@ -1203,7 +1304,7 @@ const Forms = () => {
                 <input
                   type="text"
                   // value={allData?.SUB_ZONE_CODE}
-                  value={branchData[0]?.SUB_ZONE_CODE}
+                  defaultValue={branchData[0]?.SUB_ZONE_CODE}
                   onChange={(e) => setSubZoneCode(e.target.value)}
                   className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
@@ -1215,7 +1316,7 @@ const Forms = () => {
                 <input
                   type="text"
                   // value={allData?.SUB_ZONE_NAME}
-                  value={branchData[0]?.SUB_ZONE_NAME}
+                  defaultValue={branchData[0]?.SUB_ZONE_NAME}
                   className="mb-2 h-8 w-full font-bold bg-white cursor-not-allowed pl-2"
                   disabled
                 />
@@ -1227,7 +1328,7 @@ const Forms = () => {
                 <input
                   type="text"
                   // value={allData?.Z_CODE}
-                  value={branchData[0]?.Z_CODE}
+                  defaultValue={branchData[0]?.Z_CODE}
                   onChange={(e) => setZoneCode(e.target.value)}
                   className="mb-2 h-8 w-full font-bold bg-white pl-2"
                 />
@@ -1239,7 +1340,7 @@ const Forms = () => {
                 <input
                   type="text"
                   // value={allData?.Z_NAME}
-                  value={branchData[0]?.Z_NAME}
+                  defaultValue={branchData[0]?.Z_NAME}
                   className="mb-2 h-8 w-full font-bold bg-white cursor-not-allowed pl-2"
                   disabled
                 />
@@ -1251,7 +1352,8 @@ const Forms = () => {
                 {formDatas?.DATE_TIME ? (
                   <input
                     type="text"
-                    value={formDatas?.DATE_TIME}
+                    defaultValue={formDatas?.DATE_TIME}
+                    onChange={(e) => setEntriesDate(e.target.value)}
                     className="mb-2 h-8 w-full pl-2 font-bold"
                   />
                 ) : (
@@ -1266,20 +1368,21 @@ const Forms = () => {
                 <label htmlFor="" className="mx-2 font-bold w-52">
                   Account Status
                 </label>
+                <input
+                  type="text"
+                  defaultValue={formDatas?.ADD4}
+                  className="mb-2 h-8 w-[50%] pl-2 font-bold"
+                />
                 <select
-                  className="w-full pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
-                  value={formDatas?.ADD4}
+                  className="w-[50%] pl-2 font-bold mb-2 h-8 focus:outline-none focus:shadow-outline"
                   onChange={(e) => setAccountStatus(e.target.value)}
                 >
-                  {formDatas?.ADD4 ? (
-                    <option>{formDatas?.ADD4}</option>
-                  ) : (
-                    accountStatusSelect?.map((item, index) => (
-                      <option value={item} key={index}>
-                        {item}
-                      </option>
-                    ))
-                  )}
+                  <option>Select</option>
+                  {accountStatusSelect?.map((item, index) => (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  ))}
                 </select>
               </div>
             </form>
@@ -1351,6 +1454,12 @@ const Forms = () => {
             onClick={handleSave}
           >
             Save
+          </p>
+          <p
+            className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}
+            onClick={handleUpdate}
+          >
+            Edit
           </p>
           {/* <p
             className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}

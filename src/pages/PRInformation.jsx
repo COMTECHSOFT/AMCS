@@ -25,6 +25,7 @@ const PRInformation = () => {
 
   const [detailsByInst, setDetailsByInst] = useState([]);
   const findDetailsByInst = detailsByInst?.find((data) => data);
+  console.log(findDetailsByInst);
   useEffect(() => {
     fetch(
       `http://192.168.31.94/api/inst_details.php?ACC_NO=${value}&&INST_NO=${installNumber}`
@@ -37,6 +38,7 @@ const PRInformation = () => {
 
   const [datas, setDatas] = useState([]);
   const allData = datas?.find((data) => data);
+  // console.log(allData);
   useEffect(() => {
     fetch(`http://192.168.31.94/api/commission_info.php?FDPS_NO=${value}`)
       .then((res) => res.json())
@@ -125,34 +127,34 @@ const PRInformation = () => {
       SUB_NAME: allAgencyData?.SUB_ZONE_NAME,
       PR_NO: prNo,
       PR_DATE: prDate,
-      PR_AMT: proposalInfo?.RATE,
+      PR_AMT: prAmt ? prAmt : proposalInfo?.RATE,
       OR_DATE: entryDate,
       TERM: proposalInfo?.TERM,
-      A_CODE: allAgentInfo?.CODE,
-      MO_CODE: allAgentInfo?.A_MO,
-      MM_CODE: allAgentInfo?.A_MM,
-      BM_CODE: allAgentInfo?.A_BM,
-      ZM_CODE: allAgentInfo?.A_ZM,
-      AVP_CODE: allAgentInfo?.A_AVP,
-      JVPCODE: allAgentInfo?.JVP,
-      VP_CODE: allAgentInfo?.A_VP,
-      AG_NAME: allAgentInfo?.NAME,
-      MO_NAME: allAgentInfo?.MO_NAME,
-      MM_NAME: allAgentInfo?.MM_NAME,
-      BM_NAME: allAgentInfo?.BM_NAME,
-      ZM_NAME: allAgentInfo?.ZM_NAME,
-      AVP_NAME: allAgentInfo?.AVP_NAME,
-      JVPNAME: allAgentInfo?.JVP_NAME,
-      VP_NAME: allAgentInfo?.VP_NAME,
-      PAY_MODE: payMode,
+      A_CODE: allAgentInfo?.CODE || allData?.A_CODE,
+      MO_CODE: allAgentInfo?.A_MO || allData?.MO_CODE,
+      MM_CODE: allAgentInfo?.A_MM || allData?.MM_CODE,
+      BM_CODE: allAgentInfo?.A_BM || allData?.BM_CODE,
+      ZM_CODE: allAgentInfo?.A_ZM || allData?.ZM_CODE,
+      AVP_CODE: allAgentInfo?.A_AVP || allData?.AVP_CODE,
+      JVPCODE: allAgentInfo?.JVP || allData?.JVPCODE,
+      VP_CODE: allAgentInfo?.A_VP || allData?.VP_CODE,
+      AG_NAME: allAgentInfo?.NAME || allData?.AG_NAME,
+      MO_NAME: allAgentInfo?.MO_NAME || allData?.MO_NAME,
+      MM_NAME: allAgentInfo?.MM_NAME || allData?.MM_NAME,
+      BM_NAME: allAgentInfo?.BM_NAME || allData?.BM_NAME,
+      ZM_NAME: allAgentInfo?.ZM_NAME || allData?.ZM_NAME,
+      AVP_NAME: allAgentInfo?.AVP_NAME || allData?.AVP_NAME,
+      JVPNAME: allAgentInfo?.JVP_NAME || allData?.JVPNAME,
+      VP_NAME: allAgentInfo?.VP_NAME || allData?.VP_NAME,
+      PAY_MODE: payMode ? payMode : allData?.PAY_MODE,
       LAST_PAY_DATE: proposalInfo?.LAST_INST_DATE,
       NEXT_DATE: proposalInfo?.RV_DT1,
       NOTICE_DATE: proposalInfo?.MATURITY,
       SUS_AMT: proposalInfo?.SUS_AMT,
-      INST_NO: proposalInfo?.INST_NO,
-      P_INST: partial,
+      INST_NO: instllNO ? instllNO : proposalInfo?.INST_NO,
+      P_INST: partial ? partial : "1",
       PR_RISK_DATE: proposalInfo?.RISKDATE,
-      COMM_YEAR: commYear,
+      COMM_YEAR: commYear ? commYear : "First Year",
       INSTMODE: proposalInfo?.INSTMODE,
       MONTHLY_PRM: proposalInfo?.RATE,
       TABLEID: proposalInfo?.TABLEID,
@@ -221,13 +223,13 @@ const PRInformation = () => {
   }
   return (
     <div>
-      <nav className="bg-cyan-900 text-center py-2">
-        <h1 className="text-white text-xl font-bold uppercase">
+      <nav className="bg-purple-900 text-center py-2">
+        <h1 className="text-pink-300 text-2xl font-bold uppercase">
           AMANA Group <br /> PR Entry Information
         </h1>
       </nav>
 
-      <div className="bg-slate-300 p-6 grid grid-cols-1 md:grid-cols-12 gap-x-8 border-y-2">
+      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-12 gap-x-8 border-y-2">
         <form onSubmit={handleSubmit} action="" className="col-span-5">
           <div className="mb-2 flex justify-center gap-2 items-center ">
             <label
@@ -342,7 +344,7 @@ const PRInformation = () => {
         </div>
       </div>
 
-      <div className="bg-slate-300 p-6 grid grid-cols-1 md:grid-cols-3 border-y">
+      <div className="bg-sky-400 p-6 grid grid-cols-1 md:grid-cols-3 border-y-2">
         <form action="" className=" px-6">
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold w-40">
@@ -350,7 +352,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
+              defaultValue={
                 findDetailsByInst?.PR_NO
                   ? findDetailsByInst?.PR_NO
                   : allData?.PR_NO
@@ -367,13 +369,14 @@ const PRInformation = () => {
               <input
                 type="text"
                 className="mb-2 h-6 text-xs w-full text-center font-bold"
-                value={findDetailsByInst?.PR_DATE}
+                defaultValue={findDetailsByInst?.PR_DATE}
               />
             ) : allData?.PR_DATE ? (
               <input
                 type="text"
                 className="mb-2 h-6 text-xs w-full text-center font-bold"
-                value={allData?.PR_DATE}
+                defaultValue={allData?.PR_DATE}
+                onChange={(e) => setPrDate(e.target.value)}
               />
             ) : (
               <input
@@ -404,7 +407,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
+              defaultValue={
                 findDetailsByInst?.PR_AMT
                   ? findDetailsByInst?.PR_AMT
                   : allData?.PR_AMT
@@ -419,27 +422,30 @@ const PRInformation = () => {
             <label htmlFor="" className="mx-2 font-bold w-40">
               Pay Mode
             </label>
-            <select
-              className="mb-2 h-6 text-xs bg-white w-full text-center font-bold"
+            <input
+              type="text"
               value={
                 findDetailsByInst?.PAY_MODE
                   ? findDetailsByInst?.PAY_MODE
                   : allData?.PAY_MODE
               }
+              className="mb-2 h-6 text-xs w-[50%] text-center font-bold"
+            />
+            <select
+              className="mb-2 h-6 text-xs w-[50%] text-center font-bold"
+              // defaultValue={
+              //   findDetailsByInst?.PAY_MODE
+              //     ? findDetailsByInst?.PAY_MODE
+              //     : allData?.PAY_MODE
+              // }
               onChange={(e) => setPayMode(e.target.value)}
             >
               <option>Select</option>
-              {findDetailsByInst?.PAY_MODE ? (
-                <option>{findDetailsByInst?.PAY_MODE}</option>
-              ) : allData?.PAY_MODE ? (
-                <option>{allData?.PAY_MODE}</option>
-              ) : (
-                payModeSelect?.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
-                  </option>
-                ))
-              )}
+              {payModeSelect?.map((item, index) => (
+                <option defaultValue={item} key={index}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex items-center justify-center">
@@ -448,7 +454,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
+              defaultValue={
                 findDetailsByInst?.INST_NO
                   ? findDetailsByInst?.INST_NO
                   : proposalInfo?.INST_NO
@@ -466,7 +472,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
+              defaultValue={
                 findDetailsByInst?.P_INST
                   ? findDetailsByInst?.P_INST
                   : allData?.P_INST
@@ -481,7 +487,11 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={allData?.COMM_YEAR}
+              defaultValue={
+                findDetailsByInst?.COMM_YEAR
+                  ? findDetailsByInst?.COMM_YEAR
+                  : allData?.COMM_YEAR
+              }
               onChange={(e) => setCommYear(e.target.value)}
               className="mb-2 h-6 text-xs w-full pl-2 font-bold text-center"
             />
@@ -492,7 +502,7 @@ const PRInformation = () => {
             </label>
             <input
               type="text"
-              value={
+              defaultValue={
                 findDetailsByInst?.PR_NO
                   ? findDetailsByInst?.PR_NO
                   : allData?.ORNO
@@ -504,7 +514,7 @@ const PRInformation = () => {
         </form>
       </div>
 
-      <div className="bg-slate-300 grid grid-cols-1 md:grid-cols-12 border-y-2">
+      <div className="bg-sky-400 grid grid-cols-1 md:grid-cols-12 border-y-2">
         <div className="col-span-7 p-6">
           <div className="flex flex-col md:flex-row">
             <div className="px-2">
@@ -536,7 +546,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     // value={allAgentInfo?.CODE}
-                    value={allData?.A_CODE}
+                    defaultValue={allData?.A_CODE}
                     onChange={(e) => setSelectCommCode(e.target.value)}
                     className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
@@ -548,7 +558,7 @@ const PRInformation = () => {
                   <input
                     type="text"
                     value={
-                      allData?.MO_CODE ? allData?.MO_CODE : allAgentInfo?.A_MO
+                      allAgentInfo?.A_MO ? allAgentInfo?.A_MO : allData?.MO_CODE
                     }
                     className="mb-2 h-6 text-xs w-16 text-center font-bold"
                   />
@@ -893,7 +903,11 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.RATE}
+                    value={
+                      findDetailsByInst?.PR_AMT
+                        ? proposalInfo?.RATE - findDetailsByInst?.PR_AMT
+                        : proposalInfo?.RATE
+                    }
                     className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
@@ -913,7 +927,10 @@ const PRInformation = () => {
             <div className="flex">
               <div className="mr-2">
                 <p className="font-bold mb-2">Given Inst.</p>
-                <form action="" className="flex flex-col h-64 overflow-y-scroll">
+                <form
+                  action=""
+                  className="flex flex-col overflow-y-scroll h-64"
+                >
                   {/* <select
                     className="w-full pl-2 font-bold mb-2 py-2 focus:outline-none focus:shadow-outline"
                     onChange={(e) => setInstallNumber(e.target.value)}

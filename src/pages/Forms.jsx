@@ -272,7 +272,13 @@ if(selectPayMode==='Monthly'){
    totalDepositAmount=(term*12)*amount;
    instlMAmount=amount;
 }else if(selectPayMode==='Quarterly'){
-  totalDepositAmount=(term*3)*amount;
+  totalDepositAmount=(term*4)*amount;
+   instlMAmount=amount;
+}else if(selectPayMode==='H-Yearly'){
+  totalDepositAmount=(term*2)*amount;
+   instlMAmount=amount;
+}else if(selectPayMode==='Yearly'){
+  totalDepositAmount=(term*1)*amount;
    instlMAmount=amount;
 }
 

@@ -282,13 +282,27 @@ if(selectPayMode==='Monthly'){
    instlMAmount=amount;
 }
 
+const [nextDateTrigger, setNextDateTrigger] = useState([]);
+const nxtPremDate=nextDateTrigger?.NEXTPAY;
+console.log(nxtPremDate)
+useEffect(() => {
+  // fetch(
+  //   `http://192.168.31.94/api/next_pay.php?PAYMODE=${formDatas?.INSTMODE}&&DATE=${formDatas?.RISKDATE}&&INST_NO=1`
+  // )
+  fetch(
+    `http://192.168.31.94/api/next_pay.php?PAYMODE=${selectPayMode}&&DATE=${date}&&INST_NO=1`
+  )
+    .then((res) => res.json())
+    .then((data) => setNextDateTrigger(data?.Next_pay_date[0]));
+}, [selectPayMode, date]);
+
   // save new data end
 
   const handleSave = () => {
     const newSaveData = {
       PROPOSER: name,
       FDPS_NO: value,
-      PRO_NO: proNo,
+      PRO_NO: value,
       AGE: age,
       SEX: sex,
       M_NAME: mName,
@@ -311,7 +325,7 @@ if(selectPayMode==='Monthly'){
       TERM: term,
       LAST_INST_DATE: lastDueDate,
       RATE: amount,
-      RV_DT1: nextPremDate,
+      RV_DT1: nxtPremDate,
       MATURITY: maturity,
       LF_PRM: amount,
       INST_NO: instlNo?instlNo:'1',
@@ -439,15 +453,6 @@ if(selectPayMode==='Monthly'){
     };
     console.log(updateData);
   };
-
-  const [nextDateTrigger, setNextDateTrigger] = useState([]);
-  useEffect(() => {
-    fetch(
-      `http://192.168.31.94/api/next_pay.php?PAYMODE=${formDatas?.INSTMODE}&&DATE=${formDatas?.RISKDATE}&&INST_NO=1`
-    )
-      .then((res) => res.json())
-      .then((data) => setNextDateTrigger(data?.Next_pay_date));
-  }, [formDatas?.INSTMODE, formDatas?.RISKDATE]);
 
   // function handleKeyDown(e) {
   //   // If the backspace or delete key is pressed
@@ -874,7 +879,7 @@ if(selectPayMode==='Monthly'){
             </label>
             <input
               type="text"
-              defaultValue={nextDateTrigger[0]?.NEXTPAY}
+              defaultValue={nxtPremDate?nxtPremDate:formDatas?.RV_DT1}
               disabled
               className="mb-2 h-8 bg-white w-full pl-2 font-bold"
             />

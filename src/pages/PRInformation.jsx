@@ -370,6 +370,7 @@ const PRInformation = () => {
                 type="text"
                 className="mb-2 h-6 text-xs w-full text-center font-bold"
                 defaultValue={findDetailsByInst?.PR_DATE}
+                onChange={(e) => setPrDate(e.target.value)}
               />
             ) : allData?.PR_DATE ? (
               <input
@@ -903,11 +904,12 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={
-                      findDetailsByInst?.PR_AMT
-                        ? proposalInfo?.RATE - findDetailsByInst?.PR_AMT
-                        : proposalInfo?.RATE
-                    }
+                    value={ proposalInfo?.RATE}
+                    // value={
+                      // findDetailsByInst?.PR_AMT
+                      // ? findDetailsByInst?.PR_AMT
+                      // : proposalInfo?.RATE
+                    // }
                     className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>
@@ -917,7 +919,7 @@ const PRInformation = () => {
                   </label>
                   <input
                     type="text"
-                    value={proposalInfo?.SUS_AMT}
+                    value={findDetailsByInst?.PR_AMT&&proposalInfo?.SUS_AMT-findDetailsByInst?.PR_AMT}
                     className="mb-2 text-xs h-6 w-28 pl-1 text-center font-bold"
                   />
                 </div>

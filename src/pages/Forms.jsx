@@ -286,9 +286,6 @@ const [nextDateTrigger, setNextDateTrigger] = useState([]);
 const nxtPremDate=nextDateTrigger?.NEXTPAY;
 console.log(nxtPremDate)
 useEffect(() => {
-  // fetch(
-  //   `http://192.168.31.94/api/next_pay.php?PAYMODE=${formDatas?.INSTMODE}&&DATE=${formDatas?.RISKDATE}&&INST_NO=1`
-  // )
   fetch(
     `http://192.168.31.94/api/next_pay.php?PAYMODE=${selectPayMode}&&DATE=${date}&&INST_NO=1`
   )
@@ -330,6 +327,7 @@ useEffect(() => {
       LF_PRM: amount,
       INST_NO: instlNo?instlNo:'1',
       SUM_INS: totalDepositAmount,
+      SUS_AMT:amount,
       NOMINEE_NAME1: nomName1,
       NOMINEE_NAME2: nomName2,
       NOMINEE_NAME3: nomName3,
@@ -891,8 +889,8 @@ useEffect(() => {
             <input
               type="text"
               defaultValue={formDatas?.INSTMODE}
-              // onChange={(e) => setSelectPayMode(e.target.value)}
-              className="mb-2 h-8 w-[50%] pl-2 font-bold"
+              disabled
+              className="mb-2 bg-white h-8 w-[50%] pl-2 font-bold"
             />
             <select
               onChange={(e) => setSelectPayMode(e.target.value)}
@@ -1048,7 +1046,8 @@ useEffect(() => {
                           <input
                             type="text"
                             defaultValue={NOMINEE_REL1}
-                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                            disabled
+                            className="mb-2 bg-white h-8 w-[50%] text-center font-bold"
                           />
                           <select
                             onChange={(e) => setNomRel1(e.target.value)}
@@ -1066,7 +1065,8 @@ useEffect(() => {
                           <input
                             type="text"
                             defaultValue={NOMINEE_REL2}
-                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                            disabled
+                            className="mb-2 h-8 bg-white w-[50%] text-center font-bold"
                           />
                           <select
                             onChange={(e) => setNomRel2(e.target.value)}
@@ -1084,7 +1084,8 @@ useEffect(() => {
                           <input
                             type="text"
                             defaultValue={NOMINEE_REL3}
-                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                            disabled
+                            className="mb-2 h-8 bg-white w-[50%] text-center font-bold"
                           />
                           <select
                             onChange={(e) => setNomRel3(e.target.value)}
@@ -1102,7 +1103,8 @@ useEffect(() => {
                           <input
                             type="text"
                             defaultValue={NOMINEE_REL4}
-                            className="mb-2 h-8 w-[50%] text-center font-bold"
+                            disabled
+                            className="mb-2 h-8 bg-white w-[50%] text-center font-bold"
                           />
                           <select
                             onChange={(e) => setNomRel4(e.target.value)}
@@ -1194,7 +1196,8 @@ useEffect(() => {
                       <input
                         type="text"
                         defaultValue={NOM_GAR_REL}
-                        className="mb-2 h-8 w-[50%] text-center font-bold"
+                        disabled
+                        className="mb-2 bg-white h-8 w-[50%] text-center font-bold"
                       />
                       <select
                         onChange={(e) => setNomGarRel(e.target.value)}
@@ -1244,7 +1247,8 @@ useEffect(() => {
                       <input
                         type="text"
                         defaultValue={NOM_GAR_REL1}
-                        className="mb-2 h-8 w-[50%] text-center font-bold"
+                        disabled
+                        className="mb-2 bg-white h-8 w-[50%] text-center font-bold"
                       />
                       <select
                         onChange={(e) => setNomGarRel1(e.target.value)}
@@ -1295,7 +1299,8 @@ useEffect(() => {
                 <input
                   type="text"
                   defaultValue={allData?.AGENCY_NAME}
-                  className="mb-2 h-8 w-[40%] font-bold bg-white pl-2"
+                  disabled
+                  className="mb-2 h-8 bg-white w-[40%] font-bold bg-white pl-2"
                 />
                 <select
                   className="mb-2 h-8 w-[60%] font-bold bg-white pl-2"

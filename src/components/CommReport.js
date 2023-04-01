@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 function CommReport() {
   const componentRef = useRef();
@@ -43,6 +44,14 @@ function CommReport() {
       <ReactToPrint
         trigger={() => <h1 className="cursor-pointer absolute">Print</h1>}
         content={() => componentRef.current}
+      />
+      <ReactHTMLTableToExcel
+        id="test-table-xls-button"
+        className="download-table-xls-button ml-12 absolute bg-cyan-900 rounded px-1 text-white font-bold"
+        table="table-to-xls"
+        filename="tablexls"
+        sheet="tablexls"
+        buttonText="Excel Sheet"
       />
       <div ref={componentRef}>
         <div>
@@ -97,7 +106,11 @@ function CommReport() {
           </div>
         </div>
         <div className="px-4 text-xs">
-          <table style={tableStyles.style} className="w-full text-center">
+          <table
+            style={tableStyles.style}
+            className="w-full text-center"
+            id="table-to-xls"
+          >
             <tr>
               <td rowSpan="2" style={tableStyles.style}>
                 Sl. No.
@@ -146,7 +159,7 @@ function CommReport() {
                 <tr>
                   <td style={tableStyles.style}>{index + 1}</td>
                   <td style={tableStyles.style}>{data.CODE}</td>
-                  <td style={tableStyles.style} className='text-left pl-2'>{data.NAME}</td>
+                  <td style={tableStyles.style}>{data.NAME}</td>
                   <td style={tableStyles.style}> {data.NEW_PRM}</td>
                   <td style={tableStyles.style}> {data.NEW_COMM}</td>
                   <td style={tableStyles.style}> {data.OTHER_PRM}</td>
@@ -158,14 +171,16 @@ function CommReport() {
                     {" "}
                     {+data.NEW_COMM + +data.OTHER_COMM}
                   </td>
-                  <td style={tableStyles.style}>{` ${
+                  <td style={tableStyles.style}>{` ${Math.ceil(
                     ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100
-                  }`}</td>
+                  )}`}</td>
                   <td style={tableStyles.style}>
                     {" "}
-                    {Math.round(+data.OTHER_COMM +
-                      +data.NEW_COMM -
-                      ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100)}
+                    {Math.ceil(
+                      +data.OTHER_COMM +
+                        +data.NEW_COMM -
+                        ((+data.OTHER_COMM + +data.NEW_COMM) * 5) / 100
+                    )}
                   </td>
                   <td style={tableStyles.style}></td>
                 </tr>
@@ -195,17 +210,21 @@ function CommReport() {
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {(allNewCommission("NEW_COMM") * 5 +
-                  allRenewalCommission("OTHER_COMM") * 5) /
-                  100}
+                {Math.ceil(
+                  (allNewCommission("NEW_COMM") * 5 +
+                    allRenewalCommission("OTHER_COMM") * 5) /
+                    100
+                )}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {allNewCommission("NEW_COMM") +
-                  allRenewalCommission("OTHER_COMM") -
-                  (allNewCommission("NEW_COMM") * 5 +
-                    allRenewalCommission("OTHER_COMM") * 5) /
-                    100}
+                {Math.ceil(
+                  allNewCommission("NEW_COMM") +
+                    allRenewalCommission("OTHER_COMM") -
+                    (allNewCommission("NEW_COMM") * 5 +
+                      allRenewalCommission("OTHER_COMM") * 5) /
+                      100
+                )}
               </td>
               <td style={tableStyles.style}></td>
             </tr>
@@ -233,17 +252,21 @@ function CommReport() {
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {(allNewCommission("NEW_COMM") * 5 +
-                  allRenewalCommission("OTHER_COMM") * 5) /
-                  100}
+                {Math.ceil(
+                  (allNewCommission("NEW_COMM") * 5 +
+                    allRenewalCommission("OTHER_COMM") * 5) /
+                    100
+                )}
               </td>
               <td style={tableStyles.style}>
                 {" "}
-                {allNewCommission("NEW_COMM") +
-                  allRenewalCommission("OTHER_COMM") -
-                  (allNewCommission("NEW_COMM") * 5 +
-                    allRenewalCommission("OTHER_COMM") * 5) /
-                    100}
+                {Math.ceil(
+                  allNewCommission("NEW_COMM") +
+                    allRenewalCommission("OTHER_COMM") -
+                    (allNewCommission("NEW_COMM") * 5 +
+                      allRenewalCommission("OTHER_COMM") * 5) /
+                      100
+                )}
               </td>
               <td style={tableStyles.style}></td>
             </tr>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 const ReportGenerate = () => {
   const componentRef = useRef();
@@ -40,7 +41,7 @@ const ReportGenerate = () => {
     <div>
       <ReactToPrint
         trigger={() => (
-          <h1 className="text-xl absolute bg-cyan-900 px-2 text-white font-bold cursor-pointer">
+          <h1 className=" absolute bg-cyan-900 px-2 text-white font-bold cursor-pointer">
             Pdf
           </h1>
         )}
@@ -52,6 +53,14 @@ const ReportGenerate = () => {
         //     pageCount
         //   );
         // }}
+      />
+      <ReactHTMLTableToExcel
+        id="test-table-xls-button"
+        className="download-table-xls-button ml-12 absolute bg-cyan-900 px-1 text-white font-bold"
+        table="table-to-xls"
+        filename="tablexls"
+        sheet="tablexls"
+        buttonText="Excel Sheet"
       />
       <div ref={componentRef}>
         <div className="flex flex-col items-center justify-center py-4">
@@ -310,7 +319,7 @@ const ReportGenerate = () => {
           Deposite Information
         </h1>
         <div className="border  w-[80%] m-auto">
-          <table className="w-full text-xs text-center">
+          <table className="w-full text-xs text-center" id="table-to-xls">
             <tr style={{ border: "1px solid black" }}>
               <th>Install NO.</th>
               <th>Install Wise Premium</th>

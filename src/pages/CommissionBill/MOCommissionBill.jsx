@@ -98,10 +98,10 @@ const MOCommissionBill = () => {
                     </label>
                     <select
                       className="w-full ml-10 pl-1 mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
-                      id="gender"
-                      name="gender"
+                     
                       onChange={(e) => setMonths(e.target.value)}
                     >
+                      <option>Select</option>
                       {month?.map((item, index) => (
                         <option value={item} key={index}>
                           {item}

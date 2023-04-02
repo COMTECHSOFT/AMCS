@@ -42,12 +42,13 @@ function CommReport() {
   return (
     <div>
       <ReactToPrint
-        trigger={() => <h1 className="cursor-pointer absolute">Print</h1>}
+        trigger={() => <h1 className="cursor-pointer bg-cyan-900 text-white font-bold px-1 absolute">Pdf</h1>}
         content={() => componentRef.current}
+        pageStyle="@page { size: A4;  margin: 1cm; } @media print { body { -webkit-print-color-adjust: exact; } }"
       />
       <ReactHTMLTableToExcel
         id="test-table-xls-button"
-        className="download-table-xls-button ml-12 absolute bg-cyan-900 rounded px-1 text-white font-bold"
+        className="download-table-xls-button ml-12 absolute bg-cyan-900 px-1 text-white font-bold"
         table="table-to-xls"
         filename="tablexls"
         sheet="tablexls"

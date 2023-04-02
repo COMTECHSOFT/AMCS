@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { calcLength } from "framer-motion";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const MoOpenInfo = () => {
   const handleDOB = (e) => {
     const selectDate = e.target.value;
@@ -86,6 +86,24 @@ const MoOpenInfo = () => {
       });
   }, [moData?.AGENCY_CODE]);
 
+  const [agency, setAgency] = useState([]);
+  // console.log(agency[0]?.AGENCY_CODE);
+  useEffect(() => {
+    const url = "http://192.168.31.94/api/agency_name.php";
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setAgency(data.AGENCY_NAME));
+  }, []);
+
+  const [agencyName, setAgencyName] = useState("");
+  const [branchDatas, setBranchDatas] = useState([]);
+  const getBranchDatas = branchDatas?.find((data) => data);
+  useEffect(() => {
+    fetch(`http://192.168.31.94/api/agency_code.php?NAME=${agencyName}`)
+      .then((res) => res.json())
+      .then((data) => setBranchDatas(data.CODE));
+  }, [agencyName]);
+
   const [name, setName] = useState("");
   const [fName, setFName] = useState("");
   const [address1, setAddress1] = useState("");
@@ -99,7 +117,6 @@ const MoOpenInfo = () => {
   const [avp, setAvp] = useState("");
   const [zone, setZone] = useState("");
   const [subZone, setSubZone] = useState("");
-  const [agencyCode, setAgencyCode] = useState("");
   const [jvp, setJvp] = useState("");
   const [mrNo, setMrNo] = useState("");
   const [mrAmt, setMrAmt] = useState("");
@@ -136,7 +153,7 @@ const MoOpenInfo = () => {
       LIC_RENEW: licRenwDate,
       ZONE: zone,
       SUB_ZONE: subZone,
-      AGENCY_CODE: agencyCode,
+      AGENCY_CODE: getBranchDatas?.AGENCY_CODE,
       EF_DATE: effDate,
       F_NAME: fName,
       ADDRESS2: address2,
@@ -145,19 +162,36 @@ const MoOpenInfo = () => {
     };
     console.log(moNewSaveData);
 
-    const url = "http://192.168.31.94/api/exinsert.php";
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(moNewSaveData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+    if (!moCode) {
+      toast.error("Data not saved!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
       });
+    } else {
+      const url = "http://192.168.31.94/api/exinsert.php";
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(moNewSaveData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+      toast.success("Data saved successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -423,24 +457,27 @@ const MoOpenInfo = () => {
               <label htmlFor="" className="mx-2 font-bold w-[300px] ">
                 Recruiment Type
               </label>
-              <select
-                className="w-full pl-2 font-bold mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
-                value={moData?.RCT}
-                onChange={(e) => setRct(e.target.value)}
-              >
-                <option>Select</option>
-                {moData?.RCT ? (
-                  <option>
-                    {moData?.RCT === "DA" ? "Directly Appointed" : "Promoted"}
-                  </option>
-                ) : (
-                  rct?.map((item, index) => (
+              {moData?.RCT ? (
+                <input
+                  type="text"
+                  value={
+                    moData?.RCT === "DA" ? "Directly Appointed" : "Promoted"
+                  }
+                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                />
+              ) : (
+                <select
+                  className="w-full pl-2 font-bold mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
+                  onChange={(e) => setRct(e.target.value)}
+                >
+                  <option>Select</option>
+                  {rct?.map((item, index) => (
                     <option value={item} key={index}>
                       {item}
                     </option>
-                  ))
-                )}
-              </select>
+                  ))}
+                </select>
+              )}
             </div>
           </form>
         </div>
@@ -451,13 +488,28 @@ const MoOpenInfo = () => {
                 <label htmlFor="" className="mx-2 font-bold w-[350px]">
                   Branch Code & Name
                 </label>
-                <input
-                  type="text"
-                  name=""
-                  value={branchData?.AGENCY_CODE}
-                  onChange={(e) => setAgencyCode(e.target.value)}
-                  className="mb-2 h-6 text-xs w-full pl-2 font-bold"
-                />
+                {branchData?.AGENCY_NAME ? (
+                  <input
+                    type="text"
+                    value={branchData?.AGENCY_NAME}
+                    className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                  />
+                ) : (
+                  <select
+                    className="mb-2 h-6 text-xs w-full pl-2 font-bold"
+                    onChange={(e) => setAgencyName(e.target.value)}
+                  >
+                    <option>Select</option>
+                    {agency?.map((item) => (
+                      <option
+                        defaultValue={item.AGENCY_NAME}
+                        key={item.AGENCY_CODE}
+                      >
+                        {item.AGENCY_NAME}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
               <div className="flex items-center justify-center">
                 <label htmlFor="" className="mx-2 font-bold w-[350px]">
@@ -465,8 +517,11 @@ const MoOpenInfo = () => {
                 </label>
                 <input
                   type="text"
-                  name=""
-                  value={branchData?.SUB_ZONE_CODE}
+                  value={
+                    getBranchDatas?.SUB_ZONE_CODE
+                      ? getBranchDatas?.SUB_ZONE_CODE
+                      : branchData?.SUB_ZONE_CODE
+                  }
                   onChange={(e) => setSubZone(e.target.value)}
                   className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 />
@@ -477,8 +532,11 @@ const MoOpenInfo = () => {
                 </label>
                 <input
                   type="text"
-                  name=""
-                  value={branchData?.Z_CODE}
+                  value={
+                    getBranchDatas?.Z_CODE
+                      ? getBranchDatas?.Z_CODE
+                      : branchData?.Z_CODE
+                  }
                   onChange={(e) => setZone(e.target.value)}
                   className="mb-2 h-6 text-xs w-full pl-2 font-bold"
                 />
@@ -488,8 +546,11 @@ const MoOpenInfo = () => {
               <div className="flex items-center justify-center">
                 <input
                   type="text"
-                  name=""
-                  value={branchData?.AGENCY_NAME}
+                  value={
+                    getBranchDatas?.AGENCY_CODE
+                      ? getBranchDatas?.AGENCY_CODE
+                      : branchData?.AGENCY_CODE
+                  }
                   disabled
                   className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
@@ -498,7 +559,11 @@ const MoOpenInfo = () => {
                 <input
                   type="text"
                   name=""
-                  value={branchData?.SUB_ZONE_NAME}
+                  value={
+                    getBranchDatas?.SUB_ZONE_NAME
+                      ? getBranchDatas?.SUB_ZONE_NAME
+                      : branchData?.SUB_ZONE_NAME
+                  }
                   disabled
                   className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
@@ -506,8 +571,11 @@ const MoOpenInfo = () => {
               <div className="flex items-center justify-center">
                 <input
                   type="text"
-                  name=""
-                  value={branchData?.Z_NAME}
+                  value={
+                    getBranchDatas?.Z_NAME
+                      ? getBranchDatas?.Z_NAME
+                      : branchData?.Z_NAME
+                  }
                   disabled
                   className="mb-2 bg-white h-6 text-xs w-48 md:w-full pl-2 font-bold"
                 />
@@ -734,7 +802,7 @@ const MoOpenInfo = () => {
               className="mb-2 w-full pl-2 font-bold"
             />
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 hidden">
             <button className="bg-slate-200 h-8 w-52 text-gray-600 font-bold shadow-md">
               Educational Qualification
             </button>
@@ -754,7 +822,7 @@ const MoOpenInfo = () => {
             Save
           </p>
           <p
-            className={`bg-white text-black font-bold w-40 text-center h-8 text-xl  `}
+            className={`bg-white hidden text-black font-bold w-40 text-center h-8 text-xl  `}
           >
             Delete
           </p>
@@ -773,6 +841,7 @@ const MoOpenInfo = () => {
           </Link>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

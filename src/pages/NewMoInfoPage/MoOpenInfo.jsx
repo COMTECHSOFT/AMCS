@@ -210,8 +210,8 @@ const MoOpenInfo = () => {
   }
   return (
     <div>
-      <nav className="bg-cyan-900 text-center py-6">
-        <h1 className="text-yellow-300 text-2xl font-bold uppercase">
+      <nav className="bg-cyan-900 text-center py-4">
+        <h1 className="text-white text-xl font-bold uppercase">
           NEW MO OPEN INFORMATION
         </h1>
       </nav>

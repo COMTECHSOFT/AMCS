@@ -154,7 +154,9 @@ const CommissionProcess = () => {
                     <select
                       className="w-full capitalize pl-1 mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
                       onChange={(e) => setMonths(e.target.value)}
-                    >
+                    ><option className="cursor-not-allowed" value="Select">
+                    Select
+                  </option>
                       {month?.map((item, index) => (
                         <option value={item} key={index} className="capitalize">
                           {item}
@@ -176,6 +178,9 @@ const CommissionProcess = () => {
                       className="w-full pl-1 mb-2 h-6 text-xs focus:outline-none focus:shadow-outline"
                       onChange={(e) => setYear(e.target.value)}
                     >
+                      <option className="cursor-not-allowed" value="Select">
+                      Select
+                    </option>
                       {yearDrop?.map((item, index) => (
                         <option value={item} key={index}>
                           {item}

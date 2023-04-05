@@ -265,33 +265,31 @@ const Forms = () => {
   const [entriesDate, setEntriesDate] = useState("");
   const [accountStatus, setAccountStatus] = useState("");
 
-let totalDepositAmount;
-let instlMAmount;
-if(selectPayMode==='Monthly'){
+  let totalDepositAmount;
+  let instlMAmount;
+  if (selectPayMode === "Monthly") {
+    totalDepositAmount = term * 12 * amount;
+    instlMAmount = amount;
+  } else if (selectPayMode === "Quarterly") {
+    totalDepositAmount = term * 4 * amount;
+    instlMAmount = amount;
+  } else if (selectPayMode === "H-Yearly") {
+    totalDepositAmount = term * 2 * amount;
+    instlMAmount = amount;
+  } else if (selectPayMode === "Yearly") {
+    totalDepositAmount = term * 1 * amount;
+    instlMAmount = amount;
+  }
 
-   totalDepositAmount=(term*12)*amount;
-   instlMAmount=amount;
-}else if(selectPayMode==='Quarterly'){
-  totalDepositAmount=(term*4)*amount;
-   instlMAmount=amount;
-}else if(selectPayMode==='H-Yearly'){
-  totalDepositAmount=(term*2)*amount;
-   instlMAmount=amount;
-}else if(selectPayMode==='Yearly'){
-  totalDepositAmount=(term*1)*amount;
-   instlMAmount=amount;
-}
-
-const [nextDateTrigger, setNextDateTrigger] = useState([]);
-const nxtPremDate=nextDateTrigger?.NEXTPAY;
-console.log(nxtPremDate)
-useEffect(() => {
-  fetch(
-    `http://192.168.31.94/api/next_pay.php?PAYMODE=${selectPayMode}&&DATE=${date}&&INST_NO=1`
-  )
-    .then((res) => res.json())
-    .then((data) => setNextDateTrigger(data?.Next_pay_date[0]));
-}, [selectPayMode, date]);
+  const [nextDateTrigger, setNextDateTrigger] = useState([]);
+  const nxtPremDate = nextDateTrigger?.NEXTPAY;
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/next_pay.php?PAYMODE=${selectPayMode}&&DATE=${date}&&INST_NO=1`
+    )
+      .then((res) => res.json())
+      .then((data) => setNextDateTrigger(data?.Next_pay_date[0]));
+  }, [selectPayMode, date]);
 
   // save new data end
 
@@ -308,7 +306,7 @@ useEffect(() => {
       G_NAME: gName,
       OCCUPATION: occp,
       OC_NAME: occpName,
-      NAT: 'Bangladeshi',
+      NAT: "Bangladeshi",
       NAT_ID: natId,
       RV1: mobNo,
       TELEPHONE: tele,
@@ -325,9 +323,9 @@ useEffect(() => {
       RV_DT1: nxtPremDate,
       MATURITY: maturity,
       LF_PRM: amount,
-      INST_NO: instlNo?instlNo:'1',
+      INST_NO: instlNo ? instlNo : "1",
       SUM_INS: totalDepositAmount,
-      SUS_AMT:amount,
+      SUS_AMT: amount,
       NOMINEE_NAME1: nomName1,
       NOMINEE_NAME2: nomName2,
       NOMINEE_NAME3: nomName3,
@@ -392,8 +390,8 @@ useEffect(() => {
     }
   };
 
-
   const handleUpdate = () => {
+    // return alert("Do you want to edit?");
     const updateData = {
       PROPOSER: name ? name : formDatas?.PROPOSER,
       FDPS_NO: value,
@@ -449,17 +447,29 @@ useEffect(() => {
       ADD4: accountStatus ? accountStatus : formDatas?.ADD4,
       DATE_TIME: entriesDate ? entriesDate : formDatas?.DATE_TIME,
     };
-    console.log(updateData);
-  };
+    console.log("before update data", updateData);
 
-  // function handleKeyDown(e) {
-  //   // If the backspace or delete key is pressed
-  //   if (e.keyCode === 8 || e.keyCode === 46) {
-  //     // Clear the value of the input field by updating state
-  //     setDatas(prevValueRef.current.slice(0, -1));
-  //     prevValueRef.current = prevValueRef.current.slice(0, -1);
-  //   }
-  // }
+    const url = `http://192.168.31.94/api/update_p.php?FDPS_NO=${formDatas?.FDPS_NO}`;
+    fetch(url, {
+      method: "POST",
+      // mode: "no-cors",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updateData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("after update data", data);
+        toast.success("Data update successfully!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
+      });
+  };
 
   const handleCrear = (e) => {
     window.location.reload();
@@ -509,19 +519,19 @@ useEffect(() => {
           </label>
           <input
             type="text"
-            defaultValue={value?value: formDatas?.FDPS_NO}
+            defaultValue={value ? value : formDatas?.FDPS_NO}
             onChange={(e) => setProNo(e.target.value)}
             className="w-full border border-gray-400 py-1 text-center font-bold"
           />
         </div>
       </form>
 
-      <div>
+      <div className="text-xs">
         <p className="font-bold text-xl bg-gray-600 text-white text-center py-1">
           {" "}
           Account Holder Information
         </p>
-        <div className="" style={{ backgroundColor: "#E5E7EB" }}>
+        <div className="bg-indigo-300 my-1">
           <div className=" p-2 lg:p-8">
             <form
               action=""
@@ -672,7 +682,7 @@ useEffect(() => {
                 </label>
                 <input
                   type="text"
-                  defaultValue={formDatas?.NAT?formDatas?.NAT:'Bangladeshi'}
+                  defaultValue={formDatas?.NAT ? formDatas?.NAT : "Bangladeshi"}
                   disabled
                   className="mb-2 h-8 w-full bg-white pl-2 font-bold"
                 />
@@ -788,14 +798,14 @@ useEffect(() => {
         </div>
       </div>
 
-      <div>
+      <div className="text-xs">
         <p className="font-bold text-xl bg-gray-600 text-white text-center py-2">
           {" "}
           Savings Information
         </p>
         <form
           action=""
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 p-4 border-2 "
+          className="bg-indigo-300 my-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 p-4 "
         >
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
@@ -822,7 +832,8 @@ useEffect(() => {
             </label>
             <input
               type="text"
-              className="mb-2 h-8 w-full pl-2 font-bold"
+              className="mb-2 h-8 w-full bg-white pl-2 font-bold"
+              disabled
               defaultValue={
                 formDatas?.TABLEID
                   ? formDatas?.TABLEID
@@ -850,7 +861,8 @@ useEffect(() => {
                 type="text"
                 defaultValue={formDatas?.LAST_INST_DATE}
                 onChange={(e) => setLastDueDate(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                disabled
+                className="mb-2 bg-white h-8 w-full pl-2 font-bold"
               />
             ) : (
               <input
@@ -877,7 +889,7 @@ useEffect(() => {
             </label>
             <input
               type="text"
-              defaultValue={nxtPremDate?nxtPremDate:formDatas?.RV_DT1}
+              defaultValue={nxtPremDate ? nxtPremDate : formDatas?.RV_DT1}
               disabled
               className="mb-2 h-8 bg-white w-full pl-2 font-bold"
             />
@@ -914,7 +926,8 @@ useEffect(() => {
                 type="text"
                 defaultValue={formDatas?.MATURITY}
                 onChange={(e) => setMaturity(e.target.value)}
-                className="mb-2 h-8 w-full pl-2 font-bold"
+                disabled
+                className="mb-2 bg-white h-8 w-full pl-2 font-bold"
               />
             ) : (
               <input
@@ -931,7 +944,9 @@ useEffect(() => {
             <input
               type="text"
               // defaultValue={formDatas?.LF_PRM}
-              defaultValue={formDatas?.LF_PRM?formDatas?.LF_PRM:instlMAmount}
+              defaultValue={
+                formDatas?.LF_PRM ? formDatas?.LF_PRM : instlMAmount
+              }
               onChange={(e) => setInstlAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -942,18 +957,21 @@ useEffect(() => {
             </label>
             <input
               type="text"
-              defaultValue={formDatas?.INST_NO?formDatas?.INST_NO:'1'}
+              defaultValue={formDatas?.INST_NO ? formDatas?.INST_NO : "1"}
               onChange={(e) => setInstlNo(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
+              disabled
+              className="mb-2 bg-white h-8 w-full pl-2 font-bold"
             />
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold w-48 md:w-60 lg:w-60">
               Total Depositable Amt
             </label>
-             <input
+            <input
               type="text"
-              defaultValue={totalDepositAmount?totalDepositAmount: formDatas?.SUM_INS}
+              defaultValue={
+                totalDepositAmount ? totalDepositAmount : formDatas?.SUM_INS
+              }
               onChange={(e) => setTotalDepAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -966,7 +984,7 @@ useEffect(() => {
           {" "}
           Nominee Information
         </p>
-        <div className="bg-emerald-400 p-4 mb-12 mt-8 grid grid-cols-1 lg:grid-cols-12 ">
+        <div className="bg-indigo-300 p-4 my-1 grid grid-cols-1 lg:grid-cols-12 ">
           {datas?.map((data, index) => {
             const {
               NOMINEE_NAME1,
@@ -1281,7 +1299,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div>
+      <div className="text-xs">
         <p className="font-bold text-xl bg-gray-600 text-white text-center py-2">
           {" "}
           Office & FPR Summary
@@ -1300,7 +1318,7 @@ useEffect(() => {
                   type="text"
                   defaultValue={allData?.AGENCY_NAME}
                   disabled
-                  className="mb-2 h-8 bg-white w-[40%] font-bold bg-white pl-2"
+                  className="mb-2 h-8 w-[40%] font-bold bg-white pl-2"
                 />
                 <select
                   className="mb-2 h-8 w-[60%] font-bold bg-white pl-2"
@@ -1425,64 +1443,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* <div className="md:px-12">
-        <div className=" mt-4 p-4" style={{ backgroundColor: "#D6CFC7" }}>
-          <div className="flex flex-col md:flex-row mb-6 gap-2 justify-center cursor-pointer">
-            <p
-              className={`border-2 py-2 px-6 text-xl border-r-black ${
-                pathname === "/account"
-                  ? "font-bold bg-sky-500 text-white border-b-0"
-                  : ""
-              }`}
-            >
-              <Link to={"/account"} state={formDatas}>
-                {" "}
-                Account Holder Information
-              </Link>
-            </p>
-            <p
-              className={`border-2 py-2 px-6 text-xl  border-l-black border-r-black ${
-                pathname === "/savings"
-                  ? "font-bold bg-sky-500 text-white border-b-0"
-                  : ""
-              }`}
-            >
-              <Link to="/savings" state={datas}>
-                Savings Information
-              </Link>
-            </p>
-            <p
-              className={`border-2 py-2 px-6 text-xl  border-l-black border-r-black ${
-                pathname === "/nominee"
-                  ? "font-bold bg-sky-500 text-white border-b-0"
-                  : ""
-              }`}
-            >
-              <Link to="/nominee" state={datas}>
-                {" "}
-                Nominee Information
-              </Link>
-            </p>
-            <p
-              className={`border-2 py-2 px-6 text-xl border-l-black ${
-                pathname === "/summary"
-                  ? "font-bold bg-sky-500 text-white border-b-0"
-                  : ""
-              }`}
-            >
-              <Link to="/summary" state={datas}>
-                {" "}
-                Office & FPR Summary
-              </Link>
-            </p>
-          </div>
-
-          <div>
-            <Outlet />
-          </div>
-        </div>
-      </div> */}
-      <div className="bg-indigo-300 p-6 mt-8">
+      <div className="bg-indigo-400 p-6 mt-8">
         <div className="flex flex-col md:flex-row lg:flex-row justify-center cursor-pointer gap-1">
           <p
             className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}

@@ -418,11 +418,13 @@ const Forms = () => {
       TERM: term ? term : formDatas?.TERM,
       LAST_INST_DATE: lastDueDate ? lastDueDate : formDatas?.LAST_INST_DATE,
       RATE: amount ? amount : formDatas?.RATE,
-      RV_DT1: nextPremDate,
+      RV_DT1: nxtPremDate,
       MATURITY: maturity ? maturity : formDatas?.MATURITY,
-      LF_PRM: instlAmt ? instlAmt : formDatas?.LF_PRM,
+      // LF_PRM: instlAmt ? instlAmt : formDatas?.LF_PRM,
+      LF_PRM: instlMAmount ? instlMAmount : formDatas?.LF_PRM,
       INST_NO: instlNo ? instlNo : formDatas?.INST_NO,
-      SUM_INS: totalDepAmt ? totalDepAmt : formDatas?.SUM_INS,
+      // SUM_INS: totalDepAmt ? totalDepAmt : formDatas?.SUM_INS,
+      SUM_INS: totalDepositAmount ? totalDepositAmount : formDatas?.SUM_INS,
       NOMINEE_NAME1: nomName1 ? nomName1 : formDatas?.NOMINEE_NAME1,
       NOMINEE_NAME2: nomName2 ? nomName2 : formDatas?.NOMINEE_NAME2,
       NOMINEE_NAME3: nomName3 ? nomName3 : formDatas?.NOMINEE_NAME3,
@@ -462,6 +464,33 @@ const Forms = () => {
       .then((data) => {
         console.log("after update data", data);
         toast.success("Data update successfully!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
+      });
+    // .catch((error) => {
+    //   console.log(error);
+    //   toast.error("error, data not updated", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //     autoClose: 2000,
+    //     hideProgressBar: true,
+    //     closeOnClick: true,
+    //     pauseOnHover: false,
+    //   });
+    // });
+  };
+
+  const handleDelete = () => {
+    const url = `http://192.168.31.94/api/delete_prop.php?FDPS_NO=${formDatas?.FDPS_NO}`;
+    fetch(url, {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        toast.success("Data delete successfully!", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 2000,
           hideProgressBar: true,
@@ -542,12 +571,20 @@ const Forms = () => {
                   Date
                 </label>
                 {formDatas?.RISKDATE ? (
-                  <input
-                    type="text"
-                    defaultValue={formDatas?.RISKDATE}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="mb-2 h-8 w-full placeholder:text-black pl-2 font-bold"
-                  />
+                  <div className="w-full">
+                    {" "}
+                    <input
+                      type="text"
+                      defaultValue={formDatas?.RISKDATE}
+                      onChange={(e) => setDate(e.target.value)}
+                      className="mb-2 h-8 w-[50%] placeholder:text-black pl-2 font-bold"
+                    />
+                    <input
+                      type="date"
+                      onChange={handleDate}
+                      className="mb-2 h-8 w-[50%] pl-2 font-bold"
+                    />
+                  </div>
                 ) : (
                   <input
                     type="date"
@@ -617,12 +654,19 @@ const Forms = () => {
                     Date of Birth
                   </label>
                   {formDatas?.DOB ? (
-                    <input
-                      type="text"
-                      defaultValue={formDatas?.DOB}
-                      onChange={(e) => setDob(e.target.value)}
-                      className="mb-2 h-8 md:w-full lg:w-full md:ml-8 lg:ml-8 pl-2 font-bold"
-                    />
+                    <div className="w-full ml-4">
+                      <input
+                        type="text"
+                        defaultValue={formDatas?.DOB}
+                        onChange={(e) => setDob(e.target.value)}
+                        className="mb-2 h-8 lg:w-[40%] pl-2 font-bold"
+                      />
+                      <input
+                        type="date"
+                        onChange={handleDOB}
+                        className="mb-2 h-8 lg:w-[50%] pl-2 font-bold"
+                      />
+                    </div>
                   ) : (
                     <input
                       type="date"
@@ -637,14 +681,24 @@ const Forms = () => {
                   </label>
                   <input
                     type="text"
-                    className="mb-2 h-8 w-24 pl-2 font-bold"
+                    className="mb-2 h-8 w-14 text-center bg-white pl-2 font-bold"
+                    disabled
+                    // defaultValue={
+                    //   formDatas?.AGE
+                    //     ? formDatas?.AGE
+                    //     : dobAge &&
+                    //       Math.floor(
+                    //         (Date.now() - new Date(dobAge)) / 31557600000
+                    //       )
+                    // }
                     defaultValue={
-                      formDatas?.AGE
-                        ? formDatas?.AGE
-                        : dobAge &&
+                      dobAge &&
+                      Math.floor((Date.now() - new Date(dobAge)) / 31557600000)
+                        ? dobAge &&
                           Math.floor(
                             (Date.now() - new Date(dobAge)) / 31557600000
                           )
+                        : formDatas?.AGE
                     }
                     onChange={(e) => setAge(e.target.value)}
                   />
@@ -811,19 +865,21 @@ const Forms = () => {
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60">
               Plan Name
             </label>
+            <input
+              type="text"
+              className="mb-2 h-8 w-[50%] bg-white pl-2 font-bold"
+              disabled
+              defaultValue={formDatas?.INSTMODE}
+            />
             <select
               onChange={(e) => setPlanName(e.target.value)}
-              className="mb-2 h-8 w-full pl-2 font-bold"
+              className="mb-2 h-8 w-[50%] pl-2 font-bold"
             >
-              {formDatas?.INSTMODE ? (
-                <option>{formDatas?.INSTMODE}</option>
-              ) : (
-                plan?.map((item) => (
-                  <option defaultValue={item.NAME} key={item.CODE}>
-                    {item.NAME}
-                  </option>
-                ))
-              )}
+              {plan?.map((item) => (
+                <option defaultValue={item.NAME} key={item.CODE}>
+                  {item.NAME}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex items-center justify-center">
@@ -834,10 +890,15 @@ const Forms = () => {
               type="text"
               className="mb-2 h-8 w-full bg-white pl-2 font-bold"
               disabled
+              // defaultValue={
+              //   formDatas?.TABLEID
+              //     ? formDatas?.TABLEID
+              //     : selectPlanCode[0]?.CODE
+              // }
               defaultValue={
-                formDatas?.TABLEID
-                  ? formDatas?.TABLEID
-                  : selectPlanCode[0]?.CODE
+                selectPlanCode[0]?.CODE
+                  ? selectPlanCode[0]?.CODE
+                  : formDatas?.TABLEID
               }
             />
           </div>
@@ -943,10 +1004,10 @@ const Forms = () => {
             </label>
             <input
               type="text"
-              // defaultValue={formDatas?.LF_PRM}
-              defaultValue={
-                formDatas?.LF_PRM ? formDatas?.LF_PRM : instlMAmount
-              }
+              // defaultValue={
+              //   formDatas?.LF_PRM ? formDatas?.LF_PRM : instlMAmount
+              // }
+              defaultValue={instlMAmount ? instlMAmount : formDatas?.LF_PRM}
               onChange={(e) => setInstlAmt(e.target.value)}
               className="mb-2 h-8 w-full pl-2 font-bold"
             />
@@ -1456,6 +1517,12 @@ const Forms = () => {
             onClick={handleUpdate}
           >
             Edit
+          </p>
+          <p
+            className={`bg-white text-black font-bold w-44 text-center h-8 text-xl  `}
+            onClick={handleDelete}
+          >
+            Delete
           </p>
           {/* <p
             className={`bg-white text-black font-bold w-48 text-center py-2 px-6 text-xl  `}

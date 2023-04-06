@@ -281,6 +281,7 @@ const Forms = () => {
     instlMAmount = amount;
   }
 
+  // Next Premium Date
   const [nextDateTrigger, setNextDateTrigger] = useState([]);
   const nxtPremDate = nextDateTrigger?.NEXTPAY;
   useEffect(() => {
@@ -290,6 +291,17 @@ const Forms = () => {
       .then((res) => res.json())
       .then((data) => setNextDateTrigger(data?.Next_pay_date[0]));
   }, [selectPayMode, date]);
+
+  // Maturity Date
+  const [maturityDateTrigger, setMaturityDateTrigger] = useState([]);
+  const maturityDate = maturityDateTrigger?.MAT_DATE;
+  useEffect(() => {
+    fetch(
+      `http://192.168.31.94/api/maturity_date.php?TERM=${term}&&DATE=${date}`
+    )
+      .then((res) => res.json())
+      .then((data) => setMaturityDateTrigger(data?.Maturity_date[0]));
+  }, [term, date]);
 
   // save new data end
 
@@ -321,7 +333,7 @@ const Forms = () => {
       LAST_INST_DATE: lastDueDate,
       RATE: amount,
       RV_DT1: nxtPremDate,
-      MATURITY: maturity,
+      MATURITY: maturityDate,
       LF_PRM: amount,
       INST_NO: instlNo ? instlNo : "1",
       SUM_INS: totalDepositAmount,
@@ -419,7 +431,7 @@ const Forms = () => {
       LAST_INST_DATE: lastDueDate ? lastDueDate : formDatas?.LAST_INST_DATE,
       RATE: amount ? amount : formDatas?.RATE,
       RV_DT1: nxtPremDate,
-      MATURITY: maturity ? maturity : formDatas?.MATURITY,
+      MATURITY: maturityDate ? maturityDate : formDatas?.MATURITY,
       // LF_PRM: instlAmt ? instlAmt : formDatas?.LF_PRM,
       LF_PRM: instlMAmount ? instlMAmount : formDatas?.LF_PRM,
       INST_NO: instlNo ? instlNo : formDatas?.INST_NO,
@@ -978,7 +990,7 @@ const Forms = () => {
             </select>
           </div>
 
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
               Maturity
             </label>
@@ -997,6 +1009,17 @@ const Forms = () => {
                 className="mb-2 h-8 w-full pl-2 font-bold"
               />
             )}
+          </div> */}
+          <div className="flex items-center justify-center">
+            <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">
+              Maturity Date
+            </label>
+            <input
+              type="text"
+              defaultValue={maturityDate ? maturityDate : formDatas?.MATURITY}
+              disabled
+              className="mb-2 h-8 bg-white w-full pl-2 font-bold"
+            />
           </div>
           <div className="flex items-center justify-center">
             <label htmlFor="" className="mx-2 font-bold  w-48 md:w-60 lg:w-60">

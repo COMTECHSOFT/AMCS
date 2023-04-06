@@ -495,21 +495,24 @@ const Forms = () => {
     // });
   };
 
+  // Delete Data
   const handleDelete = () => {
-    const url = `http://192.168.31.94/api/delete_prop.php?FDPS_NO=${formDatas?.FDPS_NO}`;
-    fetch(url, {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        toast.success("Data delete successfully!", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
+    if (window.confirm("Are you sure you want to delete this data?")) {
+      const url = `http://192.168.31.94/api/delete_prop.php?FDPS_NO=${formDatas?.FDPS_NO}`;
+      fetch(url, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          toast.success("Data delete successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+          });
         });
-      });
+    }
   };
 
   const handleCrear = (e) => {
